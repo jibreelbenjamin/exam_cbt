@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('gambar')->nullable(); // simpan nama file atau path
             $table->text('pertanyaan');
             $table->enum('jenis', ['pilihan_ganda', 'essay']);
-            $table->text('jawaban_exact'); // jawaban exact disini el
             $table->timestamps();
         });
 
@@ -48,11 +47,16 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('jawaban', function (Blueprint $table) {
-            $table->id('id_jawaban');
+        Schema::create('jawaban_siswa', function (Blueprint $table) {
+            $table->id('id_jawaban_siswa');
+            $table->foreignId('id_ujian')->constrained('ujian', 'id_ujian')->onDelete('cascade');
+            $table->foreignId('id_siswa')->constrained('siswa', 'id_siswa')->onDelete('cascade');
             $table->foreignId('id_soal')->constrained('soal', 'id_soal')->onDelete('cascade');
-            $table->foreignId('id_siswa')->constrained('guru', 'id_guru')->onDelete('cascade');
-            $table->text('jawaban');
+            $table->text('jawaban')->nullable(); // Jawaban (ID pilihan untuk PG, teks untuk essay)
+            $table->boolean('is_correct')->nullable(); // Hanya untuk PG
+            $table->dateTime('waktu_selesai');
+            $table->dateTime('waktu_jawab')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -60,8 +64,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('mapel');
         Schema::dropIfExists('soal');
-        Schema::dropIfExists('pilihan_jawaban'); //pj
-        Schema::dropIfExists('ujian'); //u
-        Schema::dropIfExists('jawaban'); //j
     }
 };
