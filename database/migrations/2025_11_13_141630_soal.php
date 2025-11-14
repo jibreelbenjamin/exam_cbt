@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('id_guru')->constrained('guru', 'id_guru')->onDelete('cascade');
             $table->string('gambar')->nullable(); // simpan nama file atau path
             $table->text('pertanyaan');
+            $table->text('jawaban'); // jawaban exact
             $table->enum('jenis', ['pilihan_ganda', 'essay']);
             $table->timestamps();
         });
