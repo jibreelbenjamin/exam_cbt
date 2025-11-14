@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('gambar')->nullable(); // simpan nama file atau path
             $table->text('pertanyaan');
             $table->enum('jenis', ['pilihan_ganda', 'essay']);
-            $table->text('jawaban_exact');
+            $table->text('jawaban_exact'); // jawaban exact disini el
             $table->timestamps();
         });
 
