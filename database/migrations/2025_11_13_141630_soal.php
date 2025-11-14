@@ -46,6 +46,13 @@ return new class extends Migration
             $table->enum('status', ['aktif','nonaktif'])->default('nonaktif');
             $table->timestamps();
         });
+
+        Schema::create('jawaban', function (Blueprint $table) {
+            $table->id('id_jawaban');
+            $table->foreignId('id_soal')->constrained('soal', 'id_soal')->onDelete('cascade');
+            $table->foreignId('id_siswa')->constrained('guru', 'id_guru')->onDelete('cascade');
+            $table->text('jawaban');
+        });
     }
 
     public function down(): void
