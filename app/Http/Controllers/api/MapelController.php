@@ -12,16 +12,17 @@ class MapelController extends Controller
     public function index()
     {
         try {
-            $mapel = Mapel::latest()->get();
+            $data = Mapel::latest()->get();
             return response()->json([
                 'success' => true,
-                'data' => $mapel
+                'data' => $data
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'data' => false,
-                'message' => $e->getMessage()
+                'message' => 'Gagal mengambil data',
+                'error' => $e->getMessage()
             ]);
         }
     }
@@ -34,11 +35,11 @@ class MapelController extends Controller
         ]);
 
         try {
-            $mapel = Mapel::create($validated);
+            $data = Mapel::create($validated);
             return response()->json([
                 'success' => true,
                 'message' => 'Mapel berhasil dibuat',
-                'data' => $mapel
+                'data' => $data
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -53,9 +54,9 @@ class MapelController extends Controller
     // routenya /api/mapel/{id} | methodnya GET
     public function show($id)
     {
-        $mapel = Mapel::find($id);
+        $data = Mapel::find($id);
 
-        if (!$mapel) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Mapel tidak ditemukan'
@@ -64,16 +65,16 @@ class MapelController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $mapel
+            'data' => $data
         ]);
     }
 
     // routenya /api/mapel/{id} | methodnya UPDATE
     public function update(Request $request, $id)
     {
-        $mapel = Mapel::find($id);
+        $data = Mapel::find($id);
 
-        if (empty($mapel)) {
+        if (empty($data)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Mapel Tersebut tidak ditemukan'
@@ -85,11 +86,11 @@ class MapelController extends Controller
         ]);
 
         try {
-            $mapel->update($validated);
+            $data->update($validated);
             return response()->json([
                 'success' => true,
                 'message' => 'Mapel berhasil diupdate',
-                'data' => $mapel
+                'data' => $data
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -104,9 +105,9 @@ class MapelController extends Controller
     // ini route nya /api/mapel/{id} | method DELETE
     public function destroy($id)
     {
-        $mapel = Mapel::find($id);
+        $data = Mapel::find($id);
 
-        if (!$mapel) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Mapel Tersebut tidak ditemukan'
@@ -114,7 +115,7 @@ class MapelController extends Controller
         }
 
         try {
-            $mapel->delete();
+            $data->delete();
             return response()->json([
                 'success' => true,
                 'message' => 'Mapel berhasil dihapus'
