@@ -60,8 +60,8 @@ return new class extends Migration
     {
         Schema::dropIfExists('mapel');
         Schema::dropIfExists('soal');
-        Schema::dropIfExists('pilihan_jawaban');
-        Schema::dropIfExists('ujian');
-        Schema::dropIfExists('jawaban');
+        Schema::dropIfExists('pilihan_jawaban'); //pj
+        Schema::dropIfExists('ujian'); //u
+        Schema::dropIfExists('jawaban'); //j
     }
 };
