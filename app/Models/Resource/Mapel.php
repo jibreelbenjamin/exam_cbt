@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Models\API;
+namespace App\Models\Resource;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class MapelModel extends Model
+class Mapel extends Model
 {
+    use HasFactory;
+
     protected $table = 'mapel';
     protected $primaryKey = 'id_mapel';
     protected $fillable = [

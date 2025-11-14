@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\API;
+namespace App\Models\Resource;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PilihanJawabanModel extends Model
+class PilihanJawaban extends Model
 {
     use HasFactory;
 
@@ -21,6 +21,6 @@ class PilihanJawabanModel extends Model
 
     public function soal()
     {
-        return $this->belongsTo(SoalModel::class, 'id_soal', 'id_soal');
+        return $this->belongsTo(Soal::class, 'id_soal', 'id_soal');
     }
 }

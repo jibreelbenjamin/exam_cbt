@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Models\API\JawabanSiswaModel;
+use App\Models\Resource\JawabanSiswa;
 use Illuminate\Routing\Controller;
 
 class JawabanSiswaController extends Controller
@@ -11,13 +11,25 @@ class JawabanSiswaController extends Controller
     // GET semua jawaban siswa
     public function index()
     {
-        return response()->json(JawabanSiswaModel::all(), 200);
+        try {
+            $data = JawabanSiswa::latest()->get();
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'data' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     // GET jawaban siswa berdasarkan id
     public function show($id)
     {
-        $data = JawabanSiswaModel::find($id);
+        $data = JawabanSiswa::find($id);
 
         if (!$data) {
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
@@ -39,7 +51,7 @@ class JawabanSiswaController extends Controller
             'waktu_jawab' => 'nullable|date',
         ]);
 
-        $data = JawabanSiswaModel::create($validated);
+        $data = JawabanSiswa::create($validated);
 
         return response()->json([
             'message' => 'Jawaban siswa berhasil disimpan',
@@ -50,7 +62,7 @@ class JawabanSiswaController extends Controller
     // PUT untuk update jawaban siswa
     public function update(Request $request, $id)
     {
-        $data = JawabanSiswaModel::find($id);
+        $data = JawabanSiswa::find($id);
 
         if (!$data) {
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
@@ -67,7 +79,7 @@ class JawabanSiswaController extends Controller
     // DELETE data jawaban siswa
     public function destroy($id)
     {
-        $data = JawabanSiswaModel::find($id);
+        $data = JawabanSiswa::find($id);
 
         if (!$data) {
             return response()->json(['message' => 'Data tidak ditemukan'], 404);

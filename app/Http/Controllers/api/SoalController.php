@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\API\SoalModel;
+use App\Models\Resource\Soal;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -11,7 +11,7 @@ class SoalController extends Controller
     // GET /api/soal
     public function index()
     {
-        $soal = SoalModel::with(['mapel', 'guru', 'pilihan'])->get();
+        $soal = Soal::with(['mapel', 'guru', 'pilihanJawaban'])->get();
 
         return response()->json([
             'success' => true,
@@ -36,7 +36,7 @@ class SoalController extends Controller
             $validated['gambar'] = $request->file('gambar')->store('gambar_soal', 'public');
         }
 
-        $soal = SoalModel::create($validated);
+        $soal = Soal::create($validated);
 
         return response()->json([
             'success' => true,
@@ -48,7 +48,7 @@ class SoalController extends Controller
     // GET /api/soal/{id}
     public function show($id)
     {
-        $soal = SoalModel::with(['mapel', 'guru', 'pilihan'])->find($id);
+        $soal = Soal::with(['mapel', 'guru', 'pilihan'])->find($id);
 
         if (!$soal) {
             return response()->json([
@@ -66,7 +66,7 @@ class SoalController extends Controller
     // PUT /api/soal/{id}
     public function update(Request $request, $id)
     {
-        $soal = SoalModel::find($id);
+        $soal = Soal::find($id);
 
         if (!$soal) {
             return response()->json([
@@ -101,7 +101,7 @@ class SoalController extends Controller
     // DELETE /api/soal/{id}
     public function destroy($id)
     {
-        $soal = SoalModel::find($id);
+        $soal = Soal::find($id);
 
         if (!$soal) {
             return response()->json([

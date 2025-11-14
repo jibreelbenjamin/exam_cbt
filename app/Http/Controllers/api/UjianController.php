@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\API\UjianModel;
+use App\Models\Resource\Ujian;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
 
@@ -11,7 +11,7 @@ class UjianController extends Controller
     // GET /api/ujian
     public function index()
     {
-        $ujian = UjianModel::with(['mapel', 'admin'])->latest()->get();
+        $ujian = Ujian::with(['mapel', 'admin'])->latest()->get();
 
         return response()->json([
             'success' => true,
@@ -34,7 +34,7 @@ class UjianController extends Controller
             'status' => 'in:aktif,nonaktif'
         ]);
 
-        $ujian = UjianModel::create($validated);
+        $ujian = Ujian::create($validated);
 
         return response()->json([
             'success' => true,
@@ -46,7 +46,7 @@ class UjianController extends Controller
     // GET /api/ujian/{id}
     public function show($id)
     {
-        $ujian = UjianModel::with(['mapel', 'admin', 'soal'])->find($id);
+        $ujian = Ujian::with(['mapel', 'admin', 'soal'])->find($id);
 
         if (!$ujian) {
             return response()->json([
@@ -64,7 +64,7 @@ class UjianController extends Controller
     //  /api/ujian/{id}
     public function update(Request $request, $id)
     {
-        $ujian = UjianModel::find($id);
+        $ujian = Ujian::find($id);
 
         if (!$ujian) {
             return response()->json([
@@ -97,7 +97,7 @@ class UjianController extends Controller
     // ini route nya /api/ujian/{id} | method DELETE
     public function destroy($id)
     {
-        $ujian = UjianModel::find($id);
+        $ujian = Ujian::find($id);
 
         if (!$ujian) {
             return response()->json([

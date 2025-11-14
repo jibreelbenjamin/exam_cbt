@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\API;
+namespace App\Models\Resource;
 
-use App\Models\Admin;
+use App\Models\Users\Admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UjianModel extends Model
+class Ujian extends Model
 {
     use HasFactory;
 
@@ -28,7 +28,7 @@ class UjianModel extends Model
     // relasi rek
     public function mapel()
     {
-        return $this->belongsTo(MapelModel::class, 'id_mapel', 'id_mapel');
+        return $this->belongsTo(Mapel::class, 'id_mapel', 'id_mapel');
     }
 
     public function admin()
@@ -38,7 +38,7 @@ class UjianModel extends Model
 
     public function soal()
     {
-        return $this->hasMany(SoalModel::class, 'id_mapel', 'id_mapel');
+        return $this->hasMany(Soal::class, 'id_mapel', 'id_mapel');
         // Because exam uses id_mapel to determine soal list
     }
 }

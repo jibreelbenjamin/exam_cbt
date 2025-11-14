@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Users;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Guru extends Authenticatable
+class Admin extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     
-    protected $table = 'guru';
-    protected $primaryKey = 'id_guru';
+    protected $table = 'admin';
+    protected $primaryKey = 'id_admin';
 
     protected $fillable = [
-        'nip',
+        'username',
         'nama',
         'password'
     ];

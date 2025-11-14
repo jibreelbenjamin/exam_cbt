@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\API\PilihanJawabanModel;
-use App\Models\API\SoalModel;
+use App\Models\Resource\PilihanJawaban;
+use App\Models\Resource\Soal;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -12,7 +12,7 @@ class PilihanJawabanController extends Controller
     // GET /api/pilihan-jawaban/{id_soal}
     public function index($id_soal)
     {
-        $data = PilihanJawabanModel::where('id_soal', $id_soal)->get();
+        $data = PilihanJawaban::where('id_soal', $id_soal)->get();
 
         return response()->json([
             'success' => true,
@@ -37,11 +37,11 @@ class PilihanJawabanController extends Controller
 
         // Jika pilihan ini benar → kosongkan pilihan lain
         if ($request->is_correct) {
-            PilihanJawabanModel::where('id_soal', $request->id_soal)
+            PilihanJawaban::where('id_soal', $request->id_soal)
                 ->update(['is_correct' => false]);
         }
 
-        $pilihan = PilihanJawabanModel::create($validated);
+        $pilihan = PilihanJawaban::create($validated);
 
         return response()->json([
             'success' => true,
@@ -53,7 +53,7 @@ class PilihanJawabanController extends Controller
     // GET /api/pilihan-jawaban/detail/{id}
     public function show($id)
     {
-        $pilihan = PilihanJawabanModel::find($id);
+        $pilihan = PilihanJawaban::find($id);
 
         if (!$pilihan) {
             return response()->json([
@@ -71,7 +71,7 @@ class PilihanJawabanController extends Controller
     // PUT /api/pilihan-jawaban/{id}
     public function update(Request $request, $id)
     {
-        $pilihan = PilihanJawabanModel::find($id);
+        $pilihan = PilihanJawaban::find($id);
 
         if (!$pilihan) {
             return response()->json([
@@ -93,7 +93,7 @@ class PilihanJawabanController extends Controller
 
         // Jika set sebagai benar → kosongkan lainnya
         if ($request->is_correct) {
-            PilihanJawabanModel::where('id_soal', $pilihan->id_soal)
+            PilihanJawaban::where('id_soal', $pilihan->id_soal)
                 ->update(['is_correct' => false]);
         }
 
@@ -109,7 +109,7 @@ class PilihanJawabanController extends Controller
     // DELETE /api/pilihan-jawaban/{id}
     public function destroy($id)
     {
-        $pilihan = PilihanJawabanModel::find($id);
+        $pilihan = PilihanJawaban::find($id);
 
         if (!$pilihan) {
             return response()->json([

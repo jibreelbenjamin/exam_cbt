@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\API\MapelModel;
+use App\Models\Resource\Mapel;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -12,7 +12,7 @@ class MapelController extends Controller
     public function index()
     {
         try {
-            $mapel = MapelModel::latest()->get();
+            $mapel = Mapel::latest()->get();
             return response()->json([
                 'success' => true,
                 'data' => $mapel
@@ -34,7 +34,7 @@ class MapelController extends Controller
         ]);
 
         try {
-            $mapel = MapelModel::create($validated);
+            $mapel = Mapel::create($validated);
             return response()->json([
                 'success' => true,
                 'message' => 'Mapel berhasil dibuat',
@@ -53,7 +53,7 @@ class MapelController extends Controller
     // routenya /api/mapel/{id} | methodnya GET
     public function show($id)
     {
-        $mapel = MapelModel::find($id);
+        $mapel = Mapel::find($id);
 
         if (!$mapel) {
             return response()->json([
@@ -71,7 +71,7 @@ class MapelController extends Controller
     // routenya /api/mapel/{id} | methodnya UPDATE
     public function update(Request $request, $id)
     {
-        $mapel = MapelModel::find($id);
+        $mapel = Mapel::find($id);
 
         if (empty($mapel)) {
             return response()->json([
@@ -104,7 +104,7 @@ class MapelController extends Controller
     // ini route nya /api/mapel/{id} | method DELETE
     public function destroy($id)
     {
-        $mapel = MapelModel::find($id);
+        $mapel = Mapel::find($id);
 
         if (!$mapel) {
             return response()->json([

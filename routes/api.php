@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\JawabanSiswaController;
 use App\Http\Controllers\API\MapelController;
 use App\Http\Controllers\API\PilihanJawabanController;
@@ -54,7 +54,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/ujian/{id}', [UjianController::class, 'show']);
     Route::put('/ujian/{id}', [UjianController::class, 'update']);
     Route::delete('/ujian/{id}', [UjianController::class, 'destroy']);
-
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 

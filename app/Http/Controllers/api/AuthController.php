@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Models\Admin;
-use App\Models\Guru;
-use App\Models\Siswa;
+use App\Models\Users\Admin;
+use App\Models\Users\Guru;
+use App\Models\Users\Siswa;
 use Illuminate\Support\Facades\Hash;
 use \Illuminate\Validation\ValidationException;
 
@@ -20,12 +20,12 @@ class AuthController
             ], 400);
         }
 
-        if (!in_array($request->role, ['admin', 'guru', 'siswa'])) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Role tidak valid'
-            ], 400);
-        }
+        // if (!in_array($request->role, ['admin', 'guru', 'siswa'])) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Role tidak valid'
+        //     ], 400);
+        // }
 
         switch ($request->role) {
             case 'admin':
@@ -42,6 +42,12 @@ class AuthController
                 $user = Siswa::where('nis', $request->username)->first();
                 $userIdField = 'id_siswa';
                 break;
+
+            default: // pindah validasi role
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Role tidak valid'
+                ], 400);
         }
 
         if (!$user) {

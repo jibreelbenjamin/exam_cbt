@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\API;
+namespace App\Models\Resource;
 
-use App\Models\Siswa;
+use App\Models\Users\Siswa;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JawabanSiswaModel extends Model
+class JawabanSiswa extends Model
 {
     use HasFactory;
 
@@ -26,7 +26,7 @@ class JawabanSiswaModel extends Model
     // relasi nya lek
     public function ujian()
     {
-        return $this->belongsTo(UjianModel::class, 'id_ujian');
+        return $this->belongsTo(Ujian::class, 'id_ujian');
     }
 
     public function siswa()
@@ -36,6 +36,6 @@ class JawabanSiswaModel extends Model
 
     public function soal()
     {
-        return $this->belongsTo(SoalModel::class, 'id_soal');
+        return $this->belongsTo(Soal::class, 'id_soal');
     }
 }

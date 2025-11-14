@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\API;
+namespace App\Models\Resource;
 
-use App\Models\Guru;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Users\Guru;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class SoalModel extends Model
+class Soal extends Model
 {
     use HasFactory;
 
@@ -24,7 +24,7 @@ class SoalModel extends Model
 
     public function mapel()
     {
-        return $this->belongsTo(MapelModel::class, 'id_mapel', 'id_mapel');
+        return $this->belongsTo(Mapel::class, 'id_mapel', 'id_mapel');
     }
 
     public function guru()
@@ -32,8 +32,8 @@ class SoalModel extends Model
         return $this->belongsTo(Guru::class, 'id_guru', 'id_guru');
     }
 
-    public function pilihan()
+    public function pilihanJawaban()
     {
-        return $this->hasMany(PilihanJawabanModel::class, 'id_soal', 'id_soal');
+        return $this->hasMany(PilihanJawaban::class, 'id_soal', 'id_soal');
     }
 }
