@@ -11,11 +11,11 @@ class UjianController extends Controller
     // GET /api/ujian
     public function index()
     {
-        $ujian = Ujian::with(['mapel', 'admin'])->latest()->get();
+        $data = Ujian::with(['mapel', 'admin'])->latest()->get();
 
         return response()->json([
             'success' => true,
-            'data' => $ujian
+            'data' => $data
         ]);
     }
 
@@ -34,21 +34,21 @@ class UjianController extends Controller
             'status' => 'in:aktif,nonaktif'
         ]);
 
-        $ujian = Ujian::create($validated);
+        $data = Ujian::create($validated);
 
         return response()->json([
             'success' => true,
             'message' => 'Ujian berhasil dibuat',
-            'data' => $ujian
+            'data' => $data
         ], 201);
     }
 
     // GET /api/ujian/{id}
     public function show($id)
     {
-        $ujian = Ujian::with(['mapel', 'admin', 'soal'])->find($id);
+        $data = Ujian::with(['mapel', 'admin', 'soal'])->find($id);
 
-        if (!$ujian) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Ujian tidak ditemukan'
@@ -57,16 +57,16 @@ class UjianController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $ujian
+            'data' => $data
         ]);
     }
 
     //  /api/ujian/{id}
     public function update(Request $request, $id)
     {
-        $ujian = Ujian::find($id);
+        $data = Ujian::find($id);
 
-        if (!$ujian) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Ujian Tersebut tidak ditemukan'
@@ -85,28 +85,28 @@ class UjianController extends Controller
             'status' => 'in:aktif,nonaktif'
         ]);
 
-        $ujian->update($validated);
+        $data->update($validated);
 
         return response()->json([
             'success' => true,
             'message' => 'Ujian berhasil diupdate',
-            'data' => $ujian
+            'data' => $data
         ]);
     }
 
     // ini route nya /api/ujian/{id} | method DELETE
     public function destroy($id)
     {
-        $ujian = Ujian::find($id);
+        $data = Ujian::find($id);
 
-        if (!$ujian) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Ujian Tersebut tidak ditemukan'
             ], 404);
         }
 
-        $ujian->delete();
+        $data->delete();
 
         return response()->json([
             'success' => true,

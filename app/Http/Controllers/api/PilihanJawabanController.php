@@ -41,21 +41,21 @@ class PilihanJawabanController extends Controller
                 ->update(['is_correct' => false]);
         }
 
-        $pilihan = PilihanJawaban::create($validated);
+        $data = PilihanJawaban::create($validated);
 
         return response()->json([
             'success' => true,
             'message' => 'Pilihan jawaban berhasil ditambahkan',
-            'data' => $pilihan
+            'data' => $data
         ], 201);
     }
 
     // GET /api/pilihan-jawaban/detail/{id}
     public function show($id)
     {
-        $pilihan = PilihanJawaban::find($id);
+        $data = PilihanJawaban::find($id);
 
-        if (!$pilihan) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan'
@@ -64,16 +64,16 @@ class PilihanJawabanController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $pilihan
+            'data' => $data
         ]);
     }
 
     // PUT /api/pilihan-jawaban/{id}
     public function update(Request $request, $id)
     {
-        $pilihan = PilihanJawaban::find($id);
+        $data = PilihanJawaban::find($id);
 
-        if (!$pilihan) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan'
@@ -93,32 +93,32 @@ class PilihanJawabanController extends Controller
 
         // Jika set sebagai benar → kosongkan lainnya
         if ($request->is_correct) {
-            PilihanJawaban::where('id_soal', $pilihan->id_soal)
+            PilihanJawaban::where('id_soal', $data->id_soal)
                 ->update(['is_correct' => false]);
         }
 
-        $pilihan->update($validated);
+        $data->update($validated);
 
         return response()->json([
             'success' => true,
             'message' => 'Pilihan jawaban diperbarui',
-            'data' => $pilihan
+            'data' => $data
         ]);
     }
 
     // DELETE /api/pilihan-jawaban/{id}
     public function destroy($id)
     {
-        $pilihan = PilihanJawaban::find($id);
+        $data = PilihanJawaban::find($id);
 
-        if (!$pilihan) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan'
             ], 404);
         }
 
-        $pilihan->delete();
+        $data->delete();
 
         return response()->json([
             'success' => true,

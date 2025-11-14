@@ -11,11 +11,11 @@ class SoalController extends Controller
     // GET /api/soal
     public function index()
     {
-        $soal = Soal::with(['mapel', 'guru', 'pilihanJawaban'])->get();
+        $data = Soal::with(['mapel', 'guru', 'pilihanJawaban'])->get();
 
         return response()->json([
             'success' => true,
-            'data' => $soal
+            'data' => $data
         ]);
     }
 
@@ -36,21 +36,21 @@ class SoalController extends Controller
             $validated['gambar'] = $request->file('gambar')->store('gambar_soal', 'public');
         }
 
-        $soal = Soal::create($validated);
+        $data = Soal::create($validated);
 
         return response()->json([
             'success' => true,
             'message' => 'Soal berhasil dibuat',
-            'data' => $soal
+            'data' => $data
         ], 201);
     }
 
     // GET /api/soal/{id}
     public function show($id)
     {
-        $soal = Soal::with(['mapel', 'guru', 'pilihan'])->find($id);
+        $data = Soal::with(['mapel', 'guru', 'pilihan'])->find($id);
 
-        if (!$soal) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Soal tidak ditemukan'
@@ -59,16 +59,16 @@ class SoalController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $soal
+            'data' => $data
         ]);
     }
 
     // PUT /api/soal/{id}
     public function update(Request $request, $id)
     {
-        $soal = Soal::find($id);
+        $data = Soal::find($id);
 
-        if (!$soal) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Soal tidak ditemukan'
@@ -89,28 +89,28 @@ class SoalController extends Controller
             $validated['gambar'] = $request->file('gambar')->store('gambar_soal', 'public');
         }
 
-        $soal->update($validated);
+        $data->update($validated);
 
         return response()->json([
             'success' => true,
             'message' => 'Soal berhasil diupdate',
-            'data' => $soal
+            'data' => $data
         ]);
     }
 
     // DELETE /api/soal/{id}
     public function destroy($id)
     {
-        $soal = Soal::find($id);
+        $data = Soal::find($id);
 
-        if (!$soal) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
                 'message' => 'Soal tidak ditemukan'
             ], 404);
         }
 
-        $soal->delete();
+        $data->delete();
 
         return response()->json([
             'success' => true,
