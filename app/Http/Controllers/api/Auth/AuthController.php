@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\API\Auth;
 
+use App\Models\Auth\Admin;
+use App\Models\Auth\Guru;
+use App\Models\Auth\Siswa;
 use Illuminate\Http\Request;
-use App\Models\Admin;
-use App\Models\Guru;
-use App\Models\Siswa;
 use Illuminate\Support\Facades\Hash;
-use \Illuminate\Validation\ValidationException;
 
 class AuthController
 {
@@ -39,6 +38,7 @@ class AuthController
                 break;
 
             case 'siswa':
+            default:
                 $user = Siswa::where('nis', $request->username)->first();
                 $userIdField = 'id_siswa';
                 break;
