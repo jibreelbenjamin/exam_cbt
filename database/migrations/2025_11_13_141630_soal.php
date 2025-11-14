@@ -46,6 +46,18 @@ return new class extends Migration
             $table->enum('status', ['aktif','nonaktif'])->default('nonaktif');
             $table->timestamps();
         });
+
+        Schema::create('jawaban_siswa', function (Blueprint $table) {
+            $table->id('id_jawaban_siswa');
+            $table->foreignId('id_ujian')->constrained('ujian', 'id_ujian')->onDelete('cascade');
+            $table->foreignId('id_siswa')->constrained('siswa', 'id_siswa')->onDelete('cascade');
+            $table->foreignId('id_soal')->constrained('soal', 'id_soal')->onDelete('cascade');
+            $table->text('jawaban')->nullable(); // Jawaban (ID pilihan untuk PG, teks untuk essay)
+            $table->boolean('is_correct')->nullable(); // Hanya untuk PG
+            $table->dateTime('waktu_selesai');
+            $table->dateTime('waktu_jawab')->nullable();
+            $table->timestamps();
+        });
     }
 
     public function down(): void
