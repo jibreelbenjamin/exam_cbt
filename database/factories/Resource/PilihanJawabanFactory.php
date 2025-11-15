@@ -25,7 +25,7 @@ class PilihanJawabanFactory extends Factory
         return $this->afterCreating(function ($pilihan) {
             $pilihanGroup = PilihanJawaban::where('id_soal', $pilihan->id_soal)->get();
 
-            if ($pilihanGroup->count() === 4) {
+            if ($pilihanGroup->count() === 5) {
                 PilihanJawaban::where('id_soal', $pilihan->id_soal)
                     ->update(['is_correct' => false]);
 

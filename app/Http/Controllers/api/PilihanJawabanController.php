@@ -2,127 +2,198 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Resource\PilihanJawaban;
-use App\Models\Resource\Soal;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class PilihanJawabanController extends Controller
-{
-    // GET /api/pilihan-jawaban/{id_soal}
-    public function index($id_soal)
+use App\Models\Resource\PilihanJawaban;
+
+class PilihanJawabanController
+{    
+    protected $model = PilihanJawaban::class;
+    protected $table_primary = 'id_pilihan';
+    protected $data_title = 'pilihan jawaban';
+
+    protected $rules = [
+        'id_soal'   => 'required|exists:soal,id_soal',
+        'jawaban'   => 'required|string',
+        'is_correct' => 'boolean',
+        'gambar'    => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
+    ];
+    protected $messages = [
+        'id_soal.required' => 'Soal wajib diisi',
+        'id_soal.exists' => 'Soal tidak ditemukan',
+        'jawaban.required' => 'Jawaban wajib diisi',
+        'jawaban.string' => 'Jawaban harus berupa string',
+        'is_correct.boolean' => 'is_correct harus berupa boolean',
+        'gambar.file' => 'Gambar harus berupa file',
+        'gambar.mimes' => 'Gambar harus berformat jpg, jpeg, atau png',
+        'gambar.max' => 'Ukuran gambar maksimal 2048 KB',
+    ];
+
+    public function index()
     {
-        $data = PilihanJawaban::where('id_soal', $id_soal)->get();
+        try {
+            $data = $this->model::all();
 
-        return response()->json([
-            'success' => true,
-            'data' => $data
-        ]);
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data '.$this->data_title.' kosong',
+                    'data' => [],
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' ditemukan',
+                'total' => count($data),
+                'data' => $data,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
-    // POST /api/pilihan-jawaban
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'id_soal'   => 'required|exists:soal,id_soal',
-            'jawaban'   => 'required|string',
-            'is_correct' => 'boolean',
-            'gambar'    => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
-        ]);
+        try {
+            $validate = $request->validate($this->rules, $this->messages);
 
-        // Upload gambar
-        if ($request->hasFile('gambar')) {
-            $validated['gambar'] = $request->file('gambar')->store('pilihan_gambar', 'public');
+            // Handle gambar
+            if ($request->hasFile('gambar')) {
+                $validated['gambar'] = $request->file('gambar')->store('pilihan_gambar', 'public');
+            }
+
+            // Jika set sebagai benar → kosongkan lainnya
+            if ($request->is_correct) {
+                $this->model::where('id_soal', $request->id_soal)
+                    ->update(['is_correct' => false]);
+            }
+
+            $data = $this->model::create($validate);
+
+            if (!$data) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data '.$this->data_title.' gagal dibuat'
+                ], 500);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' berhasil dibuat',
+                'data' => $data
+            ], 201);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Jika pilihan ini benar → kosongkan pilihan lain
-        if ($request->is_correct) {
-            PilihanJawaban::where('id_soal', $request->id_soal)
-                ->update(['is_correct' => false]);
-        }
-
-        $data = PilihanJawaban::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Pilihan jawaban berhasil ditambahkan',
-            'data' => $data
-        ], 201);
     }
 
-    // GET /api/pilihan-jawaban/detail/{id}
     public function show($id)
     {
-        $data = PilihanJawaban::find($id);
+        $data = $this->model::with(['soal'])->latest()->find($id);
 
-        if (!$data) {
+        if($data){
             return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ditemukan'
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' ditemukan',
+                'data' => $data
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
             ], 404);
         }
-
-        return response()->json([
-            'success' => true,
-            'data' => $data
-        ]);
     }
 
-    // PUT /api/pilihan-jawaban/{id}
     public function update(Request $request, $id)
     {
-        $data = PilihanJawaban::find($id);
+        try {
+            $data = $this->model::where($this->table_primary, $id)->firstOrFail();
 
-        if (!$data) {
+            // Handle gambar
+            if ($request->hasFile('gambar')) {
+                $validated['gambar'] = $request->file('gambar')->store('pilihan_gambar', 'public');
+            }
+
+            // Jika set sebagai benar → kosongkan lainnya
+            if ($request->is_correct) {
+                $this->model::where('id_soal', $data->id_soal)
+                    ->update(['is_correct' => false]);
+            }
+    
+            $validate = $request->validate($this->rules, $this->messages);
+
+            $data->update($validate);
+
             return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ditemukan'
+                'success' => true,
+                'message' => 'Data '.$this->data_title.' berhasil diperbarui',
+                'data' => $data
+            ]);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
             ], 404);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
-
-        $validated = $request->validate([
-            'jawaban'   => 'string',
-            'is_correct' => 'boolean',
-            'gambar'    => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
-        ]);
-
-        // Update gambar
-        if ($request->hasFile('gambar')) {
-            $validated['gambar'] = $request->file('gambar')->store('pilihan_gambar', 'public');
-        }
-
-        // Jika set sebagai benar → kosongkan lainnya
-        if ($request->is_correct) {
-            PilihanJawaban::where('id_soal', $data->id_soal)
-                ->update(['is_correct' => false]);
-        }
-
-        $data->update($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Pilihan jawaban diperbarui',
-            'data' => $data
-        ]);
     }
 
-    // DELETE /api/pilihan-jawaban/{id}
     public function destroy($id)
     {
-        $data = PilihanJawaban::find($id);
+        $data = $this->model::find($id);
 
-        if (!$data) {
+        if(empty($data)){
             return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ditemukan'
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
             ], 404);
         }
-
-        $data->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Pilihan jawaban dihapus'
-        ]);
+        
+        try {
+            $post = $data->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' berhasil dihapus',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

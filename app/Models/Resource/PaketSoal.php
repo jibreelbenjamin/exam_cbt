@@ -5,14 +5,14 @@ namespace App\Models\Resource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Mapel extends Model
+class PaketSoal extends Model
 {
     use HasFactory;
 
-    protected $table = 'mapel';
-    protected $primaryKey = 'id_mapel';
+    protected $table = 'paket_soal';
+    protected $primaryKey = 'id_paket_soal';
     protected $fillable = [
-        'nama_mapel',
+        'nama_paket_soal',
         'nama'
     ];
 }

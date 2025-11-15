@@ -14,7 +14,7 @@ class Ujian extends Model
     protected $primaryKey = 'id_ujian';
 
     protected $fillable = [
-        'id_mapel',
+        'id_paket_soal',
         'id_admin',
         'nama_ujian',
         'deskripsi',
@@ -26,9 +26,9 @@ class Ujian extends Model
     ];
 
     // relasi rek
-    public function mapel()
+    public function paketSoal()
     {
-        return $this->belongsTo(Mapel::class, 'id_mapel', 'id_mapel');
+        return $this->belongsTo(PaketSoal::class, 'id_paket_soal', 'id_paket_soal');
     }
 
     public function admin()
@@ -38,7 +38,7 @@ class Ujian extends Model
 
     public function soal()
     {
-        return $this->hasMany(Soal::class, 'id_mapel', 'id_mapel');
-        // Because exam uses id_mapel to determine soal list
+        return $this->hasMany(Soal::class, 'id_paket_soal', 'id_paket_soal');
+        // Because exam uses id_paket_soal to determine soal list
     }
 }

@@ -6,38 +6,26 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-use App\Models\Resource\JawabanSiswa;
+use App\Models\Resource\PaketSoal;
 
-class JawabanSiswaController
+class PaketSoalController
 {    
-    protected $model = JawabanSiswa::class;
-    protected $table_primary = 'id_jawaban_siswa';
-    protected $data_title = 'jawaban siswa';
+    protected $model = PaketSoal::class;
+    protected $table_primary = 'id_paket_soal';
+    protected $data_title = 'paket soal';
 
     protected $rules = [
-        'id_ujian' => 'required|integer|exists:ujian,id_ujian',
-        'id_siswa' => 'required|integer|exists:siswa,id_siswa',
-        'id_soal'  => 'required|integer|exists:soal,id_soal',
-        'jawaban'  => 'nullable|string',
-        'is_correct' => 'nullable|boolean',
-        'waktu_selesai' => 'required|date',
-        'waktu_jawab' => 'nullable|date',
+        'nama' => 'required|string|max:255',
     ];
-
     protected $messages = [
-        'id_ujian.required' => 'Ujian wajib diisi',
-        'id_ujian.exists'   => 'Ujian tidak ditemukan',
-        'id_siswa.required' => 'Siswa wajib diisi',
-        'id_siswa.exists'   => 'Siswa tidak ditemukan',
-        'id_soal.required'  => 'Soal wajib diisi',
-        'id_soal.exists'    => 'Soal tidak ditemukan',
-        'waktu_selesai.required' => 'Waktu selesai wajib diisi',
+        'nama.required' => 'Nama paket soal wajib diisi',
+        'nama.max' => 'Nama paket soal maksimal 255 karakter',
     ];
 
     public function index()
     {
         try {
-            $data = $this->model::with(['ujian', 'siswa', 'soal'])->get();
+            $data = $this->model::all();
 
             if ($data->isEmpty()) {
                 return response()->json([
@@ -100,7 +88,7 @@ class JawabanSiswaController
 
     public function show($id)
     {
-        $data = $this->model::with(['ujian', 'siswa', 'soal'])->latest()->find($id);
+        $data = $this->model::find($id);
 
         if($data){
             return response()->json([

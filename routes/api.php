@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\JawabanSiswaController;
-use App\Http\Controllers\API\MapelController;
+use App\Http\Controllers\API\PaketSoalController;
 use App\Http\Controllers\API\PilihanJawabanController;
 use App\Http\Controllers\API\SoalController;
 use App\Http\Controllers\API\UjianController;
@@ -20,12 +20,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ]);
     });
 
-    // Mapel
-    Route::get('/mapel', [MapelController::class, 'index']);
-    Route::post('/mapel', [MapelController::class, 'store']);
-    Route::get('/mapel/{id}', [MapelController::class, 'show']);
-    Route::put('/mapel/{id}', [MapelController::class, 'update']);
-    Route::delete('/mapel/{id}', [MapelController::class, 'destroy']);
+    // Paket Soal
+    Route::get('/paket-soal', [PaketSoalController::class, 'index']);
+    Route::post('/paket-soal', [PaketSoalController::class, 'store']);
+    Route::get('/paket-soal/{id}', [PaketSoalController::class, 'show']);
+    Route::put('/paket-soal/{id}', [PaketSoalController::class, 'update']);
+    Route::delete('/paket-soal/{id}', [PaketSoalController::class, 'destroy']);
 
     // Soal
     Route::get('/soal', [SoalController::class, 'index']);

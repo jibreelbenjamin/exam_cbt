@@ -2,12 +2,12 @@
 
 namespace Database\Factories\Resource;
 
-use App\Models\Resource\Mapel;
+use App\Models\Resource\PaketSoal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class MapelFactory extends Factory
+class PaketSoalFactory extends Factory
 {
-    protected $model = Mapel::class;
+    protected $model = PaketSoal::class;
 
     public function definition()
     {

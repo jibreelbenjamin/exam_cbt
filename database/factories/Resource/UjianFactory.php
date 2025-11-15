@@ -3,7 +3,7 @@
 namespace Database\Factories\Resource;
 
 use App\Models\Resource\Ujian;
-use App\Models\Resource\Mapel;
+use App\Models\Resource\PaketSoal;
 use App\Models\Users\Admin;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,7 +17,7 @@ class UjianFactory extends Factory
         $end = (clone $start)->modify('+2 hours');
 
         return [
-            'id_mapel' => Mapel::factory(),
+            'id_paket_soal' => PaketSoal::factory(),
             'id_admin' => Admin::factory(),
             'nama_ujian' => "Ujian " . $this->faker->word(),
             'deskripsi' => $this->faker->sentence(),

@@ -8,15 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('mapel', function (Blueprint $table) {
-            $table->id('id_mapel');
+        Schema::create('paket_soal', function (Blueprint $table) {
+            $table->id('id_paket_soal');
             $table->text('nama');
             $table->timestamps();
         });
 
         Schema::create('soal', function (Blueprint $table) {
             $table->id('id_soal');
-            $table->foreignId('id_mapel')->constrained('mapel', 'id_mapel')->onDelete('cascade');
+            $table->foreignId('id_paket_soal')->constrained('paket_soal', 'id_paket_soal')->onDelete('cascade');
             $table->foreignId('id_guru')->constrained('guru', 'id_guru')->onDelete('cascade');
             $table->string('gambar')->nullable(); // simpan nama file atau path
             $table->text('pertanyaan');
@@ -36,7 +36,7 @@ return new class extends Migration
 
         Schema::create('ujian', function (Blueprint $table) {
             $table->id('id_ujian');
-            $table->foreignId('id_mapel')->constrained('mapel', 'id_mapel')->onDelete('cascade');
+            $table->foreignId('id_paket_soal')->constrained('paket_soal', 'id_paket_soal')->onDelete('cascade');
             $table->foreignId('id_admin')->constrained('admin', 'id_admin')->onDelete('cascade');
             $table->string('nama_ujian');
             $table->text('deskripsi')->nullable();
@@ -63,7 +63,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('mapel');
+        Schema::dropIfExists('paket_soal');
         Schema::dropIfExists('soal');
         Schema::dropIfExists('pilihan_jawaban');
         Schema::dropIfExists('ujian');

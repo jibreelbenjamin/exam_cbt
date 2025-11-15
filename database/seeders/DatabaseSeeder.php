@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Users\Admin;
 use App\Models\Users\Guru;
 use App\Models\Users\Siswa;
-use App\Models\Resource\Mapel;
+use App\Models\Resource\PaketSoal;
 use App\Models\Resource\Soal;
 use App\Models\Resource\PilihanJawaban;
 use App\Models\Resource\Ujian;
@@ -38,14 +38,14 @@ class DatabaseSeeder extends Seeder
 
         $gurus  = Guru::factory()->count($JUMLAH_GURU)->create();
         $siswa  = Siswa::factory()->count($JUMLAH_SISWA)->create();
-        $mapels = Mapel::factory()->count($JUMLAH_MAPEL)->create();
+        $paket_soals = PaketSoal::factory()->count($JUMLAH_MAPEL)->create();
 
         $soalList = Soal::factory()
             ->count($JUMLAH_SOAL)
             ->make() // editing sebelum insert
-            ->each(function ($soal) use ($mapels, $gurus, $JUMLAH_PILIHAN_PER_SOAL) {
+            ->each(function ($soal) use ($paket_soals, $gurus, $JUMLAH_PILIHAN_PER_SOAL) {
 
-                $soal->id_mapel = $mapels->random()->id_mapel;
+                $soal->id_paket_soal = $paket_soals->random()->id_paket_soal;
                 $soal->id_guru  = $gurus->random()->id_guru;
                 $soal->save();
 
@@ -57,10 +57,10 @@ class DatabaseSeeder extends Seeder
         $ujians = Ujian::factory()
             ->count($JUMLAH_UJIAN)
             ->make()
-            ->each(function ($ujian) use ($admins, $mapels) {
+            ->each(function ($ujian) use ($admins, $paket_soals) {
 
                 $ujian->id_admin = $admins->random()->id_admin;
-                $ujian->id_mapel = $mapels->random()->id_mapel;
+                $ujian->id_paket_soal = $paket_soals->random()->id_paket_soal;
                 $ujian->save();
             });
 
@@ -80,4 +80,5 @@ class DatabaseSeeder extends Seeder
             }
         }
     }
+    echo "Seeding completed successfully.\n";
 }

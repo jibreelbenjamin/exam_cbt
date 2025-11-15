@@ -14,7 +14,7 @@ class Soal extends Model
     protected $primaryKey = 'id_soal';
 
     protected $fillable = [
-        'id_mapel',
+        'id_paket_soal',
         'id_guru',
         'gambar',
         'pertanyaan',
@@ -22,9 +22,9 @@ class Soal extends Model
         'jenis'
     ];
 
-    public function mapel()
+    public function paketSoal()
     {
-        return $this->belongsTo(Mapel::class, 'id_mapel', 'id_mapel');
+        return $this->belongsTo(PaketSoal::class, 'id_paket_soal', 'id_paket_soal');
     }
 
     public function guru()

@@ -3,7 +3,7 @@
 namespace Database\Factories\Resource;
 
 use App\Models\Resource\Soal;
-use App\Models\Resource\Mapel;
+use App\Models\Resource\PaketSoal;
 use App\Models\Users\Guru;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -14,7 +14,7 @@ class SoalFactory extends Factory
     public function definition()
     {
         return [
-            'id_mapel' => Mapel::factory(),
+            'id_paket_soal' => PaketSoal::factory(),
             'id_guru' => Guru::factory(),
             'gambar' => null,
             'pertanyaan' => $this->faker->sentence(10),

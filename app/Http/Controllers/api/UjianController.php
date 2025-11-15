@@ -2,115 +2,187 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Resource\Ujian;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class UjianController extends Controller
-{
-    // GET /api/ujian
+use App\Models\Resource\Ujian;
+
+class UjianController
+{    
+    protected $model = Ujian::class;
+    protected $table_primary = 'id_ujian';
+    protected $data_title = 'ujian';
+
+    protected $rules = [
+        'id_paket_soal' => 'required|exists:paket_soal,id_paket_soal',
+        'id_admin' => 'required|exists:admin,id_admin',
+        'nama_ujian' => 'required|string|max:255',
+        'deskripsi' => 'nullable|string',
+        'waktu_mulai' => 'required|date',
+        'waktu_selesai' => 'required|date|after:waktu_mulai',
+        'durasi_menit' => 'required|integer|min:1',
+        'acak_soal' => 'boolean',
+        'status' => 'in:aktif,nonaktif'
+    ];
+    protected $messages = [
+        'id_paket_soal.required' => 'paket_soal wajib diisi',
+        'id_paket_soal.exists' => 'paket_soal tidak ditemukan',
+        'id_admin.required' => 'Admin wajib diisi',
+        'id_admin.exists' => 'Admin tidak ditemukan',
+        'nama_ujian.required' => 'Nama ujian wajib diisi',
+        'nama_ujian.max' => 'Nama ujian maksimal 255 karakter',
+        'waktu_mulai.required' => 'Waktu mulai wajib diisi',
+        'waktu_selesai.required' => 'Waktu selesai wajib diisi',
+        'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai',
+        'durasi_menit.required' => 'Durasi ujian wajib diisi',
+        'durasi_menit.integer' => 'Durasi ujian harus berupa angka',
+        'durasi_menit.min' => 'Durasi ujian minimal 1 menit',
+        'acak_soal.boolean' => 'Acak soal harus berupa nilai boolean',
+        'status.in' => 'Status harus berupa aktif atau nonaktif',
+    ];
+
     public function index()
     {
-        $data = Ujian::with(['mapel', 'admin'])->latest()->get();
+        try {
+            $data = $this->model::with(['paketSoal', 'admin'])->latest()->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $data
-        ]);
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data '.$this->data_title.' kosong',
+                    'data' => [],
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' ditemukan',
+                'total' => count($data),
+                'data' => $data,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
-    // POST /api/ujian
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'id_mapel' => 'required|exists:mapel,id_mapel',
-            'id_admin' => 'required|exists:admin,id_admin',
-            'nama_ujian' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'waktu_mulai' => 'required|date',
-            'waktu_selesai' => 'required|date|after:waktu_mulai',
-            'durasi_menit' => 'required|integer|min:1',
-            'acak_soal' => 'boolean',
-            'status' => 'in:aktif,nonaktif'
-        ]);
+        try {
+            $validate = $request->validate($this->rules, $this->messages);
 
-        $data = Ujian::create($validated);
+            $data = $this->model::create($validate);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Ujian berhasil dibuat',
-            'data' => $data
-        ], 201);
+            if (!$data) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data '.$this->data_title.' gagal dibuat'
+                ], 500);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' berhasil dibuat',
+                'data' => $data
+            ], 201);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    // GET /api/ujian/{id}
     public function show($id)
     {
-        $data = Ujian::with(['mapel', 'admin', 'soal'])->find($id);
+        $data = $this->model::with(['paketSoal', 'admin'])->latest()->find($id);
 
-        if (!$data) {
+        if($data){
             return response()->json([
-                'success' => false,
-                'message' => 'Ujian tidak ditemukan'
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' ditemukan',
+                'data' => $data
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
             ], 404);
         }
-
-        return response()->json([
-            'success' => true,
-            'data' => $data
-        ]);
     }
 
-    //  /api/ujian/{id}
     public function update(Request $request, $id)
     {
-        $data = Ujian::find($id);
+        try {
+            $data = $this->model::where($this->table_primary, $id)->firstOrFail();
+    
+            $validate = $request->validate($this->rules, $this->messages);
 
-        if (!$data) {
+            $data->update($validate);
+
             return response()->json([
-                'success' => false,
-                'message' => 'Ujian Tersebut tidak ditemukan'
+                'success' => true,
+                'message' => 'Data '.$this->data_title.' berhasil diperbarui',
+                'data' => $data
+            ]);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
             ], 404);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
-
-        $validated = $request->validate([
-            'id_mapel' => 'exists:mapel,id_mapel',
-            'id_admin' => 'exists:admin,id_admin',
-            'nama_ujian' => 'string|max:255',
-            'deskripsi' => 'nullable|string',
-            'waktu_mulai' => 'date',
-            'waktu_selesai' => 'date|after:waktu_mulai',
-            'durasi_menit' => 'integer|min:1',
-            'acak_soal' => 'boolean',
-            'status' => 'in:aktif,nonaktif'
-        ]);
-
-        $data->update($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Ujian berhasil diupdate',
-            'data' => $data
-        ]);
     }
 
-    // ini route nya /api/ujian/{id} | method DELETE
     public function destroy($id)
     {
-        $data = Ujian::find($id);
+        $data = $this->model::find($id);
 
-        if (!$data) {
+        if(empty($data)){
             return response()->json([
-                'success' => false,
-                'message' => 'Ujian Tersebut tidak ditemukan'
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
             ], 404);
         }
-
-        $data->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Ujian berhasil dihapus'
-        ]);
+        
+        try {
+            $post = $data->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' berhasil dihapus',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

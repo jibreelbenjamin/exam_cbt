@@ -20,13 +20,6 @@ class AuthController
             ], 400);
         }
 
-        // if (!in_array($request->role, ['admin', 'guru', 'siswa'])) {
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => 'Role tidak valid'
-        //     ], 400);
-        // }
-
         switch ($request->role) {
             case 'admin':
                 $user = Admin::where('username', $request->username)->first();
@@ -43,7 +36,7 @@ class AuthController
                 $userIdField = 'id_siswa';
                 break;
 
-            default: // pindah validasi role
+            default:
                 return response()->json([
                     'status' => false,
                     'message' => 'Role tidak valid'
