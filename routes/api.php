@@ -57,21 +57,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/ujian/{id}', [UjianController::class, 'update']);
     Route::delete('/ujian/{id}', [UjianController::class, 'destroy']);
 
-
+    // Kelas
+    Route::get('/kelas', [KelasController::class, 'index']);
+    Route::post('/kelas', [KelasController::class, 'store']);
+    Route::get('/kelas/{id}', [KelasController::class, 'show']);
+    Route::put('/kelas/{id}', [KelasController::class, 'update']);
+    Route::delete('/kelas/{id}', [KelasController::class, 'destroy']);
+    
+    // Ruangan
+    Route::get('/ruangan', [RuanganController::class, 'index']);
+    Route::post('/ruangan', [RuanganController::class, 'store']);
+    Route::get('/ruangan/{id}', [RuanganController::class, 'show']);
+    Route::put('/ruangan/{id}', [RuanganController::class, 'update']);
+    Route::delete('/ruangan/{id}', [RuanganController::class, 'destroy']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });
-// Kelas
-Route::get('/kelas', [KelasController::class, 'index']);
-Route::post('/kelas', [KelasController::class, 'store']);
-Route::get('/kelas/{id}', [KelasController::class, 'show']);
-Route::put('/kelas/{id}', [KelasController::class, 'update']);
-Route::delete('/kelas/{id}', [KelasController::class, 'destroy']);
-
-// Ruangan
-Route::get('/ruangan', [RuanganController::class, 'index']);
-Route::post('/ruangan', [RuanganController::class, 'store']);
-Route::get('/ruangan/{id}', [RuanganController::class, 'show']);
-Route::put('/ruangan/{id}', [RuanganController::class, 'update']);
-Route::delete('/ruangan/{id}', [RuanganController::class, 'destroy']);
 
