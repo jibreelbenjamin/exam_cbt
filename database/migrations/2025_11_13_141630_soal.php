@@ -38,7 +38,7 @@ return new class extends Migration
             $table->id('id_ujian');
             $table->foreignId('id_paket_soal')->constrained('paket_soal', 'id_paket_soal')->onDelete('cascade');
             $table->foreignId('id_admin')->constrained('admin', 'id_admin')->onDelete('cascade');
-            $table->string('nama_ujian');
+            $table->string('nama');
             $table->text('deskripsi')->nullable();
             $table->dateTime('waktu_mulai');
             $table->dateTime('waktu_selesai');

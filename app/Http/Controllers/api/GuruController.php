@@ -6,20 +6,29 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-use App\Models\Resource\Ruangan;
+use App\Models\Users\Guru;
 
-class RuanganController
+class GuruController
 {
-    protected $model = Ruangan::class;
-    protected $table_primary = 'id_ruangan';
-    protected $data_title = 'ruangan';
+    protected $model = Guru::class;
+    protected $table_primary = 'id_guru';
+    protected $data_title = 'guru';
 
     protected $rules = [
-        'nama' => 'required|string|max:255'
+        'nip' => 'required|string|max:50|unique:guru,nip',
+        'nama' => 'required|string|max:255',
+        'password' => 'required|string|min:4',
+        'akses_paket_soal' => 'nullable|array', 
+        'akses_paket_soal.*' => 'integer|distinct|exists:paket_soal,id_paket_soal',
     ];
     protected $messages = [
-        'nama.required' => 'Nama kelas wajib diisi',
-        'nama.max' => 'Nama kelas maksimal 255 karakter',
+        'nip.required' => 'NIP wajib diisi.',
+        'nip.unique' => 'NIP sudah terdaftar.',
+        'nama.required' => 'Nama wajib diisi.',
+        'akses_paket_soal.array' => 'Akses paket soal harus berupa array.',
+        'akses_paket_soal.*.integer' => 'Setiap ID paket soal harus berupa angka.',
+        'akses_paket_soal.*.exists' => 'ID paket soal tidak ditemukan.',
+        'akses_paket_soal.*.distinct' => 'ID paket soal tidak boleh duplikat.',
     ];
 
     public function index()
@@ -55,6 +64,8 @@ class RuanganController
     {
         try {
             $validate = $request->validate($this->rules, $this->messages);
+
+            $validate['password'] = bcrypt($validate['password']);
 
             $data = $this->model::create($validate);
 
@@ -108,8 +119,13 @@ class RuanganController
     {
         try {
             $data = $this->model::where($this->table_primary, $id)->firstOrFail();
+            
+            $rules = $this->rules;
+            $rules['nip'] = "required|string|max:50|unique:guru,nip,{$id},{$this->table_primary}";
+            
+            $validate = $request->validate($rules, $this->messages);
 
-            $validate = $request->validate($this->rules, $this->messages);
+            $validate['password'] = bcrypt($validate['password']);
 
             $data->update($validate);
 

@@ -12,7 +12,6 @@ class PaketSoal extends Model
     protected $table = 'paket_soal';
     protected $primaryKey = 'id_paket_soal';
     protected $fillable = [
-        'nama_paket_soal',
         'nama'
     ];
 }

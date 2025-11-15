@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('nip')->unique();
             $table->string('nama');
             $table->string('password');
+            $table->json('akses_paket_soal')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -33,6 +34,7 @@ return new class extends Migration
             $table->string('nis')->unique();
             $table->string('nama');
             $table->string('password');
+            $table->string('unhashed_password');
             $table->rememberToken();
             $table->timestamps();
         });

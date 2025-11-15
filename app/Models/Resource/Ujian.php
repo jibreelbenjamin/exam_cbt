@@ -16,7 +16,7 @@ class Ujian extends Model
     protected $fillable = [
         'id_paket_soal',
         'id_admin',
-        'nama_ujian',
+        'nama',
         'deskripsi',
         'waktu_mulai',
         'waktu_selesai',
@@ -39,6 +39,5 @@ class Ujian extends Model
     public function soal()
     {
         return $this->hasMany(Soal::class, 'id_paket_soal', 'id_paket_soal');
-        // Because exam uses id_paket_soal to determine soal list
     }
 }

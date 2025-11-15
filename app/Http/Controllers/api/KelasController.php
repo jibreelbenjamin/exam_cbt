@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Resource\Kelas;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+use App\Models\Resource\Kelas;
 
 class KelasController
 {
@@ -14,12 +15,12 @@ class KelasController
     protected $data_title = 'kelas';
 
     protected $rules = [
-        'nama_kelas' => 'required|string|max:255',
+        'nama' => 'required|string|max:255',
         'tingkat' => 'required|string|max:255',
     ];
     protected $messages = [
-        'nama_kelas.required' => 'Nama kelas wajib diisi',
-        'nama_kelas.max' => 'Nama kelas maksimal 255 karakter',
+        'nama.required' => 'Nama kelas wajib diisi',
+        'nama.max' => 'Nama kelas maksimal 255 karakter',
         'tingkat.required' => 'Nama kelas wajib diisi',
         'tingkat.max' => 'Nama kelas maksimal 255 karakter',
     ];

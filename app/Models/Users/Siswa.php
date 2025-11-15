@@ -21,7 +21,8 @@ class Siswa extends Authenticatable
         'id_kelas',
         'id_ruangan',
         'nama',
-        'password'
+        'password',
+        'unhashed_password',
     ];
 
     protected $hidden = [

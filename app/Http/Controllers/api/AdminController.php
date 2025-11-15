@@ -6,20 +6,25 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-use App\Models\Resource\Ruangan;
+use App\Models\Users\Admin;
 
-class RuanganController
+class AdminController
 {
-    protected $model = Ruangan::class;
-    protected $table_primary = 'id_ruangan';
-    protected $data_title = 'ruangan';
+    protected $model = Admin::class;
+    protected $table_primary = 'id_admin';
+    protected $data_title = 'admin';
 
     protected $rules = [
-        'nama' => 'required|string|max:255'
+        'username' => 'required|string|max:255|unique:admin,username',
+        'nama'     => 'required|string|max:255',
+        'password' => 'required|string|min:5',
     ];
     protected $messages = [
-        'nama.required' => 'Nama kelas wajib diisi',
-        'nama.max' => 'Nama kelas maksimal 255 karakter',
+        'username.required' => 'Username wajib diisi',
+        'username.unique'   => 'Username sudah digunakan',
+        'nama.required'     => 'Nama wajib diisi',
+        'password.required' => 'Password wajib diisi',
+        'password.min'      => 'Password minimal 5 karakter',
     ];
 
     public function index()
@@ -55,6 +60,8 @@ class RuanganController
     {
         try {
             $validate = $request->validate($this->rules, $this->messages);
+
+            $validate['password'] = bcrypt($validate['password']);
 
             $data = $this->model::create($validate);
 
@@ -108,8 +115,13 @@ class RuanganController
     {
         try {
             $data = $this->model::where($this->table_primary, $id)->firstOrFail();
+            
+            $rules = $this->rules;
+            $rules['username'] = "required|string|max:50|unique:admin,username,{$id},{$this->table_primary}";
+            
+            $validate = $request->validate($rules, $this->messages);
 
-            $validate = $request->validate($this->rules, $this->messages);
+            $validate['password'] = bcrypt($validate['password']);
 
             $data->update($validate);
 

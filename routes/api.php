@@ -8,6 +8,9 @@ use App\Http\Controllers\API\PilihanJawabanController;
 use App\Http\Controllers\API\RuanganController;
 use App\Http\Controllers\API\SoalController;
 use App\Http\Controllers\API\UjianController;
+use App\Http\Controllers\API\SiswaController;
+use App\Http\Controllers\API\GuruController;
+use App\Http\Controllers\API\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -70,6 +73,27 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/ruangan/{id}', [RuanganController::class, 'show']);
     Route::put('/ruangan/{id}', [RuanganController::class, 'update']);
     Route::delete('/ruangan/{id}', [RuanganController::class, 'destroy']);
+    
+    // Siswa
+    Route::get('/siswa', [SiswaController::class, 'index']);
+    Route::post('/siswa', [SiswaController::class, 'store']);
+    Route::get('/siswa/{id}', [SiswaController::class, 'show']);
+    Route::put('/siswa/{id}', [SiswaController::class, 'update']);
+    Route::delete('/siswa/{id}', [SiswaController::class, 'destroy']);
+
+    // Guru
+    Route::get('/guru', [App\Http\Controllers\API\GuruController::class, 'index']);
+    Route::post('/guru', [App\Http\Controllers\API\GuruController::class, 'store']);
+    Route::get('/guru/{id}', [App\Http\Controllers\API\GuruController::class, 'show']);
+    Route::put('/guru/{id}', [App\Http\Controllers\API\GuruController::class, 'update']);
+    Route::delete('/guru/{id}', [App\Http\Controllers\API\GuruController::class, 'destroy']);
+
+    // Admin
+    Route::get('/admin', [App\Http\Controllers\API\AdminController::class, 'index']);
+    Route::post('/admin', [App\Http\Controllers\API\AdminController::class, 'store']);
+    Route::get('/admin/{id}', [App\Http\Controllers\API\AdminController::class, 'show']);
+    Route::put('/admin/{id}', [App\Http\Controllers\API\AdminController::class, 'update']);
+    Route::delete('/admin/{id}', [App\Http\Controllers\API\AdminController::class, 'destroy']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });

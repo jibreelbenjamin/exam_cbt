@@ -12,10 +12,12 @@ class SiswaFactory extends Factory
 
     public function definition()
     {
+        $password = $this->faker->regexify('[A-Z]{5}[0-4]{3}');
         return [
             'nis' => $this->faker->unique()->numerify('2025#####'),
             'nama' => $this->faker->name(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make($password),
+            'unhashed_password' => $password,
             'remember_token' => null,
         ];
     }

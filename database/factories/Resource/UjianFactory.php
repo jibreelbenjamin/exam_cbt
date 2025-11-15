@@ -19,7 +19,7 @@ class UjianFactory extends Factory
         return [
             'id_paket_soal' => PaketSoal::factory(),
             'id_admin' => Admin::factory(),
-            'nama_ujian' => "Ujian " . $this->faker->word(),
+            'nama' => "Ujian " . $this->faker->word(),
             'deskripsi' => $this->faker->sentence(),
             'waktu_mulai' => $start,
             'waktu_selesai' => $end,

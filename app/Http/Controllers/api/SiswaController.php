@@ -6,26 +6,37 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-use App\Models\Resource\Ruangan;
+use App\Models\Users\Siswa;
 
-class RuanganController
+class SiswaController
 {
-    protected $model = Ruangan::class;
-    protected $table_primary = 'id_ruangan';
-    protected $data_title = 'ruangan';
+    protected $model = Siswa::class;
+    protected $table_primary = 'id_siswa';
+    protected $data_title = 'siswa';
 
     protected $rules = [
-        'nama' => 'required|string|max:255'
+        'nis' => 'required|string|max:50|unique:siswa,nis',
+        'nama' => 'required|string|max:255',
+        'id_kelas' => 'required|integer|exists:kelas,id_kelas',
+        'id_ruangan' => 'required|integer|exists:ruangan,id_ruangan',
+        'password' => 'required|string|min:4',
     ];
     protected $messages = [
-        'nama.required' => 'Nama kelas wajib diisi',
-        'nama.max' => 'Nama kelas maksimal 255 karakter',
+        'nis.required' => 'NIS wajib diisi.',
+        'nis.unique' => 'NIS sudah terdaftar.',
+        'nama.required' => 'Nama siswa wajib diisi.',
+        'id_kelas.required' => 'Kelas wajib dipilih.',
+        'id_kelas.exists' => 'Kelas tidak ditemukan.',
+        'id_ruangan.required' => 'Ruangan wajib dipilih.',
+        'id_ruangan.exists' => 'Ruangan tidak ditemukan.',
+        'password.required' => 'Password wajib diisi.',
     ];
+
 
     public function index()
     {
         try {
-            $data = $this->model::all();
+            $data = $this->model::with(['kelas', 'ruangan'])->get();
 
             if ($data->isEmpty()) {
                 return response()->json([
@@ -55,6 +66,9 @@ class RuanganController
     {
         try {
             $validate = $request->validate($this->rules, $this->messages);
+
+            $validate['unhashed_password'] = $validate['password'];
+            $validate['password'] = bcrypt($validate['password']);
 
             $data = $this->model::create($validate);
 
@@ -88,7 +102,7 @@ class RuanganController
 
     public function show($id)
     {
-        $data = $this->model::find($id);
+        $data = $this->model::with(['kelas', 'ruangan'])->get()->find($id);
 
         if($data){
             return response()->json([
@@ -108,8 +122,14 @@ class RuanganController
     {
         try {
             $data = $this->model::where($this->table_primary, $id)->firstOrFail();
+            
+            $rules = $this->rules;
+            $rules['nis'] = "required|string|max:50|unique:siswa,nis,{$id},{$this->table_primary}";
+            
+            $validate = $request->validate($rules, $this->messages);
 
-            $validate = $request->validate($this->rules, $this->messages);
+            $validate['unhashed_password'] = $validate['password'];
+            $validate['password'] = bcrypt($validate['password']);
 
             $data->update($validate);
 
