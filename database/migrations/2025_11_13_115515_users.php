@@ -28,6 +28,8 @@ return new class extends Migration
 
         Schema::create('siswa', function (Blueprint $table) {
             $table->id('id_siswa');
+            $table->foreignId('id_kelas')->constrained('kelas', 'id_kelas')->onDelete('cascade');
+            $table->foreignId('id_ruangan')->constrained('ruangan', 'id_ruangan')->onDelete('cascade');
             $table->string('nis')->unique();
             $table->string('nama');
             $table->string('password');

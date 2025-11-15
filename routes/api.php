@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\JawabanSiswaController;
+use App\Http\Controllers\API\KelasController;
 use App\Http\Controllers\API\PaketSoalController;
 use App\Http\Controllers\API\PilihanJawabanController;
+use App\Http\Controllers\API\RuanganController;
 use App\Http\Controllers\API\SoalController;
 use App\Http\Controllers\API\UjianController;
 use Illuminate\Http\Request;
@@ -54,6 +56,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/ujian/{id}', [UjianController::class, 'show']);
     Route::put('/ujian/{id}', [UjianController::class, 'update']);
     Route::delete('/ujian/{id}', [UjianController::class, 'destroy']);
+
+
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+// Kelas
+Route::get('/kelas', [KelasController::class, 'index']);
+Route::post('/kelas', [KelasController::class, 'store']);
+Route::get('/kelas/{id}', [KelasController::class, 'show']);
+Route::put('/kelas/{id}', [KelasController::class, 'update']);
+Route::delete('/kelas/{id}', [KelasController::class, 'destroy']);
+
+// Ruangan
+Route::get('/ruangan', [RuanganController::class, 'index']);
+Route::post('/ruangan', [RuanganController::class, 'store']);
+Route::get('/ruangan/{id}', [RuanganController::class, 'show']);
+Route::put('/ruangan/{id}', [RuanganController::class, 'update']);
+Route::delete('/ruangan/{id}', [RuanganController::class, 'destroy']);
 
