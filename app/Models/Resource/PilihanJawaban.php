@@ -14,6 +14,7 @@ class PilihanJawaban extends Model
         'tipe_jawaban',
         'teks_jawaban',
         'gambar',
+        'benar',
     ];
 
     public function soal()

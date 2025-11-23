@@ -42,7 +42,7 @@ return new class extends Migration
 
         Schema::create('exam_peserta', function (Blueprint $table) {
             $table->id('id_peserta');
-            $table->foreignId('id_kelas')->nullable()->constrained('exam_kelas', 'id_kelas')->nullOnDelete();
+            $table->foreignId('id_kelas')->constrained('exam_kelas', 'id_kelas')->onDelete('cascade');
             $table->foreignId('id_ruangan')->nullable()->constrained('exam_ruangan', 'id_ruangan')->nullOnDelete();
             $table->string('username')->unique();
             $table->string('nama');
@@ -91,6 +91,7 @@ return new class extends Migration
             $table->tinyInteger('tipe_jawaban')->comment('1=Pilihan ganda, 2=Essay');
             $table->text('teks_jawaban');
             $table->string('gambar')->nullable();
+            $table->boolean('benar')->default(false);
             $table->timestamps();
         });
 
@@ -118,10 +119,10 @@ return new class extends Migration
         // manajemen jawaban siswa
         Schema::create('exam_jawaban_siswa', function (Blueprint $table) {
             $table->id('id_jawaban_siswa');
-            $table->foreignId('id_peserta')->nullable()->constrained('exam_peserta', 'id_peserta')->nullOnDelete();
-            $table->foreignId('id_ujian')->nullable()->constrained('exam_ujian', 'id_ujian')->nullOnDelete();
-            $table->foreignId('id_soal')->nullable()->constrained('exam_soal', 'id_soal')->nullOnDelete();
-            $table->foreignId('id_pilihan_jawaban')->nullable()->constrained('exam_pilihan_jawaban', 'id_pilihan_jawaban')->nullOnDelete();
+            $table->foreignId('id_peserta')->constrained('exam_peserta', 'id_peserta')->onDelete('cascade');
+            $table->foreignId('id_ujian')->constrained('exam_ujian', 'id_ujian')->onDelete('cascade');
+            $table->foreignId('id_soal')->constrained('exam_soal', 'id_soal')->onDelete('cascade');
+            $table->foreignId('id_pilihan_jawaban')->constrained('exam_pilihan_jawaban', 'id_pilihan_jawaban')->onDelete('cascade');
             $table->text('jawaban_essay')->nullable();
             $table->boolean('benar')->default(false);
             $table->timestamps();
@@ -129,11 +130,11 @@ return new class extends Migration
 
         Schema::create('exam_hasil_ujian', function (Blueprint $table) {
             $table->id('id_hasil_ujian');
-            $table->foreignId('id_peserta')->nullable()->constrained('exam_peserta', 'id_peserta')->nullOnDelete();
-            $table->foreignId('id_ujian')->nullable()->constrained('exam_ujian', 'id_ujian')->nullOnDelete();
-            $table->integer('jumlah_benar');
-            $table->integer('jumlah_salah');
-            $table->integer('nilai')->nullable();
+            $table->foreignId('id_peserta')->constrained('exam_peserta', 'id_peserta')->onDelete('cascade');
+            $table->foreignId('id_ujian')->constrained('exam_ujian', 'id_ujian')->onDelete('cascade');
+            $table->integer('jumlah_benar')->default(0);
+            $table->integer('jumlah_salah')->default(0);
+            $table->float('nilai')->default(0);
             $table->integer('waktu_mengerjakan')->nullable();
             $table->datetime('mulai_mengerjakan');
             $table->datetime('selesai_mengerjakan')->nullable();
