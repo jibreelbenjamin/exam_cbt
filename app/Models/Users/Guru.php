@@ -2,7 +2,11 @@
 
 namespace App\Models\Users;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
 use App\Models\Resource\AksesPaketSoal;
 
 class Guru extends Authenticatable
