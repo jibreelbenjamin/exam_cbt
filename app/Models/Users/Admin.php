@@ -9,21 +9,17 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Admin extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, HasApiTokens, Notifiable;
 
     protected $table = 'exam_admin';
     protected $primaryKey = 'id_admin';
 
     protected $fillable = [
-        'username',
-        'nama',
-        'password',
+        'username', 'nama', 'password',
     ];
 
-    protected $hidden = ['password', 'remember_token'];
-
-    public function ujian()
+    public function examTokens()
     {
-        return $this->hasMany(\App\Models\Resource\Ujian::class, 'id_admin');
+        return $this->hasMany(\App\Models\Resource\Token::class, 'id_admin');
     }
 }

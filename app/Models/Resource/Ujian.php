@@ -2,31 +2,20 @@
 
 namespace App\Models\Resource;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Ujian extends Model
 {
+    use HasFactory;
+
     protected $table = 'exam_ujian';
     protected $primaryKey = 'id_ujian';
 
     protected $fillable = [
-        'id_paket_ujian',
-        'id_paket_soal',
-        'token',
-        'token_expired_at',
-        'status',
-        'durasi_menit',
-        'acak_soal',
-        'jadwal_mulai',
-        'jadwal_selesai',
-    ];
-
-    protected $casts = [
-        'status' => 'boolean',
-        'acak_soal' => 'boolean',
-        'jadwal_mulai' => 'datetime',
-        'jadwal_selesai' => 'datetime',
-        'token_expired_at' => 'datetime',
+        'id_paket_ujian', 'id_paket_soal',
+        'token', 'status', 'durasi_menit',
+        'acak_soal', 'jadwal_mulai', 'jadwal_selesai'
     ];
 
     public function paketUjian()
@@ -39,13 +28,18 @@ class Ujian extends Model
         return $this->belongsTo(PaketSoal::class, 'id_paket_soal');
     }
 
-    public function jawaban()
+    public function tokenUjian()
     {
-        return $this->hasMany(JawabanSiswa::class, 'id_ujian');
+        return $this->hasMany(Token::class, 'id_ujian');
     }
 
     public function hasil()
     {
         return $this->hasMany(HasilUjian::class, 'id_ujian');
+    }
+
+    public function jawaban()
+    {
+        return $this->hasMany(JawabanSiswa::class, 'id_ujian');
     }
 }

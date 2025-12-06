@@ -2,27 +2,19 @@
 
 namespace App\Models\Resource;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class HasilUjian extends Model
 {
+    use HasFactory;
+
     protected $table = 'exam_hasil_ujian';
     protected $primaryKey = 'id_hasil_ujian';
 
     protected $fillable = [
-        'id_peserta',
-        'id_ujian',
-        'jumlah_benar',
-        'jumlah_salah',
-        'nilai',
-        'waktu_mengerjakan',
-        'mulai_mengerjakan',
-        'selesai_mengerjakan',
-    ];
-
-    protected $casts = [
-        'mulai_mengerjakan' => 'datetime',
-        'selesai_mengerjakan' => 'datetime',
+        'id_peserta', 'id_ujian', 'jumlah_benar', 'jumlah_salah',
+        'nilai', 'waktu_mengerjakan', 'mulai_mengerjakan', 'selesai_mengerjakan'
     ];
 
     public function peserta()

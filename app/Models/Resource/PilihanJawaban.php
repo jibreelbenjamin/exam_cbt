@@ -2,19 +2,18 @@
 
 namespace App\Models\Resource;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PilihanJawaban extends Model
 {
+    use HasFactory;
+
     protected $table = 'exam_pilihan_jawaban';
     protected $primaryKey = 'id_pilihan_jawaban';
 
     protected $fillable = [
-        'id_soal',
-        'tipe_jawaban',
-        'teks_jawaban',
-        'gambar',
-        'benar',
+        'id_soal', 'tipe_jawaban', 'teks_jawaban', 'gambar', 'benar'
     ];
 
     public function soal()

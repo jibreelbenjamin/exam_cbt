@@ -2,24 +2,89 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
+use App\Models\Users\Admin;
+use App\Models\Users\Guru;
+use App\Models\Users\Peserta;
+use App\Models\Resource\AksesPaketSoal;
+use App\Models\Resource\Kelas;
+use App\Models\Resource\Ruangan;
+use App\Models\Resource\PaketSoal;
+use App\Models\Resource\Soal;
+use App\Models\Resource\PilihanJawaban;
+use App\Models\Resource\PaketUjian;
+use App\Models\Resource\Token;
+use App\Models\Resource\Ujian;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Config 
+        $jumlahGuru      = 5;
+        $jumlahKelas     = 5;
+        $jumlahRuangan   = 5;
+        $jumlahPeserta   = 100;
+        $jumlahPaket     = 3;
+        $jumlahSoal      = 120;
+        $jumlahPilihan   = 5;
+        $jumlahToken     = 3;
+        $jumlahPaketUji  = 3;
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        Admin::create([
+            'username' => 'admin',
+            'nama' => 'Administrator',
+            'password' => Hash::make('admin')
         ]);
+
+        $dataGuru = Guru::factory()->count($jumlahGuru)->create();
+        Token::factory()->count($jumlahToken)->create();
+
+        $dataKelas = Kelas::factory()->count($jumlahKelas)->create();
+        $dataRuangan = Ruangan::factory()->count($jumlahRuangan)->create();
+
+        $peserta = Peserta::factory()->count($jumlahPeserta)->create()->each(function ($p) use ($dataKelas, $dataRuangan) {
+            $p->update([
+                'id_kelas' => $dataKelas->random()->id_kelas,
+                'id_ruangan' => $dataRuangan->random()->id_ruangan,
+            ]);
+        });
+
+        $paketSoal = PaketSoal::factory()->count($jumlahPaket)->create();
+
+        foreach ($paketSoal as $paket) {
+            $aksesGuru = $dataGuru->random(rand(1, $dataGuru->count()));
+
+            foreach ($aksesGuru as $guru) {
+                AksesPaketSoal::create([
+                    'id_paket_soal' => $paket->id_paket_soal,
+                    'id_guru'       => $guru->id_guru
+                ]);
+            }
+
+            $soal = Soal::factory()->count($jumlahSoal)->create([
+                'id_paket_soal' => $paket->id_paket_soal,
+            ]);
+
+            $soal->each(function ($s) use ($jumlahPilihan) {
+                $jawaban = PilihanJawaban::factory()->count($jumlahPilihan)->create([
+                    'id_soal' => $s->id_soal,
+                    'benar' => false
+                ]);
+                $jawaban->random()->update(['benar' => true]);
+            });
+        }
+
+
+        PaketUjian::factory()->count($jumlahPaketUji)->create()->each(function ($pu) use ($paketSoal) {
+            Ujian::factory()->create([
+                'id_paket_ujian' => $pu->id_paket_ujian,
+                'id_paket_soal' => $paketSoal->random()->id_paket_soal
+            ]);
+        });
+
+        $this->command->info("Seeding complete!");
     }
 }

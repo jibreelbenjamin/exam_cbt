@@ -2,23 +2,20 @@
 
 namespace App\Models\Resource;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class JawabanSiswa extends Model
 {
+    use HasFactory;
+
     protected $table = 'exam_jawaban_siswa';
     protected $primaryKey = 'id_jawaban_siswa';
 
     protected $fillable = [
-        'id_peserta',
-        'id_ujian',
-        'id_soal',
-        'id_pilihan_jawaban',
-        'jawaban_essay',
-        'benar',
+        'id_peserta', 'id_ujian', 'id_soal',
+        'id_pilihan_jawaban', 'jawaban_essay', 'benar'
     ];
-
-    protected $casts = ['benar' => 'boolean'];
 
     public function peserta()
     {

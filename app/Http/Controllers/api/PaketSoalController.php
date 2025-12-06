@@ -21,7 +21,7 @@ class PaketSoalController
     public function index()
     {
         try {
-            $data = PaketSoal::with(['soal', 'guru', 'akses'])->get();
+            $data = PaketSoal::with(['soal', 'guru', 'aksesPaketSoal'])->get();
 
             return response()->json([
                 'success' => true,
@@ -60,7 +60,7 @@ class PaketSoalController
     public function show($id)
     {
         try {
-            $data = PaketSoal::with(['soal', 'guru', 'akses'])->findOrFail($id);
+            $data = PaketSoal::with(['soal', 'guru', 'aksesPaketSoal'])->findOrFail($id);
 
             return response()->json([
                 'success' => true,
