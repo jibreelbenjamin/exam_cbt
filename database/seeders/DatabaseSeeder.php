@@ -64,47 +64,30 @@ class DatabaseSeeder extends Seeder
         $basePerKelas = intdiv($jumlahPeserta, $jumlahKelas);
         $sisaKelas = $jumlahPeserta % $jumlahKelas;
 
-        $globalIndex = 1;
-
-        foreach ($dataKelas as $indexKelas => $kelas) {
-            $pesertaDiKelas = $basePerKelas + ($sisaKelas > 0 ? 1 : 0);
+        foreach ($dataKelas as $kelas) {
+            $jumlahPesertaKelas = $basePerKelas + ($sisaKelas > 0 ? 1 : 0);
             if ($sisaKelas > 0) $sisaKelas--;
 
-            $ruanganUntukKelas = $dataRuangan;
-            $countRuangan = $ruanganUntukKelas->count();
+            $pesertaKelas = Peserta::factory()->count($jumlahPesertaKelas)->create([
+                'id_kelas' => $kelas->id_kelas
+            ]);
 
-            if ($countRuangan === 0) {
-                for ($i = 0; $i < $pesertaDiKelas; $i++) {
-                    Peserta::create([
-                        'username' => 'peserta' . $globalIndex,
-                        'nama' => 'Peserta ' . $globalIndex,
-                        'id_kelas' => $kelas->id_kelas,
-                        'id_ruangan' => null,
-                        'password' => Hash::make('password'),
-                        'unhashed_password' => 'password',
-                    ]);
-                    $globalIndex++;
-                }
-                continue;
-            }
+            $basePerRuangan = intdiv($jumlahPesertaKelas, $jumlahRuangan);
+            $sisaRuangan = $jumlahPesertaKelas % $jumlahRuangan;
 
-            $basePerRuangan = intdiv($pesertaDiKelas, $countRuangan);
-            $sisaRuangan = $pesertaDiKelas % $countRuangan;
+            $offset = 0;
 
-            foreach ($ruanganUntukKelas as $ruangan) {
-                $assignCount = $basePerRuangan + ($sisaRuangan > 0 ? 1 : 0);
+            foreach ($dataRuangan as $ruangan) {
+                $jumlahRuanganIni = $basePerRuangan + ($sisaRuangan > 0 ? 1 : 0);
                 if ($sisaRuangan > 0) $sisaRuangan--;
 
-                for ($j = 0; $j < $assignCount; $j++) {
-                    Peserta::create([
-                        'username' => 'peserta' . $globalIndex,
-                        'nama' => 'Peserta ' . $globalIndex,
-                        'id_kelas' => $kelas->id_kelas,
-                        'id_ruangan' => $ruangan->id_ruangan,
-                        'password' => Hash::make('password'),
-                        'unhashed_password' => 'password',
+                $slice = $pesertaKelas->slice($offset, $jumlahRuanganIni);
+                $offset += $jumlahRuanganIni;
+
+                foreach ($slice as $p) {
+                    $p->update([
+                        'id_ruangan' => $ruangan->id_ruangan
                     ]);
-                    $globalIndex++;
                 }
             }
         }

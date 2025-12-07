@@ -106,6 +106,7 @@ return new class extends Migration
             $table->id('id_ujian');
             $table->foreignId('id_paket_ujian')->nullable()->constrained('exam_paket_ujian', 'id_paket_ujian')->nullOnDelete();
             $table->foreignId('id_paket_soal')->constrained('exam_paket_soal', 'id_paket_soal')->onDelete('cascade');
+            $table->string('nama');
             $table->boolean('token')->default(false)->comment('1=Menggunakan token, 0=Tanpa token');;
             $table->boolean('status')->default(false);
             $table->integer('durasi')->default(0)->comment('Satuan menit');;

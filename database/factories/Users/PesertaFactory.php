@@ -13,8 +13,8 @@ class PesertaFactory extends Factory
     {
         $password = $this->faker->regexify('[A-Z]{5}[0-4]{3}');
         return [
-            'id_kelas'   => KelasFactory::new(),
-            'id_ruangan' => RuanganFactory::new(),
+            'id_kelas'   => null,
+            'id_ruangan' => null,
             'username'   => $this->faker->unique()->numerify('#####/####.###'),
             'nama'       => $this->faker->name(),
             'password'   => Hash::make($password),
