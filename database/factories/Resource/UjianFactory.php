@@ -13,7 +13,7 @@ class UjianFactory extends Factory
             'id_paket_soal'  => PaketSoalFactory::new(),
             'token' => false,
             'status' => false,
-            'durasi_menit' => $this->faker->numberBetween(30, 120),
+            'durasi' => $this->faker->numberBetween(30, 120),
             'acak_soal' => false,
             'jadwal_mulai' => now(),
             'jadwal_selesai' => now()->addHours(2),

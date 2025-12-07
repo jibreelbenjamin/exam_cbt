@@ -18,14 +18,21 @@ class SoalController
         'id_paket_soal' => 'required|integer|exists:exam_paket_soal,id_paket_soal',
         'teks_soal' => 'required|string',
         'gambar' => 'nullable|string',
+        'tipe_jawaban' => 'required|integer|in:1,2',
     ];
     protected array $messages = [
         'id_paket_soal.required' => 'ID paket soal harus diisi.',
         'id_paket_soal.integer' => 'ID paket soal harus berupa angka.',
         'id_paket_soal.exists' => 'Paket soal tidak ditemukan.',
 
-        'teks_soal.required' => 'Teks soal harus diisi.',
+        'teks_soal.required'  => 'Teks soal harus diisi.',
         'teks_soal.string' => 'Teks soal harus berupa teks.',
+
+        'gambar.string' => 'Path gambar harus berupa teks.',
+
+        'tipe_jawaban.required' => 'Tipe jawaban harus diisi.',
+        'tipe_jawaban.integer' => 'Tipe jawaban harus berupa angka.',
+        'tipe_jawaban.in' => 'Tipe jawaban tidak valid.',
     ];
 
     public function index()

@@ -82,13 +82,13 @@ return new class extends Migration
             $table->foreignId('id_paket_soal')->constrained('exam_paket_soal', 'id_paket_soal')->onDelete('cascade');
             $table->text('teks_soal');
             $table->string('gambar')->nullable();
+            $table->tinyInteger('tipe_jawaban')->comment('1=Pilihan ganda, 2=Essay');
             $table->timestamps();
         });
 
         Schema::create('exam_pilihan_jawaban', function (Blueprint $table) {
             $table->id('id_pilihan_jawaban');
             $table->foreignId('id_soal')->constrained('exam_soal', 'id_soal')->onDelete('cascade');
-            $table->tinyInteger('tipe_jawaban')->comment('1=Pilihan ganda, 2=Essay');
             $table->text('teks_jawaban');
             $table->string('gambar')->nullable();
             $table->boolean('benar')->default(false);
@@ -108,7 +108,7 @@ return new class extends Migration
             $table->foreignId('id_paket_soal')->constrained('exam_paket_soal', 'id_paket_soal')->onDelete('cascade');
             $table->boolean('token')->default(false)->comment('1=Menggunakan token, 0=Tanpa token');;
             $table->boolean('status')->default(false);
-            $table->integer('durasi_menit')->default(0)->comment('Satuan menit');;
+            $table->integer('durasi')->default(0)->comment('Satuan menit');;
             $table->boolean('acak_soal')->default(false);
             $table->datetime('jadwal_mulai')->nullable();
             $table->datetime('jadwal_selesai')->nullable();

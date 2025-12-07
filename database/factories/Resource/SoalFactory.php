@@ -12,6 +12,7 @@ class SoalFactory extends Factory
             'id_paket_soal' => PaketSoalFactory::new(),
             'teks_soal' => $this->faker->sentence(10),
             'gambar' => null,
+            'tipe_jawaban' => 1,
         ];
     }
 }
