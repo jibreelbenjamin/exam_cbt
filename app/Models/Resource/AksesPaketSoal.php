@@ -21,6 +21,6 @@ class AksesPaketSoal extends Model
 
     public function guru()
     {
-        return $this->belongsTo(Guru::class, 'id_guru');
+        return $this->belongsTo(\App\Models\Users\Guru::class, 'id_guru');
     }
 }

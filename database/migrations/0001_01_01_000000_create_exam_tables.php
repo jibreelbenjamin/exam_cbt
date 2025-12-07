@@ -65,7 +65,7 @@ return new class extends Migration
         Schema::create('exam_paket_soal', function (Blueprint $table) {
             $table->id('id_paket_soal');
             $table->string('nama');
-            $table->text('deskripsi');
+            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
 
@@ -105,7 +105,7 @@ return new class extends Migration
         Schema::create('exam_ujian', function (Blueprint $table) {
             $table->id('id_ujian');
             $table->foreignId('id_paket_ujian')->nullable()->constrained('exam_paket_ujian', 'id_paket_ujian')->nullOnDelete();
-            $table->foreignId('id_paket_soal')->nullable()->constrained('exam_paket_soal', 'id_paket_soal')->nullOnDelete();
+            $table->foreignId('id_paket_soal')->constrained('exam_paket_soal', 'id_paket_soal')->onDelete('cascade');
             $table->boolean('token')->default(false)->comment('1=Menggunakan token, 0=Tanpa token');;
             $table->boolean('status')->default(false);
             $table->integer('durasi_menit')->default(0)->comment('Satuan menit');;
@@ -121,7 +121,7 @@ return new class extends Migration
             $table->foreignId('id_ujian')->constrained('exam_ujian', 'id_ujian')->onDelete('cascade');
             $table->string('token')->comment('Satuan menit');
             $table->integer('durasi')->default(0);
-            $table->datetime('token_expired_at')->nullable();
+            $table->datetime('token_expired_at');
             $table->timestamps();
         });
 

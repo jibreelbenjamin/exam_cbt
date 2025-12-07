@@ -3,17 +3,22 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\api\KelasController;
 use App\Http\Controllers\api\PaketSoalController;
+use App\Http\Controllers\api\AksesPaketSoalController;
 use App\Http\Controllers\API\PesertaController;
 use App\Http\Controllers\API\GuruController;
 use App\Http\Controllers\API\AdminController;
 use App\Http\Controllers\api\RuanganController;
 use App\Http\Controllers\api\SoalController;
+use App\Http\Controllers\api\PilihanJawabanController;
+use App\Http\Controllers\api\TokenController;
+use App\Http\Controllers\api\UjianController;
+use App\Http\Controllers\api\PaketUjianController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware(['auth:sanctum'])->group(function () {
+// Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/tes', function (Request $request) {
         return response()->json([
             'status' => true,
@@ -57,6 +62,41 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/paket-soal/{id}', [PaketSoalController::class, 'update']);
     Route::delete('/paket-soal/{id}', [PaketSoalController::class, 'destroy']);
 
+    // Pilihan Jawaban
+    Route::get('/pilihan-jawaban/{id}', [PilihanJawabanController::class, 'index']);
+    Route::post('/pilihan-jawaban', [PilihanJawabanController::class, 'store']);
+    Route::get('/pilihan-jawaban/detail/{id}', [PilihanJawabanController::class, 'show']);
+    Route::put('/pilihan-jawaban/{id}', [PilihanJawabanController::class, 'update']);
+    Route::delete('/pilihan-jawaban/{id}', [PilihanJawabanController::class, 'destroy']);
+
+    // Akses Paket Soal
+    Route::get('/akses-paket-soal', [AksesPaketSoalController::class, 'index']);
+    Route::post('/akses-paket-soal', [AksesPaketSoalController::class, 'store']);
+    Route::get('/akses-paket-soal/{id}', [AksesPaketSoalController::class, 'show']);
+    Route::put('/akses-paket-soal/{id}', [AksesPaketSoalController::class, 'update']);
+    Route::delete('/akses-paket-soal/{id}', [AksesPaketSoalController::class, 'destroy']);
+
+    // Ujian
+    Route::get('/ujian', [UjianController::class, 'index']);
+    Route::post('/ujian', [UjianController::class, 'store']);
+    Route::get('/ujian/{id}', [UjianController::class, 'show']);
+    Route::put('/ujian/{id}', [UjianController::class, 'update']);
+    Route::delete('/ujian/{id}', [UjianController::class, 'destroy']);
+
+    // Paket Ujian
+    Route::get('/paket-ujian', [PaketUjianController::class, 'index']);
+    Route::post('/paket-ujian', [PaketUjianController::class, 'store']);
+    Route::get('/paket-ujian/{id}', [PaketUjianController::class, 'show']);
+    Route::put('/paket-ujian/{id}', [PaketUjianController::class, 'update']);
+    Route::delete('/paket-ujian/{id}', [PaketUjianController::class, 'destroy']);
+
+    // Token
+    Route::get('/token', [TokenController::class, 'index']);
+    Route::post('/token', [TokenController::class, 'store']);
+    Route::get('/token/{id}', [TokenController::class, 'show']);
+    Route::put('/token/{id}', [TokenController::class, 'update']);
+    Route::delete('/token/{id}', [TokenController::class, 'destroy']);
+
     // Ruangan
     Route::get('/ruangan', [RuanganController::class, 'index']);
     Route::post('/ruangan', [RuanganController::class, 'store']);
@@ -72,4 +112,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/kelas/{id}', [KelasController::class, 'destroy']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
-});
+// });

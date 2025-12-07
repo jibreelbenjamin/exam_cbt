@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\Users\Admin;
@@ -22,13 +23,13 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Config 
-        $jumlahGuru      = 5;
-        $jumlahKelas     = 5;
+        // Config
+        $jumlahGuru      = 10;
+        $jumlahKelas     = 4;
         $jumlahRuangan   = 5;
         $jumlahPeserta   = 100;
-        $jumlahPaket     = 3;
-        $jumlahSoal      = 120;
+        $jumlahPaket     = 5;
+        $jumlahSoal      = 30;
         $jumlahPilihan   = 5;
         $jumlahToken     = 3;
         $jumlahPaketUji  = 3;
@@ -36,21 +37,95 @@ class DatabaseSeeder extends Seeder
         Admin::create([
             'username' => 'admin',
             'nama' => 'Administrator',
-            'password' => Hash::make('admin')
+            'password' => Hash::make('admin'),
+        ]);
+
+        Guru::create([
+            'username' => 'guru',
+            'nama' => 'Guru',
+            'password' => Hash::make('guru'),
+        ]);
+
+        $dataKelas = Kelas::factory()->count($jumlahKelas)->create();
+        $dataRuangan = Ruangan::factory()->count($jumlahRuangan)->create();
+
+        Peserta::create([
+            'username' => 'peserta',
+            'nama' => 'Peserta uji coba',
+            'id_kelas' => $dataKelas->first()->id_kelas,
+            'id_ruangan' => null,
+            'password' => Hash::make('peserta'),
+            'unhashed_password' => 'peserta',
         ]);
 
         $dataGuru = Guru::factory()->count($jumlahGuru)->create();
         Token::factory()->count($jumlahToken)->create();
 
-        $dataKelas = Kelas::factory()->count($jumlahKelas)->create();
-        $dataRuangan = Ruangan::factory()->count($jumlahRuangan)->create();
+        $basePerKelas = intdiv($jumlahPeserta, $jumlahKelas);
+        $sisaKelas = $jumlahPeserta % $jumlahKelas;
 
-        $peserta = Peserta::factory()->count($jumlahPeserta)->create()->each(function ($p) use ($dataKelas, $dataRuangan) {
-            $p->update([
-                'id_kelas' => $dataKelas->random()->id_kelas,
-                'id_ruangan' => $dataRuangan->random()->id_ruangan,
-            ]);
-        });
+        $globalIndex = 1;
+
+        foreach ($dataKelas as $indexKelas => $kelas) {
+            $pesertaDiKelas = $basePerKelas + ($sisaKelas > 0 ? 1 : 0);
+            if ($sisaKelas > 0) $sisaKelas--;
+
+            $ruanganUntukKelas = $dataRuangan;
+            $countRuangan = $ruanganUntukKelas->count();
+
+            if ($countRuangan === 0) {
+                for ($i = 0; $i < $pesertaDiKelas; $i++) {
+                    Peserta::create([
+                        'username' => 'peserta' . $globalIndex,
+                        'nama' => 'Peserta ' . $globalIndex,
+                        'id_kelas' => $kelas->id_kelas,
+                        'id_ruangan' => null,
+                        'password' => Hash::make('password'),
+                        'unhashed_password' => 'password',
+                    ]);
+                    $globalIndex++;
+                }
+                continue;
+            }
+
+            $basePerRuangan = intdiv($pesertaDiKelas, $countRuangan);
+            $sisaRuangan = $pesertaDiKelas % $countRuangan;
+
+            foreach ($ruanganUntukKelas as $ruangan) {
+                $assignCount = $basePerRuangan + ($sisaRuangan > 0 ? 1 : 0);
+                if ($sisaRuangan > 0) $sisaRuangan--;
+
+                for ($j = 0; $j < $assignCount; $j++) {
+                    Peserta::create([
+                        'username' => 'peserta' . $globalIndex,
+                        'nama' => 'Peserta ' . $globalIndex,
+                        'id_kelas' => $kelas->id_kelas,
+                        'id_ruangan' => $ruangan->id_ruangan,
+                        'password' => Hash::make('password'),
+                        'unhashed_password' => 'password',
+                    ]);
+                    $globalIndex++;
+                }
+            }
+        }
+
+        $createdPesertaCount = Peserta::count();
+        if ($createdPesertaCount < ($jumlahPeserta + 1)) {
+            $needed = ($jumlahPeserta + 1) - $createdPesertaCount;
+            $firstKelas = $dataKelas->first();
+            $firstRuangan = $dataRuangan->first();
+            for ($k = 0; $k < $needed; $k++) {
+                Peserta::create([
+                    'username' => 'peserta' . $globalIndex,
+                    'nama' => 'Peserta ' . $globalIndex,
+                    'id_kelas' => $firstKelas->id_kelas,
+                    'id_ruangan' => $firstRuangan ? $firstRuangan->id_ruangan : null,
+                    'password' => Hash::make('password'),
+                    'unhashed_password' => 'password',
+                ]);
+                $globalIndex++;
+            }
+        }
 
         $paketSoal = PaketSoal::factory()->count($jumlahPaket)->create();
 
@@ -76,7 +151,6 @@ class DatabaseSeeder extends Seeder
                 $jawaban->random()->update(['benar' => true]);
             });
         }
-
 
         PaketUjian::factory()->count($jumlahPaketUji)->create()->each(function ($pu) use ($paketSoal) {
             Ujian::factory()->create([

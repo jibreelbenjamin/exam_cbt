@@ -6,26 +6,46 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-use App\Models\Resource\Kelas;
+use App\Models\Resource\Token;
 
-class KelasController
+class TokenController
 {
-    protected $model = Kelas::class;
-    protected $table_primary = 'id_kelas';
-    protected $data_title = 'kelas';
+    protected $model = Token::class;
+    protected $table_primary = 'id_token';
+    protected $data_title = 'token';
 
-    protected $rules = [
-        'nama' => 'required|string|max:255',
+    protected array $rules = [
+        'id_admin' => 'required|integer|exists:exam_admin,id_admin',
+        'id_ujian' => 'required|integer|exists:exam_ujian,id_ujian',
+        'token' => 'required|string|max:255',
+        'durasi'=> 'required|integer|min:0',
+        'token_expired_at'  => 'required|date',
     ];
-    protected $messages = [
-        'nama.required' => 'Nama kelas wajib diisi',
-        'nama.max' => 'Nama kelas maksimal 255 karakter',
+    protected array $messages = [
+        'id_admin.required' => 'ID admin harus diisi.',
+        'id_admin.integer' => 'ID admin harus berupa angka.',
+        'id_admin.exists' => 'Admin tidak ditemukan.',
+
+        'id_ujian.required' => 'ID ujian harus diisi.',
+        'id_ujian.integer' => 'ID ujian harus berupa angka.',
+        'id_ujian.exists' => 'Ujian tidak ditemukan.',
+
+        'token.required' => 'Token harus diisi.',
+        'token.string' => 'Token harus berupa teks.',
+        'token.max' => 'Token terlalu panjang.',
+
+        'durasi.required' => 'Durasi harus diisi.',
+        'durasi.integer' => 'Durasi harus berupa angka.',
+        'durasi.min' => 'Durasi minimal adalah 0 menit.',
+
+        'token_expired_at.required' => 'Tanggal kedaluwarsa harus diisi.',
+        'token_expired_at.date' => 'Format tanggal kedaluwarsa tidak valid.',
     ];
 
     public function index()
     {
         try {
-            $data = $this->model::with('peserta')->get();
+            $data = $this->model::with(['admin', 'ujian', 'ujian.paketUjian', 'ujian.paketSoal'])->get();
 
             if ($data->isEmpty()) {
                 return response()->json([
@@ -88,7 +108,7 @@ class KelasController
 
     public function show($id)
     {
-        $data = $this->model::with('peserta.kelas')->find($id);
+        $data = $this->model::with(['admin', 'ujian', 'ujian.paketUjian', 'ujian.paketSoal'])->find($id);
 
         if($data){
             return response()->json([

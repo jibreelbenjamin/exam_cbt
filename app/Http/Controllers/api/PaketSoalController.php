@@ -1,21 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\API;
+
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\Models\Resource\PaketSoal;
-use Illuminate\Http\Request;
 
 class PaketSoalController
 {
+    protected $model = PaketSoal::class;
+    protected $table_primary = 'id_paket_soal';
+    protected $data_title = 'paket soal';
+
     protected array $rules = [
-        'nama'      => 'required|string|max:255',
+        'nama'=> 'required|string|max:255',
         'deskripsi' => 'nullable|string',
     ];
-
     protected array $messages = [
         'nama.required' => 'Nama paket soal harus diisi.',
-        'nama.string'   => 'Nama paket soal harus berupa teks.',
-        'nama.max'      => 'Nama paket soal tidak boleh lebih dari 255 karakter.',
+        'nama.string' => 'Nama paket soal harus berupa teks.',
+        'nama.max' => 'Nama paket soal tidak boleh lebih dari 255 karakter.',
     ];
 
     public function index()
@@ -23,15 +29,26 @@ class PaketSoalController
         try {
             $data = PaketSoal::with(['soal', 'guru', 'aksesPaketSoal'])->get();
 
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data '.$this->data_title.' kosong',
+                    'data' => [],
+                ], 404);
+            }
+
             return response()->json([
-                'success' => true,
-                'data'    => $data,
-            ]);
-        } catch (\Throwable $e) {
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' ditemukan',
+                'total' => count($data),
+                'data' => $data,
+            ], 200);
+
+        } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan server.',
-                'error'   => $e->getMessage(),
+                'status' => false,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
@@ -39,38 +56,52 @@ class PaketSoalController
     public function store(Request $request)
     {
         try {
-            $validated = $request->validate($this->rules, $this->messages);
+            $validate = $request->validate($this->rules, $this->messages);
 
-            $data = PaketSoal::create($validated);
+            $data = $this->model::create($validate);
+
+            if (!$data) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data '.$this->data_title.' gagal dibuat'
+                ], 500);
+            }
 
             return response()->json([
-                'success' => true,
-                'message' => 'Paket soal berhasil dibuat.',
-                'data'    => $data,
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' berhasil dibuat',
+                'data' => $data
             ], 201);
-        } catch (\Throwable $e) {
+
+        } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Gagal membuat paket soal.',
-                'error'   => $e->getMessage(),
+                'status' => false,
+                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
         }
     }
 
     public function show($id)
     {
-        try {
-            $data = PaketSoal::with(['soal', 'guru', 'aksesPaketSoal'])->findOrFail($id);
+        $data = $this->model::with(['soal', 'guru', 'aksesPaketSoal'])->find($id);
 
+        if($data){
             return response()->json([
-                'success' => true,
-                'data'    => $data,
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' ditemukan',
+                'data' => $data
             ]);
-        } catch (\Throwable $e) {
+        } else {
             return response()->json([
-                'success' => false,
-                'message' => 'Paket soal tidak ditemukan.',
-                'error'   => $e->getMessage(),
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
             ], 404);
         }
     }
@@ -78,40 +109,61 @@ class PaketSoalController
     public function update(Request $request, $id)
     {
         try {
-            $validated = $request->validate($this->rules, $this->messages);
+            $data = $this->model::where($this->table_primary, $id)->firstOrFail();
 
-            $data = PaketSoal::findOrFail($id);
-            $data->update($validated);
+            $validate = $request->validate($this->rules, $this->messages);
+
+            $data->update($validate);
 
             return response()->json([
-                'success' => true,
-                'message' => 'Paket soal berhasil diupdate.',
-                'data'    => $data,
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' berhasil diperbarui',
+                'data' => $data
             ]);
-        } catch (\Throwable $e) {
+
+        } catch (ModelNotFoundException $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Gagal mengupdate paket soal.',
-                'error'   => $e->getMessage(),
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
+            ], 404);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
         }
     }
 
     public function destroy($id)
     {
-        try {
-            $data = PaketSoal::findOrFail($id);
-            $data->delete();
+        $data = $this->model::find($id);
 
+        if(empty($data)){
             return response()->json([
-                'success' => true,
-                'message' => 'Paket soal berhasil dihapus.',
-            ]);
-        } catch (\Throwable $e) {
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
+            ], 404);
+        }
+
+        try {
+            $post = $data->delete();
             return response()->json([
-                'success' => false,
-                'message' => 'Gagal menghapus paket soal.',
-                'error'   => $e->getMessage(),
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' berhasil dihapus',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
             ], 500);
         }
     }

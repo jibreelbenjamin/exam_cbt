@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use \Illuminate\Validation\ValidationException;
+
 use App\Models\Users\Admin;
 use App\Models\Users\Guru;
 use App\Models\Users\Peserta;
-use Illuminate\Support\Facades\Hash;
-use \Illuminate\Validation\ValidationException;
 
 class AuthController
 {

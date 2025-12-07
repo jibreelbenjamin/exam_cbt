@@ -1,61 +1,55 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\API;
+
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\Models\Resource\AksesPaketSoal;
-use Illuminate\Support\Facades\Request;
 
 class AksesPaketSoalController
 {
+    protected $model = AksesPaketSoal::class;
+    protected $table_primary = 'id_akses_paket_soal';
+    protected $data_title = 'akses paket soal';
+
     protected $rules = [
         'id_paket_soal' => 'required|exists:exam_paket_soal,id_paket_soal',
-        'id_guru'       => 'required|exists:exam_guru,id_guru',
+        'id_guru' => 'required|exists:exam_guru,id_guru',
     ];
-
     protected $messages = [
         'id_paket_soal.required' => 'id_paket_soal harus diisi.',
-        'id_paket_soal.exists'   => 'Paket soal tidak ditemukan.',
-        'id_guru.required'       => 'id_guru harus diisi.',
-        'id_guru.exists'         => 'Guru tidak ditemukan.',
+        'id_paket_soal.exists' => 'Paket soal tidak ditemukan.',
+        'id_guru.required' => 'id_guru harus diisi.',
+        'id_guru.exists' => 'Guru tidak ditemukan.',
     ];
 
     public function index()
     {
         try {
-            $data = AksesPaketSoal::with(['paketSoal', 'guru'])->get();
+            $data = $this->model::with(['paketSoal', 'guru'])->get();
 
-            return response()->json([
-                'success' => true,
-                'data' => $data
-            ]);
-        } catch (\Throwable $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan server.'
-            ], 500);
-        }
-    }
-
-    public function show($id)
-    {
-        try {
-            $data = AksesPaketSoal::with(['paketSoal', 'guru'])->find($id);
-
-            if (!$data) {
+            if ($data->isEmpty()) {
                 return response()->json([
-                    'success' => false,
-                    'message' => 'Akses Paket Soal tidak ditemukan.',
+                    'status' => false,
+                    'message' => 'Data '.$this->data_title.' kosong',
+                    'data' => [],
                 ], 404);
             }
 
             return response()->json([
-                'success' => true,
-                'data' => $data
-            ]);
-        } catch (\Throwable $e) {
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' ditemukan',
+                'total' => count($data),
+                'data' => $data,
+            ], 200);
+
+        } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan server.'
+                'status' => false,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
@@ -63,99 +57,114 @@ class AksesPaketSoalController
     public function store(Request $request)
     {
         try {
-            $validated = $request->validate($this->rules, $this->messages);
+            $validate = $request->validate($this->rules, $this->messages);
 
-            // Cek duplikasi
-            $exists = AksesPaketSoal::where('id_paket_soal', $validated['id_paket_soal'])
-                ->where('id_guru', $validated['id_guru'])
-                ->first();
+            $data = $this->model::create($validate);
 
-            if ($exists) {
+            if (!$data) {
                 return response()->json([
-                    'success' => false,
-                    'message' => 'Akses ini sudah ada.'
-                ], 409);
+                    'status' => false,
+                    'message' => 'Data '.$this->data_title.' gagal dibuat'
+                ], 500);
             }
 
-            $akses = AksesPaketSoal::create($validated);
+            return response()->json([
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' berhasil dibuat',
+                'data' => $data
+            ], 201);
 
+        } catch (ValidationException $e) {
             return response()->json([
-                'success' => true,
-                'message' => 'Akses berhasil ditambahkan.',
-                'data' => $akses
-            ]);
-        } catch (\Throwable $e) {
+                'status' => false,
+                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan server.'
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function show($id)
+    {
+        $data = $this->model::with(['paketSoal', 'guru'])->find($id);
+
+        if($data){
+            return response()->json([
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' ditemukan',
+                'data' => $data
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
+            ], 404);
         }
     }
 
     public function update(Request $request, $id)
     {
         try {
-            $akses = AksesPaketSoal::find($id);
+            $data = $this->model::where($this->table_primary, $id)->firstOrFail();
 
-            if (!$akses) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Data tidak ditemukan.'
-                ], 404);
-            }
+            $validate = $request->validate($this->rules, $this->messages);
 
-            $validated = $request->validate($this->rules, $this->messages);
-
-            // Cek duplikasi kombinasi kecuali data sendiri
-            $exists = AksesPaketSoal::where('id_paket_soal', $validated['id_paket_soal'])
-                ->where('id_guru', $validated['id_guru'])
-                ->where('id_akses_paket_soal', '!=', $id)
-                ->first();
-
-            if ($exists) {
-                return response()->json([
-                    'success'   => false,
-                    'message'   => 'Akses dengan kombinasi tersebut sudah ada.'
-                ], 409);
-            }
-
-            $akses->update($validated);
+            $data->update($validate);
 
             return response()->json([
-                'success' => true,
-                'message' => 'Akses berhasil diperbarui.',
-                'data' => $akses
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' berhasil diperbarui',
+                'data' => $data
             ]);
-        } catch (\Throwable $e) {
+
+        } catch (ModelNotFoundException $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan server.'
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
+            ], 404);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
         }
     }
 
     public function destroy($id)
     {
+        $data = $this->model::find($id);
+
+        if(empty($data)){
+            return response()->json([
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
+            ], 404);
+        }
+
         try {
-            $akses = AksesPaketSoal::find($id);
-
-            if (!$akses) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Data tidak ditemukan.'
-                ], 404);
-            }
-
-            $akses->delete();
-
+            $post = $data->delete();
             return response()->json([
-                'success' => true,
-                'message' => 'Akses berhasil dihapus.'
-            ]);
-        } catch (\Throwable $e) {
+                'status' => true,
+                'message' => 'Data '.$this->data_title.' berhasil dihapus',
+            ], 200);
+        } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan server.'
+                'status' => false,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
