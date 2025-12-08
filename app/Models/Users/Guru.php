@@ -16,6 +16,8 @@ class Guru extends Authenticatable
 
     protected $fillable = ['username', 'nama', 'password'];
 
+    protected $hidden = ['password'];
+
     public function aksesPaket()
     {
         return $this->hasMany(\App\Models\Resource\AksesPaketSoal::class, 'id_guru');

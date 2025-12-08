@@ -18,6 +18,8 @@ class Peserta extends Authenticatable
         'id_kelas', 'id_ruangan', 'username', 'nama', 'password', 'unhashed_password'
     ];
 
+    protected $hidden = ['password'];
+
     public function kelas()
     {
         return $this->belongsTo(\App\Models\Resource\Kelas::class, 'id_kelas');

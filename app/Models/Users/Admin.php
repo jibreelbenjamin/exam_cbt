@@ -18,6 +18,8 @@ class Admin extends Authenticatable
         'username', 'nama', 'password',
     ];
 
+    protected $hidden = ['password'];
+
     public function examTokens()
     {
         return $this->hasMany(\App\Models\Resource\Token::class, 'id_admin');
