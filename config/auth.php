@@ -36,9 +36,17 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'admin' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'admin',
+        ],
+        'guru' => [
+            'driver' => 'session',
+            'provider' => 'guru',
+        ],
+        'peserta' => [
+            'driver' => 'session',
+            'provider' => 'peserta',
         ],
     ],
 
@@ -60,15 +68,18 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'admin' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\Users\Admin::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'guru' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Users\Guru::class,
+        ],
+        'peserta' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Users\Peserta::class,
+        ],
     ],
 
     /*

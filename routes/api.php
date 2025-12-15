@@ -18,7 +18,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
-// Route::middleware(['auth:sanctum'])->group(function () {
+Route::get('/kelas/select', [KelasController::class, 'search']);
+Route::get('/ruangan/select', [RuanganController::class, 'search']);
+Route::get('/guru/select', [GuruController::class, 'search']);
+Route::get('/paket-soal/select', [PaketSoalController::class, 'search']);
+Route::get('/paket-ujian/select', [PaketUjianController::class, 'search']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/tes', function (Request $request) {
         return response()->json([
             'status' => true,
@@ -112,4 +118,4 @@ Route::post('/login', [AuthController::class, 'login']);
     Route::delete('/kelas/{id}', [KelasController::class, 'destroy']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
-// });
+});

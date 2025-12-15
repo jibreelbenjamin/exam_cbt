@@ -13,6 +13,7 @@ class GuruController
     protected $model = Guru::class;
     protected $table_primary = 'id_guru';
     protected $data_title = 'guru';
+    protected $searchKeys = ['username', 'nama'];
 
     protected $rules = [
         'nip' => 'required|string|max:50|unique:guru,nip',
@@ -55,6 +56,48 @@ class GuruController
             return response()->json([
                 'status' => false,
                 'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->query('search');
+            $searchKeys = $this->searchKeys;
+
+            $data = $this->model::when($query, function ($q) use ($query, $searchKeys) {
+                $q->where(function ($sub) use ($query, $searchKeys) {
+                    foreach ($searchKeys as $column) {
+                        $sub->orWhere($column, 'like', "%{$query}%");
+                    }
+                });
+            })->get();
+
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $query
+                        ? 'Tidak ada '.$this->data_title.' yang cocok dengan kata kunci "' . $query . '".'
+                        : 'Tidak ada data '.$this->data_title.' yang tersedia.',
+                    'data' => [],
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => $query
+                    ? 'Hasil pencarian '.$this->data_title.' ditemukan.'
+                    : 'Data '.$this->data_title.' ditemukan.',
+                'total' => $data->count(),
+                'data' => $data,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan saat mengambil data '.$this->data_title.'.',
                 'error' => $e->getMessage(),
             ], 500);
         }

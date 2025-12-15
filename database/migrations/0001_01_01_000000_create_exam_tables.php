@@ -108,11 +108,11 @@ return new class extends Migration
             $table->foreignId('id_paket_soal')->constrained('exam_paket_soal', 'id_paket_soal')->onDelete('cascade');
             $table->string('nama');
             $table->boolean('token')->default(false)->comment('1=Menggunakan token, 0=Tanpa token');;
-            $table->boolean('status')->default(false);
+            $table->boolean('status')->default(false)->comment('1=Aktif, 0=Nonaktif');;
             $table->integer('durasi')->default(0)->comment('Satuan menit');;
-            $table->boolean('acak_soal')->default(false);
-            $table->datetime('jadwal_mulai')->nullable();
-            $table->datetime('jadwal_selesai')->nullable();
+            $table->boolean('acak_soal')->default(false)->comment('1=Soal diacak, 0=Soal tidak diacak');;
+            $table->datetime('jadwal_mulai');
+            $table->datetime('jadwal_selesai');
             $table->timestamps();
         });
 
@@ -120,8 +120,8 @@ return new class extends Migration
             $table->id('id_token');
             $table->foreignId('id_admin')->constrained('exam_admin', 'id_admin')->onDelete('cascade');
             $table->foreignId('id_ujian')->constrained('exam_ujian', 'id_ujian')->onDelete('cascade');
-            $table->string('token')->comment('Satuan menit');
-            $table->integer('durasi')->default(0);
+            $table->string('token');
+            $table->integer('durasi')->default(0)->comment('Satuan menit');
             $table->datetime('token_expired_at');
             $table->timestamps();
         });

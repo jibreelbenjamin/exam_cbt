@@ -1,11 +1,81 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant hover (&:hover);
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* Preline UI */
+@import "../../node_modules/preline/variants.css";
+@source "../../node_modules/preline/dist/*.js";
+@import "../../node_modules/preline/src/plugins/datepicker/styles.css";
+
+/* Plugins */
+@plugin "@tailwindcss/forms";
+
+/* Adds pointer cursor to buttons */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+* {
+  font-family: "Inter", sans-serif;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    display: none;
+}
+
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+    background: transparent;
+}
+
+
+.tIn {
+    animation: inOut 3.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    overflow: hidden;
+}
+
+@keyframes inOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(0); /* delay section */
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-70px);
+    }
 }

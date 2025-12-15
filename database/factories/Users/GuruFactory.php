@@ -10,7 +10,7 @@ class GuruFactory extends Factory
     public function definition(): array
     {
         return [
-            'username' => $this->faker->unique()->userName(),
+            'username' => $this->faker->unique()->numerify('##################'),
             'nama' => $this->faker->name(),
             'password' => Hash::make('password'),
         ];

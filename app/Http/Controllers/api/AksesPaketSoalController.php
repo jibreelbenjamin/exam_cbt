@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -14,16 +15,30 @@ class AksesPaketSoalController
     protected $table_primary = 'id_akses_paket_soal';
     protected $data_title = 'akses paket soal';
 
-    protected $rules = [
-        'id_paket_soal' => 'required|exists:exam_paket_soal,id_paket_soal',
-        'id_guru' => 'required|exists:exam_guru,id_guru',
-    ];
-    protected $messages = [
-        'id_paket_soal.required' => 'id_paket_soal harus diisi.',
-        'id_paket_soal.exists' => 'Paket soal tidak ditemukan.',
-        'id_guru.required' => 'id_guru harus diisi.',
-        'id_guru.exists' => 'Guru tidak ditemukan.',
-    ];
+    public function __construct()
+    {
+        $this->rules = [
+            'id_paket_soal' => [
+                'required',
+                'exists:exam_paket_soal,id_paket_soal',
+                Rule::unique('exam_akses_paket_soal')
+                    ->where(fn ($query) => $query->where('id_guru', request('id_guru')))
+            ],
+            'id_guru' => [
+                'required',
+                'exists:exam_guru,id_guru',
+            ],
+        ];
+
+        $this->messages = [
+            'id_paket_soal.required' => 'id_paket_soal harus diisi.',
+            'id_paket_soal.exists' => 'Paket soal tidak ditemukan.',
+            'id_paket_soal.unique' => 'Guru sudah ada.',
+
+            'id_guru.required' => 'id_guru harus diisi.',
+            'id_guru.exists' => 'Guru tidak ditemukan.',
+        ];
+    }
 
     public function index()
     {
@@ -70,7 +85,7 @@ class AksesPaketSoalController
 
             return response()->json([
                 'status' => true,
-                'message' => 'Data '.$this->data_title.' berhasil dibuat',
+                'message' => 'Berhasil menambah akses',
                 'data' => $data
             ], 201);
 
@@ -158,7 +173,7 @@ class AksesPaketSoalController
             $post = $data->delete();
             return response()->json([
                 'status' => true,
-                'message' => 'Data '.$this->data_title.' berhasil dihapus',
+                'message' => 'Berhasil menghapus akses',
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

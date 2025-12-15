@@ -22,8 +22,8 @@ class UjianController
         'status' => 'required|boolean',
         'durasi' => 'required|integer|min:0',
         'acak_soal' => 'required|boolean',
-        'jadwal_mulai' => 'nullable|date',
-        'jadwal_selesai' => 'nullable|date|after_or_equal:jadwal_mulai',
+        'jadwal_mulai' => 'required|date',
+        'jadwal_selesai' => 'required|date|after_or_equal:jadwal_mulai',
     ];
     protected array $messages = [
         'id_paket_ujian.integer' => 'ID paket ujian harus berupa angka.',
@@ -33,8 +33,8 @@ class UjianController
         'id_paket_soal.integer' => 'ID paket soal harus berupa angka.',
         'id_paket_soal.exists' => 'Paket soal tidak ditemukan.',
 
-        'nama.required' => 'Nama ruangan harus diisi.',
-        'nama.max' => 'Nama ruangan tidak boleh lebih dari 255 karakter.',
+        'nama.required' => 'Nama ujian harus diisi.',
+        'nama.max' => 'Nama ujian tidak boleh lebih dari 255 karakter.',
 
         'token.required' => 'Pengaturan token harus diisi.',
         'token.boolean' => 'Pengaturan token harus berupa true/false.',
@@ -49,7 +49,9 @@ class UjianController
         'acak_soal.required' => 'Pengaturan acak soal harus diisi.',
         'acak_soal.boolean' => 'Pengaturan acak soal harus berupa true/false.',
 
+        'jadwal_mulai.required' => 'Jadwal mulai ujian harus diisi.',
         'jadwal_mulai.date' => 'Format tanggal mulai tidak valid.',
+        'jadwal_selesai.required' => 'Jadwal selesai ujian harus diisi.',
         'jadwal_selesai.date' => 'Format tanggal selesai tidak valid.',
         'jadwal_selesai.after_or_equal' => 'Waktu selesai harus setelah atau sama dengan waktu mulai.',
     ];

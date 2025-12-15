@@ -9,7 +9,7 @@ class RuanganFactory extends Factory
     public function definition(): array
     {
         return [
-            'nama' => 'Ruang ' . $this->faker->randomDigitNotNull(),
+            'nama' => 'Ruang ' . ucfirst($this->faker->randomLetter(true)) . '-' . $this->faker->numerify('###'),
         ];
     }
 }

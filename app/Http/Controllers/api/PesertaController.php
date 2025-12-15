@@ -15,15 +15,15 @@ class PesertaController
     protected $data_title = 'peserta';
 
     protected $rules = [
-        'nis' => 'required|string|max:50|unique:peserta,nis',
+        'username' => 'required|string|max:50|unique:exam_peserta,username',
         'nama' => 'required|string|max:255',
-        'id_kelas' => 'required|integer|exists:kelas,id_kelas',
-        'id_ruangan' => 'nullable|integer|exists:ruangan,id_ruangan',
+        'id_kelas' => 'required|integer|exists:exam_kelas,id_kelas',
+        'id_ruangan' => 'nullable|integer|exists:exam_ruangan,id_ruangan',
         'password' => 'required|string|min:4',
     ];
     protected $messages = [
-        'nis.required' => 'NIS wajib diisi.',
-        'nis.unique' => 'NIS sudah terdaftar.',
+        'username.required' => 'Username wajib diisi.',
+        'username.unique' => 'Username sudah terdaftar.',
         'nama.required' => 'Nama peserta wajib diisi.',
         'id_kelas.required' => 'Kelas wajib dipilih.',
         'id_kelas.exists' => 'Kelas tidak ditemukan.',
@@ -123,7 +123,7 @@ class PesertaController
             $data = $this->model::where($this->table_primary, $id)->firstOrFail();
             
             $rules = $this->rules;
-            $rules['nis'] = "required|string|max:50|unique:peserta,nis,{$id},{$this->table_primary}";
+            $rules['username'] = "required|string|max:50|unique:exam_peserta,username,{$id},{$this->table_primary}";
             
             $validate = $request->validate($rules, $this->messages);
 

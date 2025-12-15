@@ -13,6 +13,7 @@ class KelasController
     protected $model = Kelas::class;
     protected $table_primary = 'id_kelas';
     protected $data_title = 'kelas';
+    protected $searchKeys = ['nama'];
 
     protected $rules = [
         'nama' => 'required|string|max:255',
@@ -25,7 +26,7 @@ class KelasController
     public function index()
     {
         try {
-            $data = $this->model::with('peserta')->get();
+            $data = $this->model::withCount('peserta')->get();
 
             if ($data->isEmpty()) {
                 return response()->json([
@@ -46,6 +47,48 @@ class KelasController
             return response()->json([
                 'status' => false,
                 'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->query('search');
+            $searchKeys = $this->searchKeys;
+
+            $data = $this->model::when($query, function ($q) use ($query, $searchKeys) {
+                $q->where(function ($sub) use ($query, $searchKeys) {
+                    foreach ($searchKeys as $column) {
+                        $sub->orWhere($column, 'like', "%{$query}%");
+                    }
+                });
+            })->get();
+
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $query
+                        ? 'Tidak ada '.$this->data_title.' yang cocok dengan kata kunci "' . $query . '".'
+                        : 'Tidak ada data '.$this->data_title.' yang tersedia.',
+                    'data' => [],
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => $query
+                    ? 'Hasil pencarian '.$this->data_title.' ditemukan.'
+                    : 'Data '.$this->data_title.' ditemukan.',
+                'total' => $data->count(),
+                'data' => $data,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan saat mengambil data '.$this->data_title.'.',
                 'error' => $e->getMessage(),
             ], 500);
         }
