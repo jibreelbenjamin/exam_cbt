@@ -8,21 +8,25 @@ use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RuanganController
+class GuruController
 {
     protected $base_url;
     protected $headers;
-    protected $endpoint = 'ruangan';
-    protected $searchKeys = ['nama', 'peserta_count'];
-    protected $viewBaseScope = 'dashboard.operator.ruangan';
-    protected $routeBaseScope = 'operator.ruangan';
+    protected $endpoint = 'guru';
+    protected $searchKeys = ['nama'];
+    protected $viewBaseScope = 'dashboard.operator.guru';
+    protected $routeBaseScope = 'operator.guru';
 
     protected $rules = [
-        'nama' => 'required|string|max:255'
+        'username' => 'required|string|max:50',
+        'nama' => 'required|string|max:255',
+        'password' => 'required|string|min:8',
     ];
     protected $messages = [
-        'nama.required' => 'Nama ruangan wajib diisi',
-        'nama.max' => 'Nama ruangan maksimal 255 karakter',
+        'username.required' => 'Username wajib diisi.',
+        'nama.required' => 'Nama wajib diisi.',
+        'password.required' => 'Password wajib diisi.',
+        'password.min' => 'Password minimal 8 karakter.',
     ];
 
     public function __construct(){
@@ -31,7 +35,7 @@ class RuanganController
             'Authorization' => 'Bearer ' . session('token'),
         ];
     }
-    
+
     public function index(){
         try {
             $response = (new Client())->get("{$this->base_url}/{$this->endpoint}", [
@@ -58,7 +62,7 @@ class RuanganController
             ]);
         }
     }
-    
+
     public function create(){
         return view($this->viewBaseScope.'.form');
     }
@@ -95,7 +99,7 @@ class RuanganController
             if (!$data['status']) {
                 return back()->withErrors(['message' => $data['message']]);
             }
-        
+
             return redirect()->route($this->routeBaseScope)->with(['successToast' => $data['message']]);
         } catch (ClientException $e) {
             $response = $e->getResponse();
@@ -107,14 +111,23 @@ class RuanganController
 
             return back()->withErrors([
                 'message' => $body['message'] ?? 'Kesalahan koneksi, coba lagi...'
-            ])->withInput(); 
+            ])->withInput();
         } catch (\Exception $e) {
-            return back()->withErrors(['message' => 'Terjadi kesalahan: '.$e->getMessage()]); 
+            return back()->withErrors(['message' => 'Terjadi kesalahan: '.$e->getMessage()]);
         }
     }
 
     public function update(Request $request, $id){
-        $validate = $request->validate($this->rules, $this->messages);
+        $validate = $request->validate(
+            [
+                'username' => "required|string|max:50",
+                'nama' => 'required|string|max:255',
+            ],[
+                'username.required' => 'Username wajib diisi.',
+                'nama.required' => 'Nama wajib diisi.',
+            ]
+        );
+
         try {
             $response = (new Client())->put("{$this->base_url}/{$this->endpoint}/{$id}", [
                 'headers' => $this->headers,
@@ -126,7 +139,7 @@ class RuanganController
             if (!$data['status']) {
                 return back()->withErrors(['message' => $data['message']]);
             }
-        
+
             return redirect()->route($this->routeBaseScope)->with(['successToast' => $data['message']]);
         } catch (ClientException $e) {
             $response = $e->getResponse();
@@ -138,9 +151,51 @@ class RuanganController
 
             return back()->withErrors([
                 'message' => $body['message'] ?? 'Kesalahan koneksi, coba lagi...'
-            ])->withInput(); 
+            ])->withInput();
         } catch (\Exception $e) {
-            return back()->withErrors(['message' => 'Terjadi kesalahan: '.$e->getMessage()]); 
+            return back()->withErrors(['message' => 'Terjadi kesalahan: '.$e->getMessage()]);
+        }
+    }
+
+    public function updatePassword(Request $request, $id){
+        $validate = $request->validate(
+            [
+                'password' => 'required|string|min:8',
+                'password_confirmation' => 'required|string|same:password',
+            ],[
+                'password.required' => 'Password wajib diisi.',
+                'password.min' => 'Password minimal 8 karakter.',
+                'password_confirmation.required' => 'Konfirmasi password wajib diisi.',
+                'password_confirmation.same' => 'Konfirmasi password tidak cocok.',
+            ]
+        );
+
+        try {
+            $response = (new Client())->put("{$this->base_url}/{$this->endpoint}/{$id}/password", [
+                'headers' => $this->headers,
+                'form_params' => $validate
+            ]);
+
+            $data = json_decode($response->getBody(), true);
+
+            if (!$data['status']) {
+                return back()->withErrors(['message' => $data['message']]);
+            }
+
+            return redirect()->route($this->routeBaseScope)->with(['successToast' => $data['message']]);
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
+            $body = json_decode($response->getBody(), true);
+
+            if (isset($body['errors'])) {
+                return back()->withErrors($body['errors'])->withInput();
+            }
+
+            return back()->withErrors([
+                'message' => $body['message'] ?? 'Kesalahan koneksi, coba lagi...'
+            ])->withInput();
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => 'Terjadi kesalahan: '.$e->getMessage()]);
         }
     }
 

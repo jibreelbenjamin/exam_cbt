@@ -20,7 +20,7 @@ class AksesPaketSoalController
         'id_guru' => 'required|integer',
     ];
     protected $messages = [
-        'id_paket_soal.required' => 'Paket soal tidak terdeteksi.',
+        'id_paket_soal.required' => 'Paket soal wajib dipilih.',
         'id_guru.required' => 'Guru wajib dipilih.',
     ];
 

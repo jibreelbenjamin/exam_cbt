@@ -171,7 +171,7 @@
                             </p>
                         </th>
 
-                        <th scope="col" class="min-w-50">
+                        <th scope="col">
                             <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
                               Ruangan
                             </p>
@@ -592,7 +592,7 @@
             debounceTimer = setTimeout(() => {
                 searchQuery = value;
                 loadMoreData(true);
-            }, 1000);
+            }, 100);
         }
     });
 </script>

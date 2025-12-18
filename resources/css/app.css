@@ -55,9 +55,8 @@ input[type="datetime-local"] {
     background: transparent;
 }
 
-
 .tIn {
-    animation: inOut 3.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    animation: inOut 4.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
     overflow: hidden;
 }
 

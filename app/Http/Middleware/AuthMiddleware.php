@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthMiddleware
@@ -28,8 +29,8 @@ class AuthMiddleware
                 Auth::guard($guard)->logout();
                 session()->forget('token');
 
-                return redirect()->route('login.form')->withErrors([
-                    'message' => 'Sesi kadaluarsa. Silakan login ulang.'
+                return redirect()->route('login.form')->with([
+                    'warningToast' => 'Sesi kadaluarsa. Silakan login ulang.'
                 ]);
             }
         }
@@ -37,9 +38,21 @@ class AuthMiddleware
         $role = session('role');
 
         if (!in_array($role, $roles)) {
-            return redirect()->route('dashboard.redirect')->withErrors([
-                'message' => 'Tidak memiliki izin.'
-            ]);
+            if (Auth::guard('peserta')->check()) {
+                return redirect()
+                    ->route('home')
+                    ->with('warningToast', 'Akses halaman dilindungi');
+            }
+
+            if (Auth::guard('admin')->check() || Auth::guard('guru')->check()) {
+                return redirect()
+                    ->route('operator.home')
+                    ->with('warningToast', 'Tidak memiliki akses');
+            }
+
+            return redirect()
+                ->route('login.form')
+                ->with('warningToast', 'Akses halaman dilindungi');
         }
 
         return $next($request);

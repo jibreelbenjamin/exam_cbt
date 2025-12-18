@@ -13,7 +13,7 @@ class PaketSoalController
     protected $base_url;
     protected $headers;
     protected $endpoint = 'paket-soal';
-    protected $searchKeys = ['id_paket_soal', 'nama'];
+    protected $searchKeys = ['nama'];
     protected $viewBaseScope = 'dashboard.operator.paket-soal';
     protected $routeBaseScope = 'operator.paket-soal';
 

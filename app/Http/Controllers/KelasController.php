@@ -13,7 +13,7 @@ class KelasController
     protected $base_url;
     protected $headers;
     protected $endpoint = 'kelas';
-    protected $searchKeys = ['id_kelas', 'nama'];
+    protected $searchKeys = ['nama'];
     protected $viewBaseScope = 'dashboard.operator.kelas';
     protected $routeBaseScope = 'operator.kelas';
 

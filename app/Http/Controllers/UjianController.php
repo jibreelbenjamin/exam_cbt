@@ -13,7 +13,7 @@ class UjianController
     protected $base_url;
     protected $headers;
     protected $endpoint = 'ujian';
-    protected $searchKeys = ['id_ujian', 'nama', 'durasi','paket_ujian.nama', 'paket_soal.nama'];
+    protected $searchKeys = ['nama', 'durasi','paket_ujian.nama', 'paket_soal.nama'];
     protected $viewBaseScope = 'dashboard.operator.ujian';
     protected $routeBaseScope = 'operator.ujian';
 

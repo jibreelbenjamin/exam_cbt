@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HomeOperatorController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\PesertaController;
+use App\Http\Controllers\GuruController;
 use App\Http\Controllers\PaketSoalController;
 use App\Http\Controllers\AksesPaketSoalController;
 use App\Http\Controllers\KelasController;
@@ -39,6 +40,10 @@ Route::middleware('auth_web:peserta')->group(function () {
 });
 
 Route::middleware('auth_web:admin,guru')->group(function () {
+    Route::get('/operator/invalid', function (Request $request) {
+        return redirect()->route('operator.home')->with('warningToast', 'Sedang dalam pengembangan');
+    })->name('operator.invalid');
+
     Route::get('/operator', function () { return redirect()->route('operator.home'); });
     Route::get('/operator/dashboard', [HomeOperatorController::class, 'home'])->name('operator.home');
 
@@ -76,6 +81,16 @@ Route::middleware('auth_web:admin,guru')->group(function () {
     Route::post('/operator/peserta/add', [PesertaController::class, 'add'])->name('operator.peserta.create.action');
     Route::put('/operator/peserta/update/{id}', [PesertaController::class, 'update'])->name('operator.peserta.update.action');
     Route::delete('/operator/peserta/delete/{id}', [PesertaController::class, 'delete'])->name('operator.peserta.delete.action');
+
+    Route::get('/operator/guru', [GuruController::class, 'index'])->name('operator.guru');
+    Route::get('/operator/guru/load', [GuruController::class, 'loadData'])->name('operator.guru.load');
+    Route::get('/operator/guru/create', [GuruController::class, 'create'])->name('operator.guru.create');
+    Route::get('/operator/guru/{id}', [GuruController::class, 'setting'])->name('operator.guru.setting');
+    Route::post('/operator/guru/add', [GuruController::class, 'add'])->name('operator.guru.create.action');
+    Route::put('/operator/guru/update/{id}', [GuruController::class, 'update'])->name('operator.guru.update.action');
+    Route::put('/operator/guru/update/{id}/password', [GuruController::class, 'updatePassword'])->name('operator.guru.update-password.action');
+    Route::put('/operator/guru/update/{id}/reset-password', [GuruController::class, 'resetPassword'])->name('operator.guru.reset-password.action');
+    Route::delete('/operator/guru/delete/{id}', [GuruController::class, 'delete'])->name('operator.guru.delete.action');
 
     Route::get('/operator/ujian', [UjianController::class, 'index'])->name('operator.ujian');
     Route::get('/operator/ujian/load', [UjianController::class, 'loadData'])->name('operator.ujian.load');

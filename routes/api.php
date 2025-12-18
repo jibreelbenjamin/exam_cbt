@@ -45,6 +45,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/guru', [App\Http\Controllers\API\GuruController::class, 'store']);
     Route::get('/guru/{id}', [App\Http\Controllers\API\GuruController::class, 'show']);
     Route::put('/guru/{id}', [App\Http\Controllers\API\GuruController::class, 'update']);
+    Route::put('/guru/{id}/password', [App\Http\Controllers\API\GuruController::class, 'updatePassword']);
+    Route::put('/guru/{id}/reset-password', [App\Http\Controllers\API\GuruController::class, 'resetPassword']);
     Route::delete('/guru/{id}', [App\Http\Controllers\API\GuruController::class, 'destroy']);
 
     // Admin

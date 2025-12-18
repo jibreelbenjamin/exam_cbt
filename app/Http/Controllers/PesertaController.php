@@ -14,7 +14,7 @@ class PesertaController
     protected $base_url;
     protected $headers;
     protected $endpoint = 'peserta';
-    protected $searchKeys = ['id_peserta', 'username', 'nama', 'kelas.nama', 'ruangan.nama', 'peserta_count'];
+    protected $searchKeys = ['username', 'nama', 'kelas.nama', 'ruangan.nama', 'peserta_count'];
     protected $viewBaseScope = 'dashboard.operator.peserta';
     protected $routeBaseScope = 'operator.peserta';
 

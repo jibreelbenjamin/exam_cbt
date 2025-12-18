@@ -514,7 +514,7 @@
             debounceTimer = setTimeout(() => {
                 searchQuery = value;
                 loadMoreData(true);
-            }, 1000);
+            }, 100);
         }
     });
 </script>

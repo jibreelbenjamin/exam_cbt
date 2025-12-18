@@ -94,4 +94,9 @@
 {{ session('successToast') }}
 </x-toast>
 @endif
+@if (session('warningToast'))
+<x-toast type='normal' status='warning'>
+{{ session('warningToast') }}
+</x-toast>
+@endif
 <x-toast type='errors-has'></x-toast>

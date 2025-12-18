@@ -123,7 +123,7 @@ class AuthController extends Controller
 
         session(['role' => $data_user['role'], 'token' => $data['access_token'] ?? null]);
 
-        return redirect()->route('operator.home')->with('successToast', 'Login berhasil!');
+        return redirect()->route('operator.home')->with('successToast', 'Selamat datang!');
     }
 
     public function logout(Request $request)

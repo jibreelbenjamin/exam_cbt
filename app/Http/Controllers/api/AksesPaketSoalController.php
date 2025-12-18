@@ -31,12 +31,12 @@ class AksesPaketSoalController
         ];
 
         $this->messages = [
-            'id_paket_soal.required' => 'id_paket_soal harus diisi.',
-            'id_paket_soal.exists' => 'Paket soal tidak ditemukan.',
-            'id_paket_soal.unique' => 'Guru sudah ada.',
+            'id_paket_soal.required' => 'id_paket_soal harus diisi',
+            'id_paket_soal.exists' => 'Paket soal tidak ditemukan',
+            'id_paket_soal.unique' => 'Akses sudah dimiliki',
 
-            'id_guru.required' => 'id_guru harus diisi.',
-            'id_guru.exists' => 'Guru tidak ditemukan.',
+            'id_guru.required' => 'id_guru harus diisi',
+            'id_guru.exists' => 'Guru tidak ditemukan',
         ];
     }
 

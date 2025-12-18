@@ -143,7 +143,7 @@
                 <li class="px-2 lg:px-5">
                 <a class="{{ ($page == 'ruangan') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.ruangan') }}">
                     <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-door-open-icon lucide-door-open"><path d="M11 20H2"/><path d="M11 4.562v16.157a1 1 0 0 0 1.242.97L19 20V5.562a2 2 0 0 0-1.515-1.94l-4-1A2 2 0 0 0 11 4.561z"/><path d="M11 4H8a2 2 0 0 0-2 2v14"/><path d="M14 12h.01"/><path d="M22 20h-3"/></svg>
-                    Daftar ruangan
+                    Ruangan
                 </a>
                 </li>
                 <!-- End Link -->
@@ -152,7 +152,16 @@
                 <li class="px-2 lg:px-5">
                 <a class="{{ ($page == 'kelas') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.kelas') }}">
                     <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dock-icon lucide-dock"><path d="M2 8h20"/><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 16h12"/></svg>
-                    Daftar kelas
+                    Kelas
+                </a>
+                </li>
+                <!-- End Link -->
+
+                <!-- Link -->
+                <li class="px-2 lg:px-5">
+                <a class="{{ ($page == 'paket-ujian') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.invalid') }}">
+                    <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-archive-icon lucide-archive"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
+                    Paket ujian
                 </a>
                 </li>
                 <!-- End Link -->
@@ -161,16 +170,43 @@
                 <li class="px-2 lg:px-5">
                 <a class="{{ ($page == 'ujian') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.ujian') }}">
                     <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-fold-icon lucide-calendar-fold"><path d="M3 20a2 2 0 0 0 2 2h10a2.4 2.4 0 0 0 1.706-.706l3.588-3.588A2.4 2.4 0 0 0 21 16V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/><path d="M15 22v-5a1 1 0 0 1 1-1h5"/><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/></svg>
-                    Daftar ujian
+                    Ujian
+                </a>
+                </li>
+                <!-- End Link -->
+                
+                <!-- Link -->
+                <li class="px-2 lg:px-5">
+                <a class="{{ ($page == 'paket-soal') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.paket-soal') }}">
+                    <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-marked-icon lucide-book-marked"><path d="M10 2v8l3-3 3 3V2"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>
+                    Paket soal
                 </a>
                 </li>
                 <!-- End Link -->
 
                 <!-- Link -->
                 <li class="px-2 lg:px-5">
-                <a class="{{ ($page == 'paket-soal') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.paket-soal') }}">
-                    <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-marked-icon lucide-book-marked"><path d="M10 2v8l3-3 3 3V2"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>
-                    Daftar paket soal
+                <a class="{{ ($page == 'manajemen-soal') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.invalid') }}">
+                    <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-text-icon lucide-book-text"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M8 11h8"/><path d="M8 7h6"/></svg>
+                    Manajemen soal
+                </a>
+                </li>
+                <!-- End Link -->
+
+                <!-- Link -->
+                <li class="px-2 lg:px-5">
+                <a class="{{ ($page == 'laporan-ujian') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.invalid') }}">
+                    <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text-icon lucide-file-text"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                    Laporan ujian
+                </a>
+                </li>
+                <!-- End Link -->
+
+                <!-- Link -->
+                <li class="px-2 lg:px-5">
+                <a class="{{ ($page == 'file-manager') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.invalid') }}">
+                    <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
+                    File manager
                 </a>
                 </li>
                 <!-- End Link -->
@@ -179,25 +215,25 @@
                 <li class="px-2 lg:px-5">
                 <a class="{{ ($page == 'peserta') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.peserta') }}">
                     <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Daftar peserta
+                    Data peserta
                 </a>
                 </li>
                 <!-- End Link -->
 
                 <!-- Link -->
                 <li class="px-2 lg:px-5">
-                <a class="{{ ($page == 'guru') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.home') }}">
+                <a class="{{ ($page == 'guru') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.guru') }}">
                     <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-star-icon lucide-user-star"><path d="M16.051 12.616a1 1 0 0 1 1.909.024l.737 1.452a1 1 0 0 0 .737.535l1.634.256a1 1 0 0 1 .588 1.806l-1.172 1.168a1 1 0 0 0-.282.866l.259 1.613a1 1 0 0 1-1.541 1.134l-1.465-.75a1 1 0 0 0-.912 0l-1.465.75a1 1 0 0 1-1.539-1.133l.258-1.613a1 1 0 0 0-.282-.866l-1.156-1.153a1 1 0 0 1 .572-1.822l1.633-.256a1 1 0 0 0 .737-.535z"/><path d="M8 15H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg>
-                    Daftar guru
+                    Data guru
                 </a>
                 </li>
                 <!-- End Link -->
 
                 <!-- Link -->
                 <li class="px-2 lg:px-5">
-                <a class="{{ ($page == 'admin') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.home') }}">
+                <a class="{{ ($page == 'admin') ? $classPageActive : $classPageInactive }}" href="{{ route('operator.invalid') }}">
                     <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-cog-icon lucide-user-cog"><path d="M10 15H6a4 4 0 0 0-4 4v2"/><path d="m14.305 16.53.923-.382"/><path d="m15.228 13.852-.923-.383"/><path d="m16.852 12.228-.383-.923"/><path d="m16.852 17.772-.383.924"/><path d="m19.148 12.228.383-.923"/><path d="m19.53 18.696-.382-.924"/><path d="m20.772 13.852.924-.383"/><path d="m20.772 16.148.924.383"/><circle cx="18" cy="15" r="3"/><circle cx="9" cy="7" r="4"/></svg>
-                    Daftar admin
+                    Data admin
                 </a>
                 </li>
                 <!-- End Link -->
