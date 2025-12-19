@@ -1,6 +1,7 @@
 @php
     $page = 'paket-soal';
     $page_title = 'paket soal';
+    $action_param = $data['id_paket_soal'];
 @endphp
 <x-app-op :page='$page'>
     <div class="p-2 sm:p-5 sm:py-0 md:pt-5 space-y-5">
@@ -22,7 +23,7 @@
 
         <!-- Card -->
         <div class="bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
-          <form action="{{ route('operator.paket-soal.update.action', $data['id_paket_soal']) }}" method="post">
+          <form action="{{ route('operator.'.$page.'.update.action', $action_param) }}" method="post">
             @csrf
             @method('PUT')
             <div class="py-2 sm:py-4 px-2">
@@ -66,7 +67,7 @@
             <!-- Footer -->
             <div class="p-6 pt-0 flex justify-end gap-x-2">
               <div class="w-full flex justify-end items-center gap-x-2">
-                <a href="{{ route('operator.paket-soal') }}" class="py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                <a href="{{ route('operator.'.$page) }}" class="py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
                   Kembali
                 </a>
 
@@ -215,7 +216,7 @@
                         <div class="flex gap-x-3">
                             <div class="grow">
                                 <a class="font-medium text-sm text-gray-800 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 dark:text-neutral-200 dark:hover:text-blue-500 dark:focus:text-blue-500"
-                                  href="#">{{ $guru['nama'] }}</a>
+                                  href="{{ route('operator.guru.setting', $guru['id_guru']) }}">{{ $guru['nama'] }}</a>
                                 <p class="text-xs text-gray-500 dark:text-neutral-500">
                                     {{ $guru['username'] }}
                                 </p>
@@ -301,7 +302,7 @@
                       <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#hs-scale-confirm-modal">
                       Kembali
                       </button>
-                      <form method="post" action="{{ route('operator.paket-soal.delete.action', $data['id_paket_soal']) }}">
+                      <form method="post" action="{{ route('operator.'.$page.'.delete.action', $action_param) }}">
                           @csrf
                           @method('DELETE')
                           <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">

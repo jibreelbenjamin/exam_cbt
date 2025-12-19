@@ -1,6 +1,6 @@
 @php
-    $page = 'guru';
-    $page_title = 'tambah guru';
+    $page = 'admin';
+    $page_title = 'tambah admin';
 @endphp
 <x-app-op :page='$page'>
     <div class="p-2 sm:p-5 sm:py-0 md:pt-5 space-y-5">
@@ -44,12 +44,12 @@
                 <div class="grid sm:grid-cols-12 gap-y-1.5 sm:gap-y-0 sm:gap-x-5">
                   <div class="sm:col-span-3">
                     <label class="sm:mt-2.5 inline-block text-sm text-gray-500 dark:text-neutral-500">
-                      Nama guru
+                      Nama admin
                     </label>
                   </div>
 
                   <div class="sm:col-span-9">
-                    <input type="text" name="nama" value="{{ old('nama') }}" class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 rounded-lg sm:text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:placeholder:text-white/60 dark:focus:ring-neutral-600" placeholder="Masukan nama guru" autocomplete="off">
+                    <input type="text" name="nama" value="{{ old('nama') }}" class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 rounded-lg sm:text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:placeholder:text-white/60 dark:focus:ring-neutral-600" placeholder="Masukan nama admin" autocomplete="off">
                   </div>
                 </div>
                 <!-- End Grid -->

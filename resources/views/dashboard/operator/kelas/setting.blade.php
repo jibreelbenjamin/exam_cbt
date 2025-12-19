@@ -1,6 +1,7 @@
 @php
     $page = 'kelas';
     $page_title = 'kelas';
+    $action_param = $data['id_kelas'];
 @endphp
 <x-app-op :page='$page'>
     <div class="p-2 sm:p-5 sm:py-0 md:pt-5 space-y-5">
@@ -22,7 +23,7 @@
 
         <!-- Card -->
         <div class="bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
-          <form action="{{ route('operator.kelas.update.action', $data['id_kelas']) }}" method="post">
+          <form action="{{ route('operator.'.$page.'.update.action', $action_param) }}" method="post">
             @csrf
             @method('PUT')
             <div class="py-2 sm:py-4 px-2">
@@ -50,11 +51,11 @@
             <!-- Footer -->
             <div class="p-6 pt-0 flex justify-end gap-x-2">
               <div class="w-full flex justify-end items-center gap-x-2">
-                <a href="{{ route('operator.kelas') }}" class="py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                <a href="{{ route('operator.'.$page) }}" class="py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
                   Kembali
                 </a>
 
-                <button disabled type="submit" class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-start text-xs bg-blue-600 border border-blue-600 text-white text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:ring-1 focus:ring-blue-300 dark:focus:ring-blue-500">
+                <button type="submit" class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-start text-xs bg-blue-600 border border-blue-600 text-white text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:ring-1 focus:ring-blue-300 dark:focus:ring-blue-500">
                   Perbarui
                 </button>
               </div>
@@ -188,7 +189,7 @@
                       <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#hs-scale-confirm-modal">
                       Kembali
                       </button>
-                      <form method="post" action="{{ route('operator.kelas.delete.action', $data['id_kelas']) }}">
+                      <form method="post" action="{{ route('operator.'.$page.'.delete.action', $action_param) }}">
                           @csrf
                           @method('DELETE')
                           <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">

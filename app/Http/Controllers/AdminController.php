@@ -8,14 +8,14 @@ use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class GuruController
+class AdminController
 {
     protected $base_url;
     protected $headers;
-    protected $endpoint = 'guru';
+    protected $endpoint = 'admin';
     protected $searchKeys = ['nama', 'username'];
-    protected $viewBaseScope = 'dashboard.operator.guru';
-    protected $routeBaseScope = 'operator.guru';
+    protected $viewBaseScope = 'dashboard.operator.admin';
+    protected $routeBaseScope = 'operator.admin';
 
     protected $rules = [
         'username' => 'required|string|max:50',

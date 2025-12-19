@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeOperatorController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PaketSoalController;
 use App\Http\Controllers\AksesPaketSoalController;
 use App\Http\Controllers\KelasController;
@@ -91,6 +92,16 @@ Route::middleware('auth_web:admin,guru')->group(function () {
     Route::put('/operator/guru/update/{id}/password', [GuruController::class, 'updatePassword'])->name('operator.guru.update-password.action');
     Route::put('/operator/guru/update/{id}/reset-password', [GuruController::class, 'resetPassword'])->name('operator.guru.reset-password.action');
     Route::delete('/operator/guru/delete/{id}', [GuruController::class, 'delete'])->name('operator.guru.delete.action');
+
+    Route::get('/operator/admin', [AdminController::class, 'index'])->name('operator.admin');
+    Route::get('/operator/admin/load', [AdminController::class, 'loadData'])->name('operator.admin.load');
+    Route::get('/operator/admin/create', [AdminController::class, 'create'])->name('operator.admin.create');
+    Route::get('/operator/admin/{id}', [AdminController::class, 'setting'])->name('operator.admin.setting');
+    Route::post('/operator/admin/add', [AdminController::class, 'add'])->name('operator.admin.create.action');
+    Route::put('/operator/admin/update/{id}', [AdminController::class, 'update'])->name('operator.admin.update.action');
+    Route::put('/operator/admin/update/{id}/password', [AdminController::class, 'updatePassword'])->name('operator.admin.update-password.action');
+    Route::put('/operator/admin/update/{id}/reset-password', [AdminController::class, 'resetPassword'])->name('operator.admin.reset-password.action');
+    Route::delete('/operator/admin/delete/{id}', [AdminController::class, 'delete'])->name('operator.admin.delete.action');
 
     Route::get('/operator/ujian', [UjianController::class, 'index'])->name('operator.ujian');
     Route::get('/operator/ujian/load', [UjianController::class, 'loadData'])->name('operator.ujian.load');

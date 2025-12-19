@@ -9,7 +9,7 @@
         <!-- Nav Tab -->
         <nav class="flex justify-between gap-1 relative after:absolute after:bottom-0 after:inset-x-0" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
           <p class="flex flex-col text-lg font-medium text-gray-900 dark:text-neutral-100">
-            Daftar {{ ucfirst($page_title) }}
+            Daftar {{ $page_title }}
                 <span class="text-xs font-normal text-gray-500 dark:text-neutral-500">Total <span class="font-semibold text-gray-900 dark:text-neutral-100">{{ count($data) }}</span> data {{ $page_title }}</span>
           </p>
 
@@ -92,10 +92,10 @@
 
               <div class="max-w-sm mx-auto">
                 <p class="mt-2 font-medium text-gray-800 dark:text-neutral-200">
-                  Belum Ada Data {{ ucfirst($page) }}
+                  Belum ada data {{ $page_title }}
                 </p>
                 <p class="mb-5 text-sm text-gray-500 dark:text-neutral-500">
-                  Tambahkan {{ $page }} baru untuk mulai mengelola.
+                  Tambahkan {{ $page_title }} baru untuk mulai mengelola.
                 </p>
               </div>
             </div>
@@ -426,7 +426,7 @@
         document.getElementById('skeleton').classList.remove('hidden');
 
         searchQuery = document.getElementById('search-input').value;
-        fetch(`{{ route('operator.ruangan.load') }}?offset=${offset}&limit=${limit}&search=${encodeURIComponent(searchQuery)}`)
+        fetch(`{{ route('operator.'.$page.'.load') }}?offset=${offset}&limit=${limit}&search=${encodeURIComponent(searchQuery)}`)
             .then(res => res.json())
             .then(data => {
                 document.getElementById('skeleton').classList.add('hidden');
@@ -477,7 +477,7 @@
         
                             <td class="size-px whitespace-nowrap px-4 py-1">            
                                 <div class="relative inline-flex">
-                                <a href="{{ route('operator.ruangan') }}/${item.id_ruangan}" type="button" class="size-7 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                                <a href="{{ route('operator.'.$page) }}/${item.id_ruangan}" type="button" class="size-7 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
                                     <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
                                 </a>
                                 </div>

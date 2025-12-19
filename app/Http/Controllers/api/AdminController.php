@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -13,18 +14,20 @@ class AdminController
     protected $model = Admin::class;
     protected $table_primary = 'id_admin';
     protected $data_title = 'admin';
-
+    protected $searchKeys = ['username', 'nama'];
+    
+    // khusus controller api dan front-end rule message dibedakan setiap funciton
     protected $rules = [
-        'username' => 'required|string|max:255|unique:admin,username',
-        'nama'     => 'required|string|max:255',
-        'password' => 'required|string|min:5',
+        'username' => 'required|string|max:50|unique:exam_admin,username',
+        'nama' => 'required|string|max:255',
+        'password' => 'required|string|min:8',
     ];
     protected $messages = [
-        'username.required' => 'Username wajib diisi',
-        'username.unique'   => 'Username sudah digunakan',
-        'nama.required'     => 'Nama wajib diisi',
-        'password.required' => 'Password wajib diisi',
-        'password.min'      => 'Password minimal 5 karakter',
+        'username.required' => 'Username wajib diisi.',
+        'username.unique' => 'Username sudah terdaftar.',
+        'nama.required' => 'Nama wajib diisi.',
+        'password.required' => 'Password wajib diisi.',
+        'password.min' => 'Password minimal 8 karakter.',
     ];
 
     public function index()
@@ -51,6 +54,48 @@ class AdminController
             return response()->json([
                 'status' => false,
                 'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->query('search');
+            $searchKeys = $this->searchKeys;
+
+            $data = $this->model::when($query, function ($q) use ($query, $searchKeys) {
+                $q->where(function ($sub) use ($query, $searchKeys) {
+                    foreach ($searchKeys as $column) {
+                        $sub->orWhere($column, 'like', "%{$query}%");
+                    }
+                });
+            })->get();
+
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $query
+                        ? 'Tidak ada '.$this->data_title.' yang cocok dengan kata kunci "' . $query . '".'
+                        : 'Tidak ada data '.$this->data_title.' yang tersedia.',
+                    'data' => [],
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => $query
+                    ? 'Hasil pencarian '.$this->data_title.' ditemukan.'
+                    : 'Data '.$this->data_title.' ditemukan.',
+                'total' => $data->count(),
+                'data' => $data,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan saat mengambil data '.$this->data_title.'.',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -115,20 +160,132 @@ class AdminController
     {
         try {
             $data = $this->model::where($this->table_primary, $id)->firstOrFail();
-            
-            $rules = $this->rules;
-            $rules['username'] = "required|string|max:50|unique:admin,username,{$id},{$this->table_primary}";
-            
-            $validate = $request->validate($rules, $this->messages);
 
-            $validate['password'] = bcrypt($validate['password']);
+            $rules = [
+                'username' => "required|string|max:50|unique:exam_admin,username,{$id},{$this->table_primary}",
+                'nama' => 'required|string|max:255',
+            ];
+
+            $messages = [
+                'username.required' => 'Username wajib diisi.',
+                'username.unique' => 'Username sudah terdaftar.',
+                'nama.required' => 'Nama wajib diisi.',
+            ];
+
+            $validate = $request->validate($rules, $messages);
 
             $data->update($validate);
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Data '.$this->data_title.' berhasil diperbarui',
                 'data' => $data
+            ]);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
+            ], 404);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        try {
+            $data = $this->model::where($this->table_primary, $id)->firstOrFail();
+
+            $rules = [
+                'password' => 'required|string|min:8|confirmed',
+            ];
+            $messages = [
+                'password.required' => 'Password wajib diisi.',
+                'password.min' => 'Password minimal 8 karakter.',
+                'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            ];
+
+            $validate = $request->validate($rules, $messages);
+
+            if (Hash::check($validate['password'], $data->password)) {
+                throw ValidationException::withMessages([
+                    'password' => ['Password baru tidak boleh sama dengan password lama.']
+                ]);
+            }
+
+            $data->update([
+                'password' => bcrypt($validate['password']),
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Password berhasil diperbarui'
+            ]);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data '.$this->data_title.' tidak tersedia'
+            ], 404);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Password tidak valid',
+                'errors' => $e->errors()
+            ], 422);
+        }
+    }
+
+    public function resetPassword(Request $request, $id)
+    {
+        try {
+            $data = $this->model::where($this->table_primary, $id)->firstOrFail();
+
+            $rules = [
+                'old_password' => 'required|string',
+                'new_password' => 'required|string|min:8|confirmed',
+            ];
+            $messages = [
+                'old_password.required' => 'Password lama wajib diisi.',
+                'new_password.required' => 'Password baru wajib diisi.',
+                'new_password.min' => 'Password baru minimal 8 karakter.',
+                'new_password.confirmed' => 'Konfirmasi password tidak cocok.',
+            ];
+
+            $validate = $request->validate($rules, $messages);
+
+            if (!Hash::check($validate['old_password'], $data->password)) {
+                throw ValidationException::withMessages([
+                    'old_password' => ['Password lama tidak sesuai.']
+                ]);
+            }
+
+            if (Hash::check($validate['new_password'], $data->password)) {
+                throw ValidationException::withMessages([
+                    'new_password' => ['Password baru tidak boleh sama dengan password lama.']
+                ]);
+            }
+
+            $data->update([
+                'password' => bcrypt($validate['new_password']),
+            ]);
+
+            return response()->json([
+                'stataus' => true,
+                'message' => 'Password berhasil direset'
             ]);
 
         } catch (ModelNotFoundException $e) {

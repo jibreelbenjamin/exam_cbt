@@ -1,6 +1,7 @@
 @php
     $page = 'ujian';
     $page_title = 'ujian';
+    $action_param = $data['id_ujian'];
 @endphp
 <x-app-op :page='$page'>
     <div class="p-2 sm:p-5 sm:py-0 md:pt-5 space-y-5">
@@ -20,9 +21,33 @@
         </div>
         <!-- End Header -->
 
+        @if ($data['jadwal_mulai'] <= date('Y-m-d H:i:s') && $data['jadwal_selesai'] >= date('Y-m-d H:i:s'))
+        <!-- Alert -->
+        <div class="bg-yellow-50 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4 dark:bg-yellow-800/10 dark:border-yellow-900 dark:text-yellow-500" role="alert" tabindex="-1" aria-labelledby="hs-with-description-label">
+          <div class="flex">
+            <div class="shrink-0">
+              <svg class="shrink-0 size-4 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                <path d="M12 9v4"></path>
+                <path d="M12 17h.01"></path>
+              </svg>
+            </div>
+            <div class="ms-4">
+              <h3 id="hs-with-description-label" class="text-sm font-semibold">
+                Ujian sedang berjalan!
+              </h3>
+              <div class="mt-1 text-sm text-yellow-700">
+                Saat ini tidak dapat mengubah beberapa pengaturan ujian karena ujian sedang berlangsung.
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Alert -->
+        @endif
+
         <!-- Card -->
         <div class="bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
-          <form action="{{ route('operator.ujian.update.action', $data['id_ujian']) }}" method="post">
+          <form action="{{ route('operator.'.$page.'.update.action', $action_param) }}" method="post">
             @csrf
             @method('PUT')
             <div class="py-2 sm:py-4 px-2">
@@ -289,7 +314,7 @@
             <!-- Footer -->
             <div class="p-6 pt-0 flex justify-end gap-x-2">
               <div class="w-full flex justify-end items-center gap-x-2">
-                <a href="{{ route('operator.ujian') }}" class="py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                <a href="{{ route('operator.'.$page) }}" class="py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
                   Kembali
                 </a>
 
@@ -352,7 +377,7 @@
                       <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#hs-scale-confirm-modal">
                       Kembali
                       </button>
-                      <form method="post" action="{{ route('operator.ujian.delete.action', $data['id_ujian']) }}">
+                      <form method="post" action="{{ route('operator.'.$page.'.delete.action', $action_param) }}">
                           @csrf
                           @method('DELETE')
                           <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">

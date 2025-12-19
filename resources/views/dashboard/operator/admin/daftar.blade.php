@@ -1,6 +1,6 @@
 @php
-    $page = 'ujian';
-    $page_title = 'ujian';
+    $page = 'admin';
+    $page_title = 'admin';
 @endphp
 <x-app-op :page='$page'>
     <div class="p-2 sm:p-5 sm:py-0 md:pt-5 space-y-5">
@@ -100,7 +100,7 @@
               </div>
             </div>
             <!-- End Empty State -->
-        @else            
+        @else
           <!-- Search Group -->
           <div class="grid md:grid-cols-2 gap-y-2 md:gap-y-0 md:gap-x-5">
             <div>
@@ -147,57 +147,15 @@
                             </p>
                         </th>
 
+                        <th scope="col">
+                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
+                              Username
+                            </p>
+                        </th>
+
                         <th scope="col" class="min-w-72">
-                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Nama ujian
-                            </p>
-                        </th>
-
-                        <th scope="col">
-                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Token masuk
-                            </p>
-                        </th>
-
-                        <th scope="col">
-                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Status
-                            </p>
-                        </th>
-
-                        <th scope="col">
-                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Durasi
-                            </p>
-                        </th>
-
-                        <th scope="col">
-                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Jadwal mulai
-                            </p>
-                        </th>
-
-                        <th scope="col">
-                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Jadwal selesai
-                            </p>
-                        </th>
-
-                        <th scope="col">
-                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Paket soal
-                            </p>
-                        </th>
-
-                        <th scope="col">
-                          <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                            Acak soal
-                          </p>
-                        </th>
-
-                        <th scope="col">
-                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Paket ujian
+                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm font-normal text-gray-500 dark:text-neutral-500">
+                              Nama
                             </p>
                         </th>
 
@@ -216,59 +174,21 @@
                     </tbody>
 
                     <tfoot id="skeleton" class="divide-y divide-gray-200 dark:divide-neutral-700">
-                      <tr class="divide-x divide-gray-200 dark:divide-neutral-700">                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
+                      <tr class="divide-x divide-gray-200 dark:divide-neutral-700">
                           <td class="size-px whitespace-nowrap px-3 py-3">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
                           </td>
 
-                          <td class="size-px whitespace-nowrap px-4 py-1">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
+                          <td class="size-px px-4 py-1 relative group pe-20 lg:pe-24">
+                          <div class="w-full flex items-center gap-x-3">
+                              <div class="grow">
+                              <span class="text-sm font-medium text-gray-800 dark:text-neutral-200">
+                                  <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
+                              </span>
+                              </div>
+                          </div>
                           </td>
 
                           <td class="size-px whitespace-nowrap px-4 py-1">
@@ -294,53 +214,15 @@
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
                           </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
 
-                          <td class="size-px whitespace-nowrap px-4 py-1">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
+                          <td class="size-px px-4 py-1 relative group pe-20 lg:pe-24">
+                          <div class="w-full flex items-center gap-x-3">
+                              <div class="grow">
+                              <span class="text-sm font-medium text-gray-800 dark:text-neutral-200">
+                                  <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
+                              </span>
+                              </div>
+                          </div>
                           </td>
 
                           <td class="size-px whitespace-nowrap px-4 py-1">
@@ -361,59 +243,20 @@
                       </tr>
 
                       <tr class="divide-x divide-gray-200 dark:divide-neutral-700">
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
                           <td class="size-px whitespace-nowrap px-3 py-3">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
                           </td>
 
-                          <td class="size-px whitespace-nowrap px-4 py-1">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
+                          <td class="size-px px-4 py-1 relative group pe-20 lg:pe-24">
+                          <div class="w-full flex items-center gap-x-3">
+                              <div class="grow">
+                              <span class="text-sm font-medium text-gray-800 dark:text-neutral-200">
+                                  <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
+                              </span>
+                              </div>
+                          </div>
                           </td>
 
                           <td class="size-px whitespace-nowrap px-4 py-1">
@@ -601,14 +444,6 @@
                 const container = document.getElementById('data-container');
                 data.forEach((item, index) => {
                     const number = offset + index + 1;
-                    function badgeStatus(key){
-                      return key === 1
-                          ? `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">Aktif</span>`
-                          : key === 0
-                          ? `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">Nonaktif</span>`
-                          : `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-50 text-gray-500 dark:bg-white/10 dark:text-white">Unknown</span>`;
-                    }
-
 
                     container.insertAdjacentHTML('beforeend', `
                         <tr class="divide-x divide-gray-200 dark:divide-neutral-700">
@@ -617,74 +452,32 @@
                                 ${number}
                                 </span>
                             </td>
-        
+
                             <td class="size-px px-4 py-1 relative group pe-20 lg:pe-24">
                                 <div class="w-full flex items-center gap-x-3">
                                 <div class="grow">
                                     <span class="text-sm font-medium text-gray-800 dark:text-neutral-200">
-                                    ${item.nama}
+                                    ${item.username}
                                     </span>
                                 </div>
                                 </div>
                             </td>
-        
+
                             <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${badgeStatus(item.token)}
-                                </span>
-                            </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${badgeStatus(item.status)}
-                                </span>
-                            </td>
-        
-                              <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${item.durasi} Menit
+                                <span class="text-sm font-medium text-gray-800 dark:text-neutral-200">
+                                    ${item.nama}
                                 </span>
                             </td>
 
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${formatTanggal(item.jadwal_mulai)}
-                                </span>
-                            </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${formatTanggal(item.jadwal_selesai)}
-                                </span>
-                            </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${item.paket_soal.nama}
-                                </span>
-                            </td>
-
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${badgeStatus(item.acak_soal)}
-                                </span>
-                            </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${item?.paket_ujian?.nama ?? '-'}
-                                </span>
-                            </td>
-        
                             <td class="size-px whitespace-nowrap px-4 py-1">
                                 <span class="text-sm text-gray-600 dark:text-neutral-400">
                                     ${formatTanggal(item.updated_at)}
                                 </span>
                             </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">            
+
+                            <td class="size-px whitespace-nowrap px-4 py-1">
                                 <div class="relative inline-flex">
-                                <a href="{{ route('operator.'.$page) }}/${item.id_ujian}" type="button" class="size-7 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                                <a href="{{ route('operator.'.$page) }}/${item.id_admin}" type="button" class="size-7 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
                                     <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
                                 </a>
                                 </div>
@@ -708,7 +501,7 @@
         const windowHeight = window.innerHeight;
         const docHeight = document.documentElement.scrollHeight;
 
-        if (scrollTop + windowHeight >= docHeight - 200) {
+        if (scrollTop + windowHeight >= docHeight - 500) {
             loadMoreData();
         }
     });

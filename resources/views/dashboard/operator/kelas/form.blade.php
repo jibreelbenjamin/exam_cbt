@@ -22,7 +22,7 @@
 
         <!-- Card -->
         <div class="bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
-          <form action="{{ route('operator.kelas.create.action') }}" method="post">
+          <form action="{{ route('operator.'.$page.'.create.action') }}" method="post">
             @csrf
             <div class="py-2 sm:py-4 px-2">
               <div class="p-4 space-y-5">
