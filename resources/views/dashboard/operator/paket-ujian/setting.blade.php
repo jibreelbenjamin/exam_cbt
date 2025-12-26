@@ -1,7 +1,7 @@
 @php
-    $page = 'paket-soal';
-    $page_title = 'paket soal';
-    $action_param = $data['id_paket_soal'];
+    $page = 'paket-ujian';
+    $page_title = 'paket ujian';
+    $action_param = $data['id_paket_ujian'];
 @endphp
 <x-app-op :page='$page'>
     <div class="p-2 sm:p-5 sm:py-0 md:pt-5 space-y-5">
@@ -32,35 +32,19 @@
                 <div class="grid sm:grid-cols-12 gap-y-1.5 sm:gap-y-0 sm:gap-x-5">
                   <div class="sm:col-span-3">
                     <label class="sm:mt-2.5 inline-block text-sm text-gray-500 dark:text-neutral-500">
-                      Nama paket soal
+                      Nama paket ujian
                     </label>
                   </div>
                   <!-- End Col -->
 
                   <div class="sm:col-span-9">
                     <input type="text" name="nama" class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 rounded-lg sm:text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:placeholder:text-white/60 dark:focus:ring-neutral-600"
-                    placeholder="Masukan nama soal" value="{{ $data['nama'] }}" autocomplete="off">
+                    placeholder="Masukan nama paket ujian" value="{{ $data['nama'] }}" autocomplete="off">
                   </div>
                   <!-- End Col -->
                 </div>
                 <!-- End Grid -->
 
-                <!-- Grid -->
-                <div class="grid sm:grid-cols-12 gap-y-1.5 sm:gap-y-0 sm:gap-x-5">
-                  <div class="sm:col-span-3">
-                    <label class="sm:mt-2.5 inline-block text-sm text-gray-500 dark:text-neutral-500">
-                      Deskripsi paket (opsional)
-                    </label>
-                  </div>
-                  <!-- End Col -->
-
-                  <div class="sm:col-span-9">
-                    <input type="text" name="deskripsi" class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 rounded-lg sm:text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:placeholder:text-white/60 dark:focus:ring-neutral-600"
-                    placeholder="Masukan deskripsi soal" value="{{ $data['deskripsi'] }}" autocomplete="off">
-                  </div>
-                  <!-- End Col -->
-                </div>
-                <!-- End Grid -->
               </div>
             </div>
 
@@ -82,85 +66,23 @@
         <!-- End Card -->
 
         <!-- Card -->
-        <div class="bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
-          <form action="{{ route('operator.akses-paket-soal.create.action') }}" method="post">
-            @csrf
-            <input type="hidden" name="id_paket_soal" value="{{ $data['id_paket_soal'] }}">
-            <div class="py-2 sm:py-4 px-2">
-              <div class="p-4 space-y-5">
-                <!-- Grid -->
-                <div class="grid sm:grid-cols-12 gap-y-1.5 sm:gap-y-0 sm:gap-x-5">
-                  <div class="sm:col-span-3">
-                    <label class="sm:mt-2.5 inline-block text-sm text-gray-500 dark:text-neutral-500">
-                      Daftar guru
-                    </label>
-                  </div>
-                  <!-- End Col -->
-
-                  <div class="sm:col-span-9">
-                    <!-- Select -->
-                    <select data-hs-select='{
-                        "apiUrl": "{{ env('API_BASE_URL') }}/guru/select",
-                        "apiQuery": "",
-                        "apiSearchQueryKey": "search",
-                        "apiDataPart": "data",
-                        "apiSelectedValues": ["{{ old('id_guru') }}"],
-                        "apiFieldsMap": {
-                          "id": "id_guru",
-                          "val": "id_guru",
-                          "title": "nama",
-                          "description": "username"
-                        },
-
-                        "isSelectedOptionOnTop": true,
-                        "hasSearch": true,
-                        "searchPlaceholder": "Cari guru...",
-                        "searchClasses": "block w-full sm:text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-1 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-1.5 sm:py-2 px-3",
-                        "searchWrapperClasses": "bg-white p-2 -mx-1 -mt-1 sticky top-0 dark:bg-neutral-900",
-                        "placeholder": "{{ (old('id_guru') ? 'Guru terpilih' : 'Pilih guru...') }}",
-                        "toggleTag": "<button type=\"button\" aria-expanded=\"false\"><span class=\"\" data-title></span></button>",
-                        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3.5 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600",
-                        "dropdownClasses": "mt-2 max-h-72 pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
-                        "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
-                        "optionTemplate": "<div class=\"flex items-center\"><div><div class=\"text-sm font-semibold text-gray-800 dark:text-neutral-200 \" data-title></div><div class=\"text-xs text-gray-500 dark:text-neutral-500 \" data-description></div></div><div class=\"ms-auto\"><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-4 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z\"/></svg></span></div></div>",
-                        "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                      }' name="id_guru" class="hidden">
-                      <option value="">Choose</option>
-                    </select>
-                    <!-- End Select -->
-                  </div>
-                  <!-- End Col -->
-                </div>
-                <!-- End Grid -->
-              </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="p-6 pt-0 flex justify-end gap-x-2">
-              <div class="w-full flex justify-end items-center gap-x-2">
-                <button type="submit" class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-start text-xs bg-blue-600 border border-blue-600 text-white text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:ring-1 focus:ring-blue-300 dark:focus:ring-blue-500">
-                  Beri akses paket
-                </button>
-              </div>
-            </div>
-            <!-- End Footer -->
-          </form>
-        </div>
-        <!-- End Card -->
-
-        <!-- Card -->
         <div class="p-6 bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
             <div class=" w-full flex justify-between">
                 <div class="w-full text-sm">
-                    <p class="font-semibold text-gray-800 dark:text-neutral-200">Daftar guru</p>
-                    <p class="text-xs text-gray-500 dark:text-neutral-500">{{ empty($data['guru']) ? 'Tidak ada guru' : 'Total '.count($data['guru']).' data guru' }}</p>
+                    <p class="font-semibold text-gray-800 dark:text-neutral-200">Daftar ujian</p>
+                    <p class="text-xs text-gray-500 dark:text-neutral-500">{{ empty($data['ujian']) ? 'Tidak ada ujian' : 'Total '.count($data['ujian']).' data ujian' }}</p>
                 </div>
+              <div>
+                <a href="{{ route('operator.peserta') }}" class="py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                  Kelola
+                </a>
+              </div>
             </div>
 
             <!-- List Group -->
             <ul>
 
-              @if (empty($data['guru']))
+              @if (empty($data['ujian']))
                 <div class="py-3">
                   <svg class="w-48 mx-auto mb-4" width="178" height="90" viewBox="0 0 178 90" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="27" y="50.5" width="124" height="39" rx="7.5" fill="currentColor" class="fill-white dark:fill-neutral-800" />
@@ -196,67 +118,32 @@
 
                   <div class="max-w-sm mx-auto text-center">
                     <p class="mt-2 font-medium text-gray-800 dark:text-neutral-200">
-                      Tidak ada guru tercatat
+                      Tidak ada peserta tercatat
                     </p>
                     <p class="mb-5 text-sm text-gray-500 dark:text-neutral-500">
-                      Daftar data guru akan tampil disini
+                      Daftar data peserta akan tampil disini
                     </p>
                   </div>
                 </div>
               @else
-                @foreach ($data['guru'] as $guru)
-                    @php
-                        $akses = collect($data['akses_paket_soal'])
-                                ->firstWhere('id_guru', $guru['id_guru']);
-
-                        $idAPS = $akses['id_akses_paket_soal'] ?? null;
-                    @endphp
-
-                    <li class="py-3 border-b last:border-b-0 border-gray-200 dark:border-neutral-700">
-                        <div class="flex gap-x-3">
-                            <div class="grow">
-                                <a class="font-medium text-sm text-gray-800 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 dark:text-neutral-200 dark:hover:text-blue-500 dark:focus:text-blue-500"
-                                  href="{{ route('operator.guru.setting', $guru['id_guru']) }}">{{ $guru['nama'] }}</a>
-                                <p class="text-xs text-gray-500 dark:text-neutral-500">
-                                    {{ $guru['username'] }}
-                                </p>
-                            </div>
-
-                            <div>
-                                @if ($idAPS)
-                                <form method="POST" action="{{ route('operator.akses-paket-soal.delete.action', $idAPS) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-red-700 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-red-600 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
-                                        Cabut akses
-                                    </button>
-                                </form>
-                                @endif
-                            </div>
-                        </div>
-                    </li>
+                @foreach ($data['ujian'] as $item)
+                  <li class="py-3 border-b last:border-b-0 border-gray-200 dark:border-neutral-700">
+                    <div class="flex gap-x-3">
+                      <div class="grow">
+                        <a class="font-medium text-sm text-gray-800 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 dark:text-neutral-200 dark:hover:text-blue-500 dark:focus:text-blue-500" href="{{ route('operator.ujian.setting', $item['id_ujian']) }}">
+                          {{ $item['nama'] }}
+                        </a>
+                        <p class="text-xs text-gray-500 dark:text-neutral-500">
+                         
+                        </p>
+                      </div>
+                    </div>
+                  </li>
                 @endforeach
               @endif
 
             </ul>
             <!-- End List Group -->
-          </form>
-        </div>
-        <!-- End Card -->
-
-        <!-- Card -->
-        <div class="bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
-            <div class="p-6 w-full flex justify-between">
-                <div class="w-full text-sm">
-                    <p class="font-semibold text-gray-800 dark:text-neutral-200">{{ count($data['soal']) }} Soal tercatat</p>
-                    <p class="text-xs text-gray-500 dark:text-neutral-500">Manajemen daftar soal dari {{ $page_title }}</p>
-                </div>
-              <div>
-                <a href="{{ route('operator.soal.list', $data['id_paket_soal']) }}" class="py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-gray-800 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
-                  Kelola
-                </a>
-              </div>
-            </div>
           </form>
         </div>
         <!-- End Card -->

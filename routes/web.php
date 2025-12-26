@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,9 +12,12 @@ use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PaketSoalController;
+use App\Http\Controllers\SoalController;
 use App\Http\Controllers\AksesPaketSoalController;
+use App\Http\Controllers\PilihanJawabanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\UjianController;
+use App\Http\Controllers\PaketUjianController;
 
 Route::get('/', function () { return redirect()->route('dashboard.redirect'); })->name('root');
 Route::get('/login', [AuthController::class, 'loginForm'])->name('login.form');
@@ -44,6 +48,38 @@ Route::middleware('auth_web:admin,guru')->group(function () {
     Route::get('/operator/invalid', function (Request $request) {
         return redirect()->route('operator.home')->with('warningToast', 'Sedang dalam pengembangan');
     })->name('operator.invalid');
+
+    Route::post('operator/upload', function (Request $request) {
+        if (!$request->hasFile('image')) {
+            return response()->json([
+                'error' => 'File image tidak ditemukan'
+            ], 422);
+        }
+
+        $file = $request->file('image');
+        $path = $file->store('image', 'public');
+
+        return response()->json([
+            'url' => asset('storage/' . $path)
+        ]);
+    })->name('upload');
+
+
+    Route::get('/operator/soal', [SoalController::class, 'index'])->name('operator.soal');
+    Route::get('/operator/soal/load/{id}', [SoalController::class, 'loadSoal'])->name('operator.soal.load');
+    Route::get('/operator/soal/{idps}', [SoalController::class, 'list'])->name('operator.soal.list');
+    Route::get('/operator/soal/{idps}/create', [SoalController::class, 'create'])->name('operator.soal.create');
+    Route::get('/operator/soal/{idps}/{id}', [SoalController::class, 'setting'])->name('operator.soal.setting');
+    Route::post('/operator/soal/{idps}/add', [SoalController::class, 'add'])->name('operator.soal.create.action');
+    Route::put('/operator/soal/update/{idps}/{id}', [SoalController::class, 'update'])->name('operator.soal.update.action');
+    Route::delete('/operator/soal/delete/{idps}/{id}', [SoalController::class, 'delete'])->name('operator.soal.delete.action');
+    Route::get('/operator/soal/print/{idps}/cetak', [SoalController::class, 'print'])->name('operator.soal.print');
+
+    Route::get('/operator/soal/{idps}/{ids}/create', [PilihanJawabanController::class, 'create'])->name('operator.soal.pj.create');
+    Route::get('/operator/soal/{idps}/{ids}/{id}', [PilihanJawabanController::class, 'updateForm'])->name('operator.soal.pj.update');
+    Route::post('/operator/soal/{idps}/{ids}/add', [PilihanJawabanController::class, 'add'])->name('operator.soal.pj.create.action');
+    Route::put('/operator/soal/update/{idps}/{ids}/{id}', [PilihanJawabanController::class, 'update'])->name('operator.soal.pj.update.action');
+    Route::delete('/operator/soal/delete/{idps}/{ids}/{id}', [PilihanJawabanController::class, 'delete'])->name('operator.soal.pj.delete.action');
 
     Route::get('/operator', function () { return redirect()->route('operator.home'); });
     Route::get('/operator/dashboard', [HomeOperatorController::class, 'home'])->name('operator.home');
@@ -110,6 +146,14 @@ Route::middleware('auth_web:admin,guru')->group(function () {
     Route::post('/operator/ujian/add', [UjianController::class, 'add'])->name('operator.ujian.create.action');
     Route::put('/operator/ujian/update/{id}', [UjianController::class, 'update'])->name('operator.ujian.update.action');
     Route::delete('/operator/ujian/delete/{id}', [UjianController::class, 'delete'])->name('operator.ujian.delete.action');
+
+    Route::get('/operator/paket-ujian', [PaketUjianController::class, 'index'])->name('operator.paket-ujian');
+    Route::get('/operator/paket-ujian/load', [PaketUjianController::class, 'loadData'])->name('operator.paket-ujian.load');
+    Route::get('/operator/paket-ujian/create', [PaketUjianController::class, 'create'])->name('operator.paket-ujian.create');
+    Route::get('/operator/paket-ujian/{id}', [PaketUjianController::class, 'setting'])->name('operator.paket-ujian.setting');
+    Route::post('/operator/paket-ujian/add', [PaketUjianController::class, 'add'])->name('operator.paket-ujian.create.action');
+    Route::put('/operator/paket-ujian/update/{id}', [PaketUjianController::class, 'update'])->name('operator.paket-ujian.update.action');
+    Route::delete('/operator/paket-ujian/delete/{id}', [UjianController::class, 'delete'])->name('operator.paket-ujian.delete.action');
 
     Route::get('/operator/peserta', [PesertaController::class, 'index'])->name('operator.peserta');
     Route::get('/operator/peserta/load', [PesertaController::class, 'loadData'])->name('operator.peserta.load');

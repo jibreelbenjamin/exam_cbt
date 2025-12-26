@@ -81,7 +81,6 @@ return new class extends Migration
             $table->id('id_soal');
             $table->foreignId('id_paket_soal')->constrained('exam_paket_soal', 'id_paket_soal')->onDelete('cascade');
             $table->text('teks_soal');
-            $table->string('gambar')->nullable();
             $table->tinyInteger('tipe_jawaban')->comment('1=Pilihan ganda, 2=Essay');
             $table->timestamps();
         });
@@ -90,7 +89,6 @@ return new class extends Migration
             $table->id('id_pilihan_jawaban');
             $table->foreignId('id_soal')->constrained('exam_soal', 'id_soal')->onDelete('cascade');
             $table->text('teks_jawaban');
-            $table->string('gambar')->nullable();
             $table->boolean('benar')->default(false);
             $table->timestamps();
         });

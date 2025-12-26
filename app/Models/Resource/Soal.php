@@ -11,7 +11,7 @@ class Soal extends Model
 
     protected $table = 'exam_soal';
     protected $primaryKey = 'id_soal';
-    protected $fillable = ['id_paket_soal', 'teks_soal', 'gambar', 'tipe_jawaban'];
+    protected $fillable = ['id_paket_soal', 'teks_soal', 'tipe_jawaban'];
 
     public function paket()
     {

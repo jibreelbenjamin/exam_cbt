@@ -24,15 +24,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Config
-        $jumlahGuru      = 50;
-        $jumlahKelas     = 40;
-        $jumlahRuangan   = 36;
-        $jumlahPeserta   = 3000;
-        $jumlahPaket     = 70;
-        $jumlahSoal      = 40;
+        $jumlahGuru      = 150;
+        $jumlahKelas     = 50;
+        $jumlahRuangan   = 40;
+        $jumlahPeserta   = 5000;
+        $jumlahPaket     = 100;
+        $jumlahSoal      = 50;
         $jumlahPilihan   = 5;
         $jumlahToken     = 17;
-        $jumlahPaketUji  = 3;
+        $jumlahPaketUji  = 20;
+
+        $this->command->info("Loading...");
 
         Admin::create([
             'username' => 'admin',

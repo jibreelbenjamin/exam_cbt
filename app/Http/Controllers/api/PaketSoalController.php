@@ -54,6 +54,91 @@ class PaketSoalController
         }
     }
 
+    public function indexByGuru(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user->tokenCan('admin')) {
+
+            $paketSoal = PaketSoal::latest()->get();
+
+        } elseif ($user->tokenCan('guru')) {
+
+            $paketSoal = PaketSoal::whereHas('guru', function ($q) use ($user) {
+                $q->where('exam_guru.id_guru', $user->id_guru);
+            })->latest()->get();
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak memiliki akses'
+            ], 403);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $paketSoal
+        ]);
+    }
+
+    public function showByGuru(Request $request, $id)
+    {
+        $user = $request->user();
+
+        if ($user->tokenCan('admin')) {
+            $paketSoal = PaketSoal::with([
+                'soal',
+                'soal.pilihan',
+            ])->find($id);
+
+            if (!$paketSoal) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Paket soal tidak ditemukan'
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'data' => $paketSoal
+            ]);
+        }
+
+        if ($user->tokenCan('guru')) {
+            $paketSoal = PaketSoal::where('id_paket_soal', $id)
+                ->whereHas('guru', function ($q) use ($user) {
+                    $q->where('exam_guru.id_guru', $user->id_guru);
+                })
+                ->with([
+                    'soal',
+                    'soal.pilihan',
+                ])
+                ->first();
+
+            if (!$paketSoal) {
+                $exists = PaketSoal::where('id_paket_soal', $id)->exists();
+
+                return response()->json([
+                    'status' => false,
+                    'message' => $exists
+                        ? 'Anda tidak memiliki akses ke paket soal ini'
+                        : 'Paket soal tidak ditemukan'
+                ], $exists ? 403 : 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'data' => $paketSoal
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Role tidak valid'
+        ], 403);
+    }
+
+
     public function search(Request $request)
     {
         try {
@@ -133,7 +218,7 @@ class PaketSoalController
 
     public function show($id)
     {
-        $data = $this->model::with(['soal', 'guru', 'aksesPaketSoal'])->find($id);
+        $data = $this->model::with(['soal', 'soal.pilihan', 'guru', 'aksesPaketSoal'])->find($id);
 
         if($data){
             return response()->json([

@@ -64,9 +64,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/soal/{id}', [SoalController::class, 'show']);
     Route::put('/soal/{id}', [SoalController::class, 'update']);
     Route::delete('/soal/{id}', [SoalController::class, 'destroy']);
+    Route::get('/soal/{id}/check', [SoalController::class, 'checkSoal']);
 
     // Paket Soal
     Route::get('/paket-soal', [PaketSoalController::class, 'index']);
+    Route::get('/paket-soal/guru', [PaketSoalController::class, 'indexByGuru']);
+    Route::get('/paket-soal/guru/{id}', [PaketSoalController::class, 'showByGuru']);
     Route::post('/paket-soal', [PaketSoalController::class, 'store']);
     Route::get('/paket-soal/{id}', [PaketSoalController::class, 'show']);
     Route::put('/paket-soal/{id}', [PaketSoalController::class, 'update']);
@@ -78,6 +81,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/pilihan-jawaban/detail/{id}', [PilihanJawabanController::class, 'show']);
     Route::put('/pilihan-jawaban/{id}', [PilihanJawabanController::class, 'update']);
     Route::delete('/pilihan-jawaban/{id}', [PilihanJawabanController::class, 'destroy']);
+    Route::get('/pilihan-jawaban/{id}/check', [PilihanJawabanController::class, 'checkPilihanJawaban']);
 
     // Akses Paket Soal
     Route::get('/akses-paket-soal', [AksesPaketSoalController::class, 'index']);

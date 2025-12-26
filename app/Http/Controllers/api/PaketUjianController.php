@@ -6,37 +6,27 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-use App\Models\Resource\Soal;
-use App\Models\Resource\PaketSoal;
+use App\Models\Resource\PaketUjian;
 
-class SoalController
+class PaketUjianController
 {
-    protected $model = Soal::class;
-    protected $table_primary = 'id_soal';
-    protected $data_title = 'soal';
+    protected $model = PaketUjian::class;
+    protected $table_primary = 'id_paket_ujian';
+    protected $data_title = 'paket ujian';
+    protected $searchKeys = ['nama'];
 
-    protected array $rules = [
-        'id_paket_soal' => 'required|integer|exists:exam_paket_soal,id_paket_soal',
-        'teks_soal' => 'required|string',
-        'tipe_jawaban' => 'required|integer|in:1,2',
+    protected $rules = [
+        'nama' => 'required|string|max:255',
     ];
-    protected array $messages = [
-        'id_paket_soal.required' => 'ID paket soal harus diisi.',
-        'id_paket_soal.integer' => 'ID paket soal harus berupa angka.',
-        'id_paket_soal.exists' => 'Paket soal tidak ditemukan.',
-
-        'teks_soal.required'  => 'Teks soal harus diisi.',
-        'teks_soal.string' => 'Teks soal harus berupa teks.',
-
-        'tipe_jawaban.required' => 'Tipe jawaban harus diisi.',
-        'tipe_jawaban.integer' => 'Tipe jawaban harus berupa angka.',
-        'tipe_jawaban.in' => 'Tipe jawaban tidak valid.',
+    protected $messages = [
+        'nama.required' => 'Nama paket ujian wajib diisi',
+        'nama.max' => 'Nama paket ujian maksimal 255 karakter',
     ];
 
     public function index()
     {
         try {
-            $data = $this->model::with(['paket', 'pilihan'])->get();
+            $data = $this->model::withCount('ujian')->get();
 
             if ($data->isEmpty()) {
                 return response()->json([
@@ -62,35 +52,46 @@ class SoalController
         }
     }
 
-    public function checkSoal(Request $request, $id){
-        $user = $request->user();
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->query('search');
+            $searchKeys = $this->searchKeys;
 
-        $idps = $this->model
-            ::where('id_soal', $id)
-            ->latest()
-            ->value('id_paket_soal');
+            $data = $this->model::when($query, function ($q) use ($query, $searchKeys) {
+                $q->where(function ($sub) use ($query, $searchKeys) {
+                    foreach ($searchKeys as $column) {
+                        $sub->orWhere($column, 'like', "%{$query}%");
+                    }
+                });
+            })->get();
 
-        $check = PaketSoal::where('id_paket_soal', $idps)
-                ->whereHas('guru', function ($q) use ($user) {
-                    $q->where('exam_guru.id_guru', $user->id_guru);
-                })
-                ->with([
-                    'soal',
-                    'soal.pilihan',
-                ])
-                ->first();
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $query
+                        ? 'Tidak ada '.$this->data_title.' yang cocok dengan kata kunci "' . $query . '".'
+                        : 'Tidak ada data '.$this->data_title.' yang tersedia.',
+                    'data' => [],
+                ], 404);
+            }
 
-        if (!$check) {
+            return response()->json([
+                'status' => true,
+                'message' => $query
+                    ? 'Hasil pencarian '.$this->data_title.' ditemukan.'
+                    : 'Data '.$this->data_title.' ditemukan.',
+                'total' => $data->count(),
+                'data' => $data,
+            ], 200);
+
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Tidak memiliki akses soal'
-            ], 404);
+                'message' => 'Terjadi kesalahan saat mengambil data '.$this->data_title.'.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Memiliki akses soal',
-        ]);
     }
 
     public function store(Request $request)
@@ -130,7 +131,7 @@ class SoalController
 
     public function show($id)
     {
-        $data = $this->model::with(['paket', 'pilihan'])->find($id);
+        $data = $this->model::with('ujian')->find($id);
 
         if($data){
             return response()->json([

@@ -60,6 +60,39 @@ input[type="datetime-local"] {
     overflow: hidden;
 }
 
+.ql-toolbar {
+  @apply p-0 m-0 rounded-t-lg;
+}
+.ql-container {
+  @apply rounded-b-lg;
+}
+.ql-editor {
+  @apply text-gray-800 dark:text-neutral-200;
+}
+.ql-editor p img {
+  @apply max-h-[250px] rounded-md;
+}
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  @apply border-t-0 dark:border-neutral-500;
+}
+.ql-toolbar.ql-snow {
+  @apply dark:border-neutral-500;
+}
+.ql-snow .ql-fill {
+  @apply dark:fill-white;
+}
+.ql-snow .ql-stroke {
+  @apply dark:stroke-white;
+}
+
+.q-escape-container img {
+  @apply max-h-[250px] rounded-lg;
+}
+.escape-container img {
+  @apply max-h-[100px] rounded-lg;
+}
+
 @keyframes inOut {
     0% {
         opacity: 0;

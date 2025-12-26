@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/x-icon" href="{{ asset('images/fav.pnG') }}" >
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/fav.png') }}" >
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ (isset($page)) ? ucfirst(preg_replace('/[^a-zA-Z0-9]+/', ' ', $page)) . ' - ' . env('APP_ECHO_NAME') : env('APP_ECHO_NAME') }} {{ (session('role') && session('role') != 'siswa') ? '[OPERATOR]' : '' }}</title>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
@@ -43,6 +45,7 @@
         <div class="w-12 h-12 border-5 border-white border-t-transparent rounded-full animate-spin"></div>
     </div>
     {{ $slot }}
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const overlay = document.getElementById("overlayInit");

@@ -10,8 +10,7 @@ class SoalFactory extends Factory
     {
         return [
             'id_paket_soal' => PaketSoalFactory::new(),
-            'teks_soal' => $this->faker->sentence(10),
-            'gambar' => null,
+            'teks_soal' => $this->faker->text(250),
             'tipe_jawaban' => 1,
         ];
     }

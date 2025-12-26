@@ -13,7 +13,7 @@ class PilihanJawaban extends Model
     protected $primaryKey = 'id_pilihan_jawaban';
 
     protected $fillable = [
-        'id_soal', 'teks_jawaban', 'gambar', 'benar'
+        'id_soal', 'teks_jawaban', 'benar'
     ];
 
     public function soal()

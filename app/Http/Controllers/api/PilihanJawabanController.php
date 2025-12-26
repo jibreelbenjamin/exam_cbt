@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+use App\Models\Resource\Soal;
+use App\Models\Resource\PaketSoal;
 use App\Models\Resource\PilihanJawaban;
 
 class PilihanJawabanController
@@ -18,7 +20,6 @@ class PilihanJawabanController
         'id_soal'   => 'required|exists:exam_soal,id_soal',
         'teks_jawaban'   => 'required|string',
         'benar' => 'required|boolean',
-        'gambar'    => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
     ];
     protected $messages = [
         'id_soal.required' => 'Soal wajib diisi',
@@ -27,9 +28,6 @@ class PilihanJawabanController
         'teks_jawaban.string' => 'Jawaban harus berupa string',
         'benar.required' => 'Pilihan benar wajib diisi',
         'benar.boolean' => 'Pilihan benar harus berupa boolean',
-        'gambar.file' => 'Gambar harus berupa file',
-        'gambar.mimes' => 'Gambar harus berformat jpg, jpeg, atau png',
-        'gambar.max' => 'Ukuran gambar maksimal 2048 KB',
     ];
 
     public function index()
@@ -40,14 +38,14 @@ class PilihanJawabanController
             if ($data->isEmpty()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data '.$this->data_title.' kosong',
+                    'message' => ucfirst($this->data_title).' kosong',
                     'data' => [],
                 ], 404);
             }
 
             return response()->json([
                 'status' => true,
-                'message' => 'Data '.$this->data_title.' ditemukan',
+                'message' => ucfirst($this->data_title).' ditemukan',
                 'total' => count($data),
                 'data' => $data,
             ], 200);
@@ -61,41 +59,65 @@ class PilihanJawabanController
         }
     }
 
+    public function checkPilihanJawaban(Request $request, $id){
+        $user = $request->user();
+
+        $ids = $this->model
+            ::where('id_pilihan_jawaban', $id)
+            ->latest()
+            ->value('id_soal');
+
+        $idps = Soal::where('id_soal', $ids)
+            ->latest()
+            ->value('id_paket_soal');
+
+        $check = PaketSoal::where('id_paket_soal', $idps)
+                ->whereHas('guru', function ($q) use ($user) {
+                    $q->where('exam_guru.id_guru', $user->id_guru);
+                })
+                ->with([
+                    'soal',
+                    'soal.pilihan',
+                ])
+                ->first();
+
+        if (!$check) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak memiliki akses soal',
+            ], 403);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Memiliki akses soal',
+        ]);
+    }
+
     public function store(Request $request)
     {
         try {
             $validate = $request->validate($this->rules, $this->messages);
-
-            // Handle gambar
-            if ($request->hasFile('gambar')) {
-                $validated['gambar'] = $request->file('gambar')->store('pilihan_gambar', 'public');
-            }
-
-            // Jika set sebagai benar → kosongkan lainnya
-            if ($request->benar) {
-                $this->model::where('id_soal', $request->id_soal)
-                    ->update(['benar' => false]);
-            }
 
             $data = $this->model::create($validate);
 
             if (!$data) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data '.$this->data_title.' gagal dibuat'
+                    'message' => ucfirst($this->data_title).' gagal dibuat'
                 ], 500);
             }
 
             return response()->json([
                 'status' => true,
-                'message' => 'Data '.$this->data_title.' berhasil dibuat',
+                'message' => ucfirst($this->data_title).' berhasil dibuat',
                 'data' => $data
             ], 201);
 
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'message' => 'Informasi '.ucfirst($this->data_title).' tidak lengkap',
                 'errors' => $e->errors()
             ], 422);
 
@@ -114,13 +136,13 @@ class PilihanJawabanController
         if($data){
             return response()->json([
                 'status' => true,
-                'message' => 'Data '.$this->data_title.' ditemukan',
+                'message' => ucfirst($this->data_title).' ditemukan',
                 'data' => $data
             ]);
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Data '.$this->data_title.' tidak tersedia'
+                'message' => ucfirst($this->data_title).' tidak tersedia'
             ], 404);
         }
     }
@@ -129,38 +151,27 @@ class PilihanJawabanController
     {
         try {
             $data = $this->model::where($this->table_primary, $id)->firstOrFail();
-
-            // Handle gambar
-            if ($request->hasFile('gambar')) {
-                $validated['gambar'] = $request->file('gambar')->store('pilihan_gambar', 'public');
-            }
-
-            // Jika set sebagai benar → kosongkan lainnya
-            if ($request->is_correct) {
-                $this->model::where('id_soal', $data->id_soal)
-                    ->update(['is_correct' => false]);
-            }
     
             $validate = $request->validate($this->rules, $this->messages);
 
             $data->update($validate);
 
             return response()->json([
-                'success' => true,
-                'message' => 'Data '.$this->data_title.' berhasil diperbarui',
+                'status' => true,
+                'message' => ucfirst($this->data_title).' berhasil diperbarui',
                 'data' => $data
             ]);
 
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Data '.$this->data_title.' tidak tersedia'
+                'message' => ucfirst($this->data_title).' tidak tersedia'
             ], 404);
 
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Informasi '.$this->data_title.' tidak lengkap',
+                'message' => 'Informasi '.ucfirst($this->data_title).' tidak lengkap',
                 'errors' => $e->errors()
             ], 422);
 
@@ -179,7 +190,7 @@ class PilihanJawabanController
         if(empty($data)){
             return response()->json([
                 'status' => false,
-                'message' => 'Data '.$this->data_title.' tidak tersedia'
+                'message' => ucfirst($this->data_title).' tidak tersedia'
             ], 404);
         }
         
@@ -187,7 +198,7 @@ class PilihanJawabanController
             $post = $data->delete();
             return response()->json([
                 'status' => true,
-                'message' => 'Data '.$this->data_title.' berhasil dihapus',
+                'message' => ucfirst($this->data_title).' berhasil dihapus',
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

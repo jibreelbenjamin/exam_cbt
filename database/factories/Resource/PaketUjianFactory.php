@@ -8,8 +8,28 @@ class PaketUjianFactory extends Factory
 {
     public function definition(): array
     {
+        $jenisUjian = [
+            'SAS',                 
+            'SAT',                 
+            'PTS',                 
+            'PAS',                 
+            'UAS',                 
+            'UTS',                 
+            'US',                  
+            'AS',                  
+            'PH',                  
+            'ANBK',                
+            'Try Out',
+            'Remedial',
+            'Susulan',
+        ];
+
+        $semester = ['Ganjil', 'Genap'];
+
         return [
-            'nama' => 'Ujian ' . $this->faker->word(),
+            'nama' => $this->faker->randomElement($jenisUjian)
+                    . ' Semester '
+                    . $this->faker->randomElement($semester),
         ];
     }
 }

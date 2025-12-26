@@ -58,7 +58,10 @@ class AuthController
             ], 401);
         }
 
-        $tokenResult = $user->createToken('auth_token');
+        $tokenResult = $user->createToken(
+            'auth_token',
+            [$request->role]
+        );
         $token = $tokenResult->plainTextToken;
 
         $tokenResult->accessToken->expires_at = now()->addDays(7); // 7 hari
