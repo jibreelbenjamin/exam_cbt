@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // keterangan siswa
+        // keterangan peserta
         Schema::create('exam_ruangan', function (Blueprint $table) {
             $table->id('id_ruangan');
             $table->string('nama');
@@ -124,9 +124,9 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // manajemen jawaban siswa
-        Schema::create('exam_jawaban_siswa', function (Blueprint $table) {
-            $table->id('id_jawaban_siswa');
+        // manajemen jawaban peserta
+        Schema::create('exam_jawaban_peserta', function (Blueprint $table) {
+            $table->id('id_jawaban_peserta');
             $table->foreignId('id_peserta')->constrained('exam_peserta', 'id_peserta')->onDelete('cascade');
             $table->foreignId('id_ujian')->constrained('exam_ujian', 'id_ujian')->onDelete('cascade');
             $table->foreignId('id_soal')->constrained('exam_soal', 'id_soal')->onDelete('cascade');
@@ -152,7 +152,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('exam_jawaban_siswa');
+        Schema::dropIfExists('exam_jawaban_peserta');
         Schema::dropIfExists('exam_sessions');
         Schema::dropIfExists('exam_hasil_ujian');
         Schema::dropIfExists('exam_ujian');

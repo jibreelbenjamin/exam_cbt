@@ -131,7 +131,7 @@ class PaketUjianController
 
     public function show($id)
     {
-        $data = $this->model::with('ujian')->find($id);
+        $data = $this->model::with('ujian', 'ujian.paketSoal')->find($id);
 
         if($data){
             return response()->json([

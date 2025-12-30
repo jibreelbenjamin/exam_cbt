@@ -2,14 +2,14 @@
     $page = 'login';
 @endphp
 <x-head :page='$page'>
- <div class="flex min-h-full">
+ <div class="flex justify-center min-h-full">
     <div class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div class="mx-auto w-full max-w-sm lg:w-96">
         <div>
-            <img class="w-25 mb-10 h-auto mx-auto lg:w-15 lg:mx-0 lg:mb-0" src="{{ asset('images/fav.png') }}" alt="Logo">
-            <h2 class="mt-5 text-2xl/9 font-bold tracking-tight text-gray-800 dark:text-white">Masuk ke akun Anda</h2>
-            <p class="mt-2 text-sm/6 text-gray-400">
-                Setiap soal adalah langkah kecil menuju hasil besar. Fokus, percaya diri, dan tunjukkan kemampuan terbaikmu!
+            <img class="w-25 mb-10 h-auto mx-auto" src="{{ asset('images/fav.png') }}" alt="Logo">
+            <h2 class="mt-5 text-2xl/9 text-center font-bold tracking-tight text-gray-800 dark:text-white">Masuk ke akun Anda</h2>
+            <p class="mt-2 text-center text-sm/6 text-gray-400">
+                Selamat datang di <b>{{ env('APP_ECHO_NAME') }}!</b>
             </p>
         </div>
 
@@ -20,7 +20,7 @@
                 <div>
                 <label class="block text-sm/6 font-medium text-gray-800 dark:text-gray-100">ID Peserta / Username</label>
                 <div class="mt-2">
-                    <input type="text" name="username" value="{{ old('username') }}" class="py-2.5 sm:py-3 ps-4 pe-10 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="Masukan nomor induk siswa" autocomplete="off">
+                    <input type="text" name="username" value="{{ old('username') }}" class="py-2.5 sm:py-3 ps-4 pe-10 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="Masukan username" autocomplete="off">
                 </div>
                 </div>
 
@@ -45,7 +45,7 @@
 
                 <div>
                 <button type="submit" onclick="login()" class="w-full py-2 px-3 inline-flex items-center justify-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">Masuk</button>
-                <div class="text-sm/6 text-center mt-3 lg:block hidden">
+                <div class="text-sm/6 text-center mt-3 2xl:block hidden">
                     <p class="font-medium text-gray-800 dark:text-gray-100">Bukan peserta? <a href="{{ route('operator.login') }}" class="font-semibold text-blue-600 hover:text-blue-700">Masuk sebagai operator</a></p>
                 </div>
                 </div>
@@ -53,9 +53,6 @@
             </div>
         </div>
         </div>
-    </div>
-    <div class="relative hidden w-0 flex-1 lg:block">
-        <img src="{{ asset('images/bg-auth.jpeg') }}" alt="Banner" class="absolute inset-0 size-full object-cover" />
     </div>
 </div>
 </x-head>

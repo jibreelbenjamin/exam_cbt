@@ -10,4 +10,14 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    // server: {
+    //     host: '0.0.0.0',
+    //     port: 5173,
+    //     cors: true,
+    //     hmr: {
+    //         host: '192.168.18.54',
+    //     },
+    // },
+    // php artisan serve --host=0.0.0.0 --port=8000
+    // php artisan serve --host=0.0.0.0 --port=8001
 });

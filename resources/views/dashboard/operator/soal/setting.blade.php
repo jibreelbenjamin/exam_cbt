@@ -237,7 +237,7 @@
                                 <div>
                                   <div class="mt-2 flex items-start gap-x-2 text-gray-500 dark:text-neutral-400">
                                       <p class="text-xs">
-                                        Pilihann jawaban {{ $loop->iteration }}
+                                        Pilihan jawaban {{ $loop->iteration }}
                                       </p>
                                   </div>
                                 </div>
@@ -411,12 +411,12 @@
             <div class="p-7">
                 <div class="flex justify-between items-center  ">
                     <h3 id="hs-scale-confirm-modal-label" class="font-bold text-gray-800 dark:text-white">
-                    Hapus {{ $page }}?
+                    Hapus {{ $page_title }}?
                     </h3>
                 </div>
                 <div class="pb-3 overflow-y-auto">
                     <p class="mt-1 text-gray-800 dark:text-neutral-400">
-                    Yakin ingin menghapus data {{ $page }} ini secara permanen? Mungkin akan memengaruhi data lainnya. Aksi ini tidak dapat dikembalikan.
+                    Yakin ingin menghapus data {{ $page_title }} ini secara permanen? Mungkin akan memengaruhi data lainnya. Aksi ini tidak dapat dikembalikan.
                     </p>
                 </div>
                 <div class="flex justify-end items-center gap-x-2  ">

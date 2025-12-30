@@ -40,6 +40,6 @@ class Ujian extends Model
 
     public function jawaban()
     {
-        return $this->hasMany(JawabanSiswa::class, 'id_ujian');
+        return $this->hasMany(JawabanPeserta::class, 'id_ujian');
     }
 }

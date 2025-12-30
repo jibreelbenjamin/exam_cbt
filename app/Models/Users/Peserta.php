@@ -32,7 +32,7 @@ class Peserta extends Authenticatable
 
     public function jawaban()
     {
-        return $this->hasMany(\App\Models\Resource\JawabanSiswa::class, 'id_peserta');
+        return $this->hasMany(\App\Models\Resource\JawabanPeserta::class, 'id_peserta');
     }
 
     public function hasil()

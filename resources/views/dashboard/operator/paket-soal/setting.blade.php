@@ -223,15 +223,9 @@
                             </div>
 
                             <div>
-                                @if ($idAPS)
-                                <form method="POST" action="{{ route('operator.akses-paket-soal.delete.action', $idAPS) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-red-700 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-red-600 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
-                                        Cabut akses
-                                    </button>
-                                </form>
-                                @endif
+                                <button type="button" data-id="{{ $idAPS }}" data-label="{{ $guru['nama'] }}" class="btn-hapus-aps py-2 px-3 inline-flex justify-center items-center text-start text-xs bg-white border border-gray-200 text-red-700 text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-red-600 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-confirm-modal-akses" data-hs-overlay="#hs-scale-confirm-modal-akses">
+                                    Cabut akses
+                                </button>
                             </div>
                         </div>
                     </li>
@@ -283,6 +277,20 @@
     </div>
 </x-app-op>
 
+<script>
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.btn-hapus-aps')
+    if (!btn) return
+
+    const label = btn.dataset.label
+    const id = btn.dataset.id
+    const action = `/operator/akses-paket-soal/delete/${id}`
+
+    document.getElementById('label').innerText = label
+    document.getElementById('form').action = action
+  })
+</script>
+
 <!-- Confirm Modal -->
   <div id="hs-scale-confirm-modal" class="hs-overlay hidden size-full fixed top-0 start-0 z-80 overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="hs-scale-confirm-modal-label">
       <div class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-56px)] flex items-center">
@@ -290,12 +298,12 @@
               <div class="p-7">
                   <div class="flex justify-between items-center  ">
                       <h3 id="hs-scale-confirm-modal-label" class="font-bold text-gray-800 dark:text-white">
-                      Hapus {{ $page }}?
+                      Hapus {{ $page_title }}?
                       </h3>
                   </div>
                   <div class="pb-3 overflow-y-auto">
                       <p class="mt-1 text-gray-800 dark:text-neutral-400">
-                      Yakin ingin menghapus data {{ $page }} ini secara permanen? Mungkin akan memengaruhi data lainnya. Aksi ini tidak dapat dikembalikan.
+                      Yakin ingin menghapus data {{ $page_title }} ini secara permanen? Mungkin akan memengaruhi data lainnya. Aksi ini tidak dapat dikembalikan.
                       </p>
                   </div>
                   <div class="flex justify-end items-center gap-x-2  ">
@@ -314,4 +322,37 @@
           </div>
       </div>
   </div>
-  <!-- End Confirm Modal -->
+<!-- End Confirm Modal -->
+
+<!-- Confirm Modal Akses -->
+  <div id="hs-scale-confirm-modal-akses" class="hs-overlay hidden size-full fixed top-0 start-0 z-80 overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="hs-scale-confirm-modal-akses-label">
+      <div class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-56px)] flex items-center">
+          <div class="w-full flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+              <div class="p-7">
+                  <div class="flex justify-between items-center  ">
+                      <h3 id="hs-scale-confirm-modal-akses-label" class="font-bold text-gray-800 dark:text-white">
+                      Cabut akses paket soal?
+                      </h3>
+                  </div>
+                  <div class="pb-3 overflow-y-auto">
+                      <p class="mt-1 text-gray-800 dark:text-neutral-400">
+                      Yakin ingin mencabut akses <strong id="label">Nama</strong> pada paket soal ini? Aksi ini tidak dapat dikembalikan.
+                      </p>
+                  </div>
+                  <div class="flex justify-end items-center gap-x-2  ">
+                      <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#hs-scale-confirm-modal-akses">
+                      Kembali
+                      </button>
+                      <form id="form" method="post" action="">
+                          @csrf
+                          @method('DELETE')
+                          <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
+                          Hapus
+                          </button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- End Confirm Modal Akses -->
