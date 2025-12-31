@@ -151,7 +151,7 @@ class PaketSoalController
                         $sub->orWhere($column, 'like', "%{$query}%");
                     }
                 });
-            })->withCount('soal')->get();
+            })->get();
 
             if ($data->isEmpty()) {
                 return response()->json([

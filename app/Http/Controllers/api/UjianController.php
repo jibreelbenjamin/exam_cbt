@@ -13,13 +13,13 @@ class UjianController
     protected $model = Ujian::class;
     protected $table_primary = 'id_ujian';
     protected $data_title = 'ujian';
+    protected $searchKeys = ['token'];
 
     protected array $rules = [
         'id_paket_ujian' => 'nullable|integer|exists:exam_paket_ujian,id_paket_ujian',
         'id_paket_soal' => 'required|integer|exists:exam_paket_soal,id_paket_soal',
         'nama' => 'required|string|max:255',
         'token' => 'required|boolean',
-        'status' => 'required|boolean',
         'durasi' => 'required|integer|min:0',
         'acak_soal' => 'required|boolean',
         'jadwal_mulai' => 'required|date',
@@ -38,9 +38,6 @@ class UjianController
 
         'token.required' => 'Pengaturan token harus diisi.',
         'token.boolean' => 'Pengaturan token harus berupa true/false.',
-
-        'status.required' => 'Status ujian harus diisi.',
-        'status.boolean' => 'Status ujian harus berupa true/false.',
 
         'durasi.required' => 'Durasi ujian harus diisi.',
         'durasi.integer' => 'Durasi harus berupa angka.',
@@ -80,6 +77,53 @@ class UjianController
             return response()->json([
                 'status' => false,
                 'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->query('search');
+            $searchKeys = $this->searchKeys;
+
+            $data = $this->model::when($query, function ($q) use ($query, $searchKeys) {
+                $q->where(function ($sub) use ($query, $searchKeys) {
+                    foreach ($searchKeys as $column) {
+                        $sub->orWhere($column, 'like', "%{$query}%");
+                    }
+                });
+            })->get();
+
+            $data->prepend([ // untuk kebutuhan rule pada controller web
+                'id_ujian' => 'ALL',
+                'nama' => 'SEMUA UJIAN',
+            ]);
+
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $query 
+                        ? 'Tidak ada '.$this->data_title.' yang cocok dengan kata kunci "' . $query . '".'
+                        : 'Tidak ada data '.$this->data_title.' yang tersedia.',
+                    'data' => [],
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => $query
+                    ? 'Hasil pencarian '.$this->data_title.' ditemukan.'
+                    : 'Data '.$this->data_title.' ditemukan.',
+                'total' => $data->count(),
+                'data' => $data,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan saat mengambil data '.$this->data_title.'.',
                 'error' => $e->getMessage(),
             ], 500);
         }

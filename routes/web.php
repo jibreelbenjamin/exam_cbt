@@ -16,6 +16,7 @@ use App\Http\Controllers\SoalController;
 use App\Http\Controllers\AksesPaketSoalController;
 use App\Http\Controllers\PilihanJawabanController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UjianController;
 use App\Http\Controllers\PaketUjianController;
 
@@ -118,6 +119,12 @@ Route::middleware('auth_web:admin,guru')->group(function () {
     Route::post('/operator/peserta/add', [PesertaController::class, 'add'])->name('operator.peserta.create.action');
     Route::put('/operator/peserta/update/{id}', [PesertaController::class, 'update'])->name('operator.peserta.update.action');
     Route::delete('/operator/peserta/delete/{id}', [PesertaController::class, 'delete'])->name('operator.peserta.delete.action');
+
+    Route::get('/operator/token', [TokenController::class, 'index'])->name('operator.token');
+    Route::get('/operator/token/load', [TokenController::class, 'loadData'])->name('operator.token.load');
+    Route::get('/operator/token/create', [TokenController::class, 'create'])->name('operator.token.create');
+    Route::post('/operator/token/add', [TokenController::class, 'add'])->name('operator.token.create.action');
+    Route::delete('/operator/token/delete/{id}', [TokenController::class, 'delete'])->name('operator.token.delete.action');
 
     Route::get('/operator/guru', [GuruController::class, 'index'])->name('operator.guru');
     Route::get('/operator/guru/load', [GuruController::class, 'loadData'])->name('operator.guru.load');

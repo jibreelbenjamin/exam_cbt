@@ -151,7 +151,6 @@ class UjianFactory extends Factory
                 'XII',
             ]),
             'token' => $this->faker->randomElement([false, true]),
-            'status' => $this->faker->randomElement([false, true]),
             'durasi' => $this->faker->numberBetween(30, 120),
             'acak_soal' => $this->faker->randomElement([false, true]),
             'jadwal_mulai' => now(),

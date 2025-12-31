@@ -259,10 +259,7 @@
           }
       }
 
-      // Sync saat halaman pertama kali load
       syncState();
-
-      // Sync saat checkbox dicentang/dilepas
       checkbox.addEventListener('change', syncState);
   });
 </script>

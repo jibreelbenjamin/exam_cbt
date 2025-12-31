@@ -22,6 +22,7 @@ Route::get('/kelas/select', [KelasController::class, 'search']);
 Route::get('/ruangan/select', [RuanganController::class, 'search']);
 Route::get('/guru/select', [GuruController::class, 'search']);
 Route::get('/paket-soal/select', [PaketSoalController::class, 'search']);
+Route::get('/ujian/select', [UjianController::class, 'search']);
 Route::get('/paket-ujian/select', [PaketUjianController::class, 'search']);
 
 Route::middleware(['auth:sanctum'])->group(function () {

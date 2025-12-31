@@ -14,7 +14,7 @@ class Ujian extends Model
 
     protected $fillable = [
         'id_paket_ujian', 'id_paket_soal',
-        'nama', 'token', 'status', 'durasi',
+        'nama', 'token', 'durasi',
         'acak_soal', 'jadwal_mulai', 'jadwal_selesai'
     ];
 

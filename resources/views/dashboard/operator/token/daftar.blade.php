@@ -1,6 +1,6 @@
 @php
-    $page = 'ujian';
-    $page_title = 'ujian';
+    $page = 'token';
+    $page_title = 'token';
 @endphp
 <x-app-op :page='$page'>
     <div class="p-2 sm:p-5 sm:py-0 md:pt-5 space-y-5">
@@ -14,43 +14,15 @@
           </p>
 
           <div class="flex justify-end items-center gap-x-2">
-            <!-- Import Dropdown -->
-            <div class="hs-dropdown [--auto-close:true] relative inline-flex">
+            <div class="relative inline-flex">
               <!-- Filter Button -->
-              <button id="hs-pro-dptied" type="button" class="py-1.5 sm:py-2 px-2.5 inline-flex items-center gap-x-1.5 text-sm sm:text-xs font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+              <a href="{{ route('operator.token.create') }}" class="py-1.5 sm:py-2 px-2.5 inline-flex items-center gap-x-1.5 text-sm sm:text-xs font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
                 <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-fading-plus-icon lucide-circle-fading-plus"><path d="M12 2a10 10 0 0 1 7.38 16.75"/><path d="M12 8v8"/><path d="M16 12H8"/><path d="M2.5 8.875a10 10 0 0 0-.5 3"/><path d="M2.83 16a10 10 0 0 0 2.43 3.4"/><path d="M4.636 5.235a10 10 0 0 1 .891-.857"/><path d="M8.644 21.42a10 10 0 0 0 7.631-.38"/></svg>
-                Tambah <span class="hidden sm:block">{{ $page_title }}</span>
-              </button>
+                Generate <span class="hidden sm:block">{{ $page_title }}</span>
+              </a>
               <!-- End Filter Button -->
-
-              <!-- Dropdown -->
-              <div class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-40 transition-[opacity,margin] duration opacity-0 hidden z-10 bg-white rounded-xl shadow-xl dark:bg-neutral-900" role="menu" aria-orientation="vertical" aria-labelledby="hs-pro-dptied">
-                <div class="p-1">
-                  <a href="{{ route('operator.'.$page.'.create') }}" class="w-full flex gap-x-3 py-1.5 px-2 rounded-lg text-[13px] text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-300 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-overlay="#hs-pro-dicm">
-                    <svg class="shrink-0 mt-0.5 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                    Tambah manual
-                  </a>
-                  <button disabled type="button" class="w-full flex gap-x-3 py-1.5 px-2 rounded-lg text-[13px] text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-300 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-overlay="#hs-pro-decm">
-                    <svg class="shrink-0 mt-0.5 size-3.5" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20.0324 1.91994H9.45071C9.09999 1.91994 8.76367 2.05926 8.51567 2.30725C8.26767 2.55523 8.12839 2.89158 8.12839 3.24228V8.86395L20.0324 15.8079L25.9844 18.3197L31.9364 15.8079V8.86395L20.0324 1.91994Z" fill="#21A366"></path>
-                        <path d="M8.12839 8.86395H20.0324V15.8079H8.12839V8.86395Z" fill="#107C41"></path>
-                        <path d="M30.614 1.91994H20.0324V8.86395H31.9364V3.24228C31.9364 2.89158 31.7971 2.55523 31.5491 2.30725C31.3011 2.05926 30.9647 1.91994 30.614 1.91994Z" fill="#33C481"></path>
-                        <path d="M20.0324 15.8079H8.12839V28.3736C8.12839 28.7243 8.26767 29.0607 8.51567 29.3087C8.76367 29.5567 9.09999 29.6959 9.45071 29.6959H30.6141C30.9647 29.6959 31.3011 29.5567 31.549 29.3087C31.797 29.0607 31.9364 28.7243 31.9364 28.3736V22.7519L20.0324 15.8079Z" fill="#185C37"></path>
-                        <path d="M20.0324 15.8079H31.9364V22.7519H20.0324V15.8079Z" fill="#107C41"></path>
-                        <path opacity="0.1" d="M16.7261 6.87994H8.12839V25.7279H16.7261C17.0764 25.7269 17.4121 25.5872 17.6599 25.3395C17.9077 25.0917 18.0473 24.756 18.0484 24.4056V8.20226C18.0473 7.8519 17.9077 7.51616 17.6599 7.2684C17.4121 7.02064 17.0764 6.88099 16.7261 6.87994Z" class="og88b dark:fill-neutral-200" fill="currentColor"></path>
-                        <path opacity="0.2" d="M15.7341 7.87194H8.12839V26.7199H15.7341C16.0844 26.7189 16.4201 26.5792 16.6679 26.3315C16.9157 26.0837 17.0553 25.748 17.0564 25.3976V9.19426C17.0553 8.84386 16.9157 8.50818 16.6679 8.26042C16.4201 8.01266 16.0844 7.87299 15.7341 7.87194Z" class="og88b dark:fill-neutral-200" fill="currentColor"></path>
-                        <path opacity="0.2" d="M15.7341 7.87194H8.12839V24.7359H15.7341C16.0844 24.7349 16.4201 24.5952 16.6679 24.3475C16.9157 24.0997 17.0553 23.764 17.0564 23.4136V9.19426C17.0553 8.84386 16.9157 8.50818 16.6679 8.26042C16.4201 8.01266 16.0844 7.87299 15.7341 7.87194Z" class="og88b dark:fill-neutral-200" fill="currentColor"></path>
-                        <path opacity="0.2" d="M14.7421 7.87194H8.12839V24.7359H14.7421C15.0924 24.7349 15.4281 24.5952 15.6759 24.3475C15.9237 24.0997 16.0633 23.764 16.0644 23.4136V9.19426C16.0633 8.84386 15.9237 8.50818 15.6759 8.26042C15.4281 8.01266 15.0924 7.87299 14.7421 7.87194Z" class="og88b dark:fill-neutral-200" fill="currentColor"></path>
-                        <path d="M1.51472 7.87194H14.7421C15.0927 7.87194 15.4291 8.01122 15.6771 8.25922C15.925 8.50722 16.0644 8.84354 16.0644 9.19426V22.4216C16.0644 22.7723 15.925 23.1087 15.6771 23.3567C15.4291 23.6047 15.0927 23.7439 14.7421 23.7439H1.51472C1.16402 23.7439 0.827672 23.6047 0.579686 23.3567C0.3317 23.1087 0.192383 22.7723 0.192383 22.4216V9.19426C0.192383 8.84354 0.3317 8.50722 0.579686 8.25922C0.827672 8.01122 1.16402 7.87194 1.51472 7.87194Z" fill="#107C41"></path>
-                        <path d="M3.69711 20.7679L6.90722 15.794L3.96694 10.8479H6.33286L7.93791 14.0095C8.08536 14.3091 8.18688 14.5326 8.24248 14.68H8.26328C8.36912 14.4407 8.47984 14.2079 8.5956 13.9817L10.3108 10.8479H12.4822L9.46656 15.7663L12.5586 20.7679H10.2473L8.3932 17.2959C8.30592 17.148 8.23184 16.9927 8.172 16.8317H8.14424C8.09016 16.9891 8.01824 17.1399 7.92998 17.2811L6.02236 20.7679H3.69711Z" fill="white"></path>
-                    </svg>
-                    Import data
-                  </button>
-                </div>
-              </div>
-              <!-- End Dropdown -->
             </div>
-            <!-- End Import Dropdown -->
+            <button id="btnConfirm" class="hidden" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-confirm-modal" data-hs-overlay="#hs-scale-confirm-modal"></button>
           </div>
         </nav>
         <!-- End Nav Tab -->
@@ -147,15 +119,15 @@
                             </p>
                         </th>
 
-                        <th scope="col" class="min-w-72">
+                        <th scope="col">
                             <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Nama ujian
+                              Token
                             </p>
                         </th>
 
                         <th scope="col">
                             <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Token
+                              Masa aktif
                             </p>
                         </th>
 
@@ -167,43 +139,25 @@
 
                         <th scope="col">
                             <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Durasi
+                              Ujian
                             </p>
                         </th>
 
                         <th scope="col">
                             <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Jadwal mulai
+                              Penanggung jawab
                             </p>
                         </th>
 
                         <th scope="col">
                             <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Jadwal selesai
-                            </p>
-                        </th>
-
-                        <th scope="col">
-                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Paket soal
-                            </p>
-                        </th>
-
-                        <th scope="col">
-                          <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                            Acak soal
-                          </p>
-                        </th>
-
-                        <th scope="col">
-                            <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Paket ujian
+                              Kadaluarsa
                             </p>
                         </th>
 
                         <th scope="col" class="min-w-50">
                             <p class="px-5 py-2.5 text-start flex items-center gap-x-1 text-sm text-nowrap font-normal text-gray-500 dark:text-neutral-500">
-                              Diperbarui
+                              Waktu generate
                             </p>
                         </th>
 
@@ -216,7 +170,7 @@
                     </tbody>
 
                     <tfoot id="skeleton" class="divide-y divide-gray-200 dark:divide-neutral-700">
-                      <tr class="divide-x divide-gray-200 dark:divide-neutral-700">                          
+                      <tr class="divide-x divide-gray-200 dark:divide-neutral-700">
                           <td class="size-px whitespace-nowrap px-3 py-3">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
@@ -234,32 +188,14 @@
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
                           </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
+
+                          <td class="size-px whitespace-nowrap px-4 py-1">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
                           </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
+
+                          <td class="size-px whitespace-nowrap px-4 py-1">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
@@ -300,38 +236,20 @@
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
                           </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
+
+                          <td class="size-px whitespace-nowrap px-4 py-1">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
                           </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
+
+                          <td class="size-px whitespace-nowrap px-4 py-1">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
                           </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
+
+                          <td class="size-px whitespace-nowrap px-4 py-1">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
@@ -360,8 +278,7 @@
                           </td>
                       </tr>
 
-                      <tr class="divide-x divide-gray-200 dark:divide-neutral-700">
-                          
+                      <tr class="divide-x divide-gray-200 dark:divide-neutral-700"> 
                           <td class="size-px whitespace-nowrap px-3 py-3">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
@@ -379,32 +296,14 @@
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
                           </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
+
+                          <td class="size-px whitespace-nowrap px-4 py-1">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
                           </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
-                          <span class="text-sm text-gray-600 dark:text-neutral-400">
-                              <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
-                          </span>
-                          </td>
-                          
-                          <td class="size-px whitespace-nowrap px-3 py-3">
+
+                          <td class="size-px whitespace-nowrap px-4 py-1">
                           <span class="text-sm text-gray-600 dark:text-neutral-400">
                               <div class="h-4 bg-gray-200 rounded-full dark:bg-neutral-700"></div>
                           </span>
@@ -602,22 +501,12 @@
                 data.forEach((item, index) => {
                     const number = offset + index + 1;
                     function badgeStatus(key){
-                      return key === 1
-                          ? `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">Aktif</span>`
-                          : key === 0
-                          ? `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">Nonaktif</span>`
-                          : `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-50 text-gray-500 dark:bg-white/10 dark:text-white">Unknown</span>`;
-                    }
-                    function badgeStatusUjian(s, n){
                       const now = new Date()
-                      const start = new Date(s.replace(' ', 'T'));
-                      const end = new Date(n.replace(' ', 'T'));
-                      return now > end
-                          ? `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">Selesai</span>`
-                          : now > start && now < end
-                          ? `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500">Berjalan</span>`
-                          : now < start
-                          ? `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-white">Persiapan</span>`
+                      const expired = new Date(key.replace(' ', 'T'));
+                      return now < expired
+                          ? `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">Aktif</span>`
+                          : now > expired
+                          ? `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">Kadaluarsa</span>`
                           : `<span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-50 text-gray-500 dark:bg-white/10 dark:text-white">Unknown</span>`;
                     }
 
@@ -628,76 +517,54 @@
                                 ${number}
                                 </span>
                             </td>
-        
-                            <td class="size-px px-4 py-1 relative group pe-20 lg:pe-24">
-                                <div class="w-full flex items-center gap-x-3">
-                                <div class="grow">
-                                    <span class="text-sm font-medium text-gray-800 dark:text-neutral-200">
-                                    ${item.nama}
-                                    </span>
-                                </div>
-                                </div>
-                            </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${badgeStatus(item.token)}
+
+                            <td class="size-px whitespace-nowrap px-3 py-3">
+                                <span class="text-sm font-medium text-gray-800 dark:text-neutral-200">
+                                ${item.token.toUpperCase()}
                                 </span>
                             </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${badgeStatusUjian(item.jadwal_mulai, item.jadwal_selesai)}
-                                </span>
-                            </td>
-        
-                              <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
+
+                            <td class="size-px whitespace-nowrap px-3 py-3">
+                                <span class="text-sm font-medium text-gray-800 dark:text-neutral-200">
                                 ${item.durasi} Menit
                                 </span>
                             </td>
+        
+                            <td class="size-px whitespace-nowrap px-4 py-1">
+                                <span class="text-sm text-gray-600 dark:text-neutral-400">
+                                ${badgeStatus(item.token_expired_at)}
+                                </span>
+                            </td>
+        
+                            <td class="size-px whitespace-nowrap px-4 py-1">
+                                <span class="text-sm text-gray-600 dark:text-neutral-400">
+                                ${item?.ujian?.nama ?? 'Semua ujian'}
+                                </span>
+                            </td>
+        
+                            <td class="size-px whitespace-nowrap px-4 py-1">
+                                <span class="text-sm text-gray-600 dark:text-neutral-400">
+                                ${item.admin.nama}
+                                </span>
+                            </td>
+        
+                            <td class="size-px whitespace-nowrap px-4 py-1">
+                                <span class="text-sm text-gray-600 dark:text-neutral-400">
+                                ${formatTanggal(item.token_expired_at)} 
+                                </span>
+                            </td>
+        
+                            <td class="size-px whitespace-nowrap px-4 py-1">
+                                <span class="text-sm text-gray-600 dark:text-neutral-400">
+                                    ${formatTanggal(item.created_at)}
+                                </span>
+                            </td>
 
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${formatTanggal(item.jadwal_mulai)}
-                                </span>
-                            </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${formatTanggal(item.jadwal_selesai)}
-                                </span>
-                            </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${item.paket_soal.nama}
-                                </span>
-                            </td>
-
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${badgeStatus(item.acak_soal)}
-                                </span>
-                            </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                ${item?.paket_ujian?.nama ?? '-'}
-                                </span>
-                            </td>
-        
-                            <td class="size-px whitespace-nowrap px-4 py-1">
-                                <span class="text-sm text-gray-600 dark:text-neutral-400">
-                                    ${formatTanggal(item.updated_at)}
-                                </span>
-                            </td>
-        
                             <td class="size-px whitespace-nowrap px-4 py-1">            
                                 <div class="relative inline-flex">
-                                <a href="{{ route('operator.'.$page) }}/${item.id_ujian}" type="button" class="size-7 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
-                                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
-                                </a>
+                                <button data-id="${item.id_token}" data-label="${item.token}" type="button" class="btn-hapus-token size-7 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-red-700 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-red-600 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                </button>
                                 </div>
                             </td>
                         </tr>
@@ -719,7 +586,7 @@
         const windowHeight = window.innerHeight;
         const docHeight = document.documentElement.scrollHeight;
 
-        if (scrollTop + windowHeight >= docHeight - 200) {
+        if (scrollTop + windowHeight >= docHeight - 500) {
             loadMoreData();
         }
     });
@@ -735,5 +602,52 @@
             }, 100);
         }
     });
+
+    document.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn-hapus-token')
+      if (!btn) return
+
+      const label = btn.dataset.label
+      const id = btn.dataset.id
+      const action = `/operator/token/delete/${id}`
+
+      document.getElementById('btnConfirm').click()
+
+      document.getElementById('label').innerText = label
+      document.getElementById('form').action = action
+    })
 </script>
+
+<!-- Confirm Modal -->
+  <div id="hs-scale-confirm-modal" class="hs-overlay hidden size-full fixed top-0 start-0 z-80 overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="hs-scale-confirm-modal-label">
+      <div class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-56px)] flex items-center">
+          <div class="w-full flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+              <div class="p-7">
+                  <div class="flex justify-between items-center  ">
+                      <h3 id="hs-scale-confirm-modal-label" class="font-bold text-gray-800 dark:text-white">
+                      Hapus {{ $page_title }}?
+                      </h3>
+                  </div>
+                  <div class="pb-3 overflow-y-auto">
+                      <p class="mt-1 text-gray-800 dark:text-neutral-400">
+                      Yakin ingin menghapus riwayat {{ $page_title }} <strong id="label">Nama</strong> secara permanen? Aksi ini tidak dapat dikembalikan.
+                      </p>
+                  </div>
+                  <div class="flex justify-end items-center gap-x-2  ">
+                      <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#hs-scale-confirm-modal">
+                      Kembali
+                      </button>
+                      <form id="form" method="post" action="">
+                          @csrf
+                          @method('DELETE')
+                          <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-hidden focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
+                          Hapus
+                          </button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- End Confirm Modal -->
 @endif
