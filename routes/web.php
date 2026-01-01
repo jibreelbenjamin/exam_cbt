@@ -32,7 +32,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // universal redirect
 Route::get('/redirect/dashboard', function () {
     if (Auth::guard('peserta')->check()) {
-        return redirect()->route('home');
+        return redirect()->route('onexam.home');
     }
     if (Auth::guard('admin')->check() || Auth::guard('guru')->check()) {
         return redirect()->route('operator.home');
@@ -42,7 +42,8 @@ Route::get('/redirect/dashboard', function () {
 })->name('dashboard.redirect');
 
 Route::middleware('auth_web:peserta')->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'home'])->name('home');
+    Route::get('/dashboard', [HomeController::class, 'home'])->name('onexam.home');
+    Route::get('/ujian/{id_ujian}/konfirmasi', [HomeController::class, 'confirm'])->name('onexam.konfirmasi');
 });
 
 Route::middleware('auth_web:admin,guru')->group(function () {

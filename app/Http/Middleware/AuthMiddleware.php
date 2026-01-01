@@ -40,7 +40,7 @@ class AuthMiddleware
         if (!in_array($role, $roles)) {
             if (Auth::guard('peserta')->check()) {
                 return redirect()
-                    ->route('home')
+                    ->route('onexam.home')
                     ->with('warningToast', 'Akses halaman dilindungi');
             }
 

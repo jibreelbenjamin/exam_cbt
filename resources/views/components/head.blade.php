@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('images/fav.png') }}" >
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ (isset($page)) ? ucfirst(preg_replace('/[^a-zA-Z0-9]+/', ' ', $page)) . ' - ' . env('APP_ECHO_NAME') : env('APP_ECHO_NAME') }} {{ (session('role') && session('role') != 'siswa') ? '[OPERATOR]' : '' }}</title>
+    <title>{{ (isset($page)) ? ucfirst(preg_replace('/[^a-zA-Z0-9]+/', ' ', $page)) . ' - ' . env('APP_ECHO_NAME') : env('APP_ECHO_NAME') }} {{ (session('role') && session('role') != 'peserta') ? '[OPERATOR]' : '' }}</title>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
     </style>

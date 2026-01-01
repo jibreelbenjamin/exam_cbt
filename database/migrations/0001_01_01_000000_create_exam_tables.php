@@ -135,8 +135,8 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('exam_hasil_ujian', function (Blueprint $table) {
-            $table->id('id_hasil_ujian');
+        Schema::create('exam_ujian_peserta', function (Blueprint $table) {
+            $table->id('id_ujian_peserta');
             $table->foreignId('id_peserta')->constrained('exam_peserta', 'id_peserta')->onDelete('cascade');
             $table->foreignId('id_ujian')->constrained('exam_ujian', 'id_ujian')->onDelete('cascade');
             $table->integer('jumlah_benar')->default(0);
@@ -145,6 +145,7 @@ return new class extends Migration
             $table->integer('waktu_mengerjakan')->nullable();
             $table->datetime('mulai_mengerjakan');
             $table->datetime('selesai_mengerjakan')->nullable();
+            $table->string('token');
             $table->timestamps();
         });
     }
@@ -153,7 +154,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('exam_jawaban_peserta');
         Schema::dropIfExists('exam_sessions');
-        Schema::dropIfExists('exam_hasil_ujian');
+        Schema::dropIfExists('exam_ujian_peserta');
         Schema::dropIfExists('exam_ujian');
         Schema::dropIfExists('exam_pilihan_jawaban');
         Schema::dropIfExists('exam_soal');

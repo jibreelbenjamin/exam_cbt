@@ -18,7 +18,7 @@ class AuthController extends Controller
     public function loginForm()
     {
         if (Auth::guard('peserta')->check()) {
-            return redirect()->route('home'); 
+            return redirect()->route('onexam.home'); 
         }
         return view('auth.login');
     }
@@ -71,7 +71,7 @@ class AuthController extends Controller
 
         session(['role' => 'peserta', 'token' => $data['access_token'] ?? null]);
 
-        return redirect()->route('home')->with('successToast', 'Selamat datang!');
+        return redirect()->route('onexam.home')->with('successToast', 'Selamat datang!');
     }
 
     public function loginOperator(Request $request)

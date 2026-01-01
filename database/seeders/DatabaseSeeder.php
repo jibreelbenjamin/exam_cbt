@@ -24,15 +24,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Config
-        $jumlahGuru      = 150;
-        $jumlahKelas     = 50;
-        $jumlahRuangan   = 40;
-        $jumlahPeserta   = 5000;
-        $jumlahPaket     = 100;
-        $jumlahSoal      = 50;
+        $jumlahGuru      = 15;
+        $jumlahKelas     = 5;
+        $jumlahRuangan   = 7;
+        $jumlahPeserta   = 300;
+        $jumlahPaket     = 10;
+        $jumlahSoal      = 40;
         $jumlahPilihan   = 5;
-        $jumlahToken     = 17;
-        $jumlahPaketUji  = 20;
+        $jumlahToken     = 3;
+        $jumlahPaketUji  = 4;
 
         $this->command->info("Loading...");
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\api\PilihanJawabanController;
 use App\Http\Controllers\api\TokenController;
 use App\Http\Controllers\api\UjianController;
 use App\Http\Controllers\api\PaketUjianController;
+use App\Http\Controllers\api\OnExamUjianController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
             'user' => $request->user(),
         ]);
     });
+
+
+    // onExam
+    Route::get('/onexam/ujian/{id_peserta}', [OnExamUjianController::class, 'index']);
+    Route::get('/onexam/ujian/confirm/{id_peserta}/{id_ujian}', [OnExamUjianController::class, 'show']);
+
 
     // Peserta
     Route::get('/peserta', [PesertaController::class, 'index']);
